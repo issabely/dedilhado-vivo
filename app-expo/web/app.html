@@ -396,6 +396,10 @@ select, input[type=text], input[type=number]{border:1px solid var(--line); backg
 .gpat span{display:flex; flex-direction:column; align-items:center; border:1px solid var(--line); border-radius:10px; padding:6px 0; background:var(--surface-2)}
 .gpat span b{font-size:24px; line-height:1} .gpat span small{font:500 11px var(--mono); color:var(--ink-2)}
 .gpat span.on{background:var(--accent); border-color:var(--accent); color:#fff} .gpat span.on small{color:#fff}
+.gtune{display:grid; grid-template-columns:repeat(6, 1fr); gap:6px; max-width:420px; margin:8px auto}
+.gtune span{display:flex; flex-direction:column; align-items:center; border:1px solid var(--line); border-radius:10px; padding:6px 0; background:var(--surface-2)}
+.gtune span b{font-family:var(--display); font-size:16px} .gtune span small{font-size:11px; color:var(--ink-2)}
+.gtune span.on{border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-soft)} .gtune span.done{background:var(--ok); border-color:var(--ok); color:#fff} .gtune span.done small{color:#fff}
 .newchords{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px}
 .newchords button{border:1px solid var(--line); background:var(--surface-2); color:var(--ink); border-radius:10px; padding:4px 8px; cursor:pointer; font:700 16px var(--display); width:84px}
 .newchords svg{width:64px; display:block; margin:0 auto}
@@ -1639,6 +1643,11 @@ function gFinger(m){
 }
 // f: casa de cada corda (6 → 1), -1 = não tocar; d: dedo (0 = solta)
 const G_CHORDS = {
+  Soltas:{nm:"Cordas soltas (sem mão esquerda)", f:[0,0,0,0,0,0], d:[0,0,0,0,0,0]},
+  Em7:{nm:"Mi menor com sétima (1 dedo)", f:[0,2,0,0,0,0], d:[0,2,0,0,0,0]},
+  "C fácil":{nm:"Dó de 1 dedo (só 3 cordas)", f:[-1,-1,-1,0,1,0], d:[0,0,0,0,1,0]},
+  "G fácil":{nm:"Sol de 1 dedo (4 cordas)", f:[-1,-1,0,0,0,3], d:[0,0,0,0,0,3]},
+  "G7 fácil":{nm:"Sol com sétima de 1 dedo (3 cordas)", f:[-1,-1,-1,0,0,1], d:[0,0,0,0,0,1]},
   Em:{nm:"Mi menor", f:[0,2,2,0,0,0], d:[0,2,3,0,0,0]},
   Am:{nm:"Lá menor", f:[-1,0,2,2,1,0], d:[0,0,2,3,1,0]},
   D:{nm:"Ré maior", f:[-1,-1,0,2,3,2], d:[0,0,0,1,3,2]},
@@ -1657,7 +1666,7 @@ const G_CHORDS = {
   F:{nm:"Fá maior, com pestana", f:[1,3,3,2,1,1], d:[1,3,4,2,1,1], barre:{fret:1, from:0, to:5}},
   Bm:{nm:"Si menor, com pestana", f:[-1,2,4,4,3,2], d:[0,1,3,4,2,1], barre:{fret:2, from:1, to:5}}
 };
-const G_CHORD_ORDER = ["Em","Am","D","A","G","C","E","Dm","E7","A7","D7","G7","C7","B7","Fmaj7","F","Bm"];
+const G_CHORD_ORDER = ["Em7","C fácil","G fácil","G7 fácil","Em","Am","D","A","G","C","E","Dm","E7","A7","D7","G7","C7","B7","Fmaj7","F","Bm"];
 const PC_PT = ["Dó","Dó♯","Ré","Mi♭","Mi","Fá","Fá♯","Sol","Sol♯","Lá","Si♭","Si"];
 const chordMidis = k => G_CHORDS[k].f.map((fr, i) => fr < 0 ? null : G_OPEN[i] + fr).filter(x => x != null);
 const chordPCs = k => [...new Set(chordMidis(k).map(m => m % 12))];
@@ -1759,7 +1768,7 @@ function createGuitar(container){
   const caption = text(330, 292, "", "keylabel strong");
   container.appendChild(svg); container.parentNode.insertBefore(info, container.nextSibling);
   const put = (i, fret, finger, hide) => {
-    if (fret < 0){ const t = el("text", {x:NX - 24, y:yS(i) + 6, "text-anchor":"middle", "font-size":20, "font-weight":700, fill:"var(--ink-2)"}, marks); t.textContent = "×"; return; }
+    if (fret < 0){ const t = el("text", {x:NX - 24, y:yS(i) + 6, "text-anchor":"middle", "font-size":20, "font-weight":700, fill:"#f3ead6"}, marks); t.textContent = "×"; return; }
     if (fret === 0){ el("circle", {cx:NX - 24, cy:yS(i), r:10, fill:"var(--surface)", stroke:"var(--ink)", "stroke-width":3}, marks); strs[i].setAttribute("stroke", "#f6efd9"); strs[i].setAttribute("x1", NX); return; }
     const x = fx(fret) - (fx(fret) - fx(fret - 1)) * 0.32, col = FINGER_COLOR[V_FINGER[finger]];
     strs[i].setAttribute("stroke", col); strs[i].setAttribute("x1", x);
@@ -1846,16 +1855,18 @@ function chordScore(ch, pcs){
   pcs.forEach(p => dot += ch[p]);
   return n2 ? dot / Math.sqrt(n2 * pcs.length) : 0;
 }
-function judgeChord(ch, k){
+function judgeChord(ch, k, easy){
   const pcs = chordPCs(k), s = chordScore(ch, pcs);
   let best = null, bs = -1;
   CHORD_CANDS.forEach(c => { if (c.k === k) return; const v = chordScore(ch, c.pcs); if (v > bs){ bs = v; best = c; } });
   const max = Math.max(...ch), missing = pcs.filter(p => ch[p] < max * 0.12), extra = [];
   for (let p = 0; p < 12; p++) if (!pcs.includes(p) && ch[p] > max * 0.45) extra.push(p);
-  const ok = s >= 0.72 && s >= bs - 0.02 && !missing.length;
-  return {ok, s, missing, extra};
+  const ok = easy ? s >= 0.62 && s >= bs - 0.06 && missing.length <= (pcs.length >= 3 ? 1 : 0) && extra.length <= 1
+                  : s >= 0.72 && s >= bs - 0.02 && !missing.length;
+  return {ok, s, missing, extra, easy};
 }
 function chordFeedback(j, k){
+  if (j.ok && (j.missing.length || j.extra.length)) return `Valeu, conta! ${j.missing.length ? `Só o ${j.missing.map(p => PC_PT[p]).join(" e ")} quase não soou: deixe os dedos mais em pé.` : `Apareceu um pouco de ${j.extra.map(p => PC_PT[p]).join(" e ")}: confira se não bateu numa corda com ×.`}`;
   if (j.ok) return "Acorde limpo!";
   const c = G_CHORDS[k], tips = [];
   if (j.extra.length) tips.push(`Apareceu ${j.extra.map(p => PC_PT[p]).join(", ").replace(/, ([^,]*)$/, " e $1")}, que não ${j.extra.length > 1 ? "são" : "é"} do ${k}: confira as casas e se não está tocando uma corda com ×.`);
@@ -1881,6 +1892,7 @@ const GUIDE_GUITAR_HTML = () => `
       <li><b>Polegar esquerdo atrás do braço</b>, mais ou menos atrás do dedo 2. A palma não encosta no braço.</li>
       <li><b>Dedos em pé, ponta do dedo.</b> Aperte logo atrás do traste: assim precisa de menos força e não abafa as cordas vizinhas.</li>
       <li><b>Mão direita:</b> para acordes, bata com o polegar, com as costas das unhas ou com uma palheta. Para melodias, alterne indicador (i) e médio (m); o polegar (p) toca as cordas graves.</li>
+      <li><b>Vá por etapas.</b> A trilha começa sem a mão esquerda, depois um dedo por casa, depois acordes de um dedo só. Os acordes completos vêm quando os dedos já obedecem.</li>
       <li><b>Dói no começo.</b> As pontas dos dedos ficam sensíveis nas primeiras semanas e depois criam calo. Estude 10 a 15 minutos várias vezes, em vez de uma hora seguida.</li>
     </ol>
   </div>
@@ -1904,23 +1916,39 @@ const GUIDE_GUITAR_NOTES = `
 </div>`;
 
 const GUITAR_CHORD_LESSONS = [
-  {id:"gc0", guide:"guitar", title:"Antes de tocar: violão e diagramas", notes:[], chords:["Em"], intro:"Como sentar, como ler o diagrama de acorde e o primeiro acorde, o Mi menor, que usa só dois dedos. Afine o violão na aba Afinador antes de começar.",
-   ex:[{id:"a", type:"chord", title:"Primeiro acorde: Mi menor (Em)", chord:"Em", strums:4}]},
-  {id:"gc1", title:"Mi menor e Lá menor", notes:[], chords:["Em", "Am"], intro:"O Lá menor tem a mesma forma do Mi menor, uma corda abaixo, mais o indicador na 2ª corda. Na troca, os dedos 2 e 3 descem juntos, sem se separar.",
-   ex:[{id:"a", type:"chord", title:"Lá menor (Am)", chord:"Am", strums:4},
-       {id:"b", type:"change", title:"Troca Em ↔ Am, 4 tempos cada", seq:["Em","Am"], beats:4, bpm:60, rounds:2},
-       {id:"c", type:"change", title:"Troca Em ↔ Am, 2 tempos cada", seq:["Em","Am"], beats:2, bpm:66, rounds:3}]},
+  {id:"gc0", guide:"guitar", title:"Antes de tocar: violão e diagramas", notes:[], intro:"Como sentar, como ler o diagrama de acorde e os dois primeiros passos: afinar o violão (o app ouve corda por corda) e bater nas cordas soltas, só com a mão direita.",
+   ex:[{id:"t", type:"tune", title:"Afinar as 6 cordas"},
+       {id:"a", type:"strum", title:"Cordas soltas: só a mão direita", chord:"Soltas", pattern:"D.D.D.D.", bars:4, bpm:56}]},
+  {id:"gcA", title:"Dedos na corda: o exercício da aranha", notes:[], intro:"Antes dos acordes, os dedos precisam aprender a apertar. Um dedo por casa: dedo 1 na casa 1, dedo 2 na casa 2, e assim por diante. Aperte com a ponta, logo atrás do traste, e deixe cada nota soar limpa antes de ir para a próxima. É normal doer um pouco nas primeiras semanas.",
+   ex:[{id:"a", title:"Aranha na 1ª corda", txt:"E5:2 F5:2 F#5:2 G5:2 G#5:4 G5:2 F#5:2 F5:2 E5:4", bpm:56},
+       {id:"b", title:"Aranha na 2ª corda", txt:"B4:2 C5:2 C#5:2 D5:2 D#5:4 D5:2 C#5:2 C5:2 B4:4", bpm:56},
+       {id:"c", title:"Aranha nas duas cordas", txt:"E5:1 F5:1 F#5:1 G5:1 B4:1 C5:1 C#5:1 D5:1 E5:1 F5:1 F#5:1 G5:1 G#5:4", bpm:60}]},
+  {id:"gcB", title:"Acordes de um dedo", notes:[], chords:["Em7", "C fácil", "G fácil", "G7 fácil"], intro:"Versões pequenas dos acordes, com um dedo só, para a mão aprender a bater as cordas certas sem sofrer. Repare no × : essas cordas ficam de fora da batida. Com Dó e Sol de um dedo já dá para acompanhar músicas simples.",
+   ex:[{id:"a", type:"chord", title:"Mi menor com sétima (Em7)", chord:"Em7", strums:3, easy:true},
+       {id:"b", type:"chord", title:"Dó de 1 dedo", chord:"C fácil", strums:3, easy:true},
+       {id:"c", type:"chord", title:"Sol de 1 dedo", chord:"G fácil", strums:3, easy:true},
+       {id:"d", type:"swap", title:"Troca no seu tempo: Dó ↔ Sol", pair:["C fácil","G fácil"], count:6, easy:true},
+       {id:"e", type:"swap", title:"Troca no seu tempo: Sol ↔ Sol7", pair:["G fácil","G7 fácil"], count:6, easy:true},
+       {id:"f", type:"change", title:"Dó, Sol, Sol7, Dó no metrônomo", seq:["C fácil","G fácil","G7 fácil","C fácil"], beats:4, bpm:50, rounds:1, easy:true}]},
+  {id:"gc1", title:"Mi menor e Lá menor", notes:[], chords:["Em", "Am"], intro:"Os primeiros acordes completos. O Mi menor usa dois dedos. Monte um dedo de cada vez: primeiro o 2, depois o 3, e só então bata. O Lá menor tem a mesma forma, uma corda abaixo, mais o indicador na 2ª corda.",
+   ex:[{id:"e", type:"chord", title:"Mi menor (Em)", chord:"Em", strums:4, easy:true},
+       {id:"a", type:"chord", title:"Lá menor (Am)", chord:"Am", strums:4, easy:true},
+       {id:"s", type:"swap", title:"Troca no seu tempo: Em ↔ Am", pair:["Em","Am"], count:6, easy:true},
+       {id:"b", type:"change", title:"Troca Em ↔ Am, 4 tempos cada", seq:["Em","Am"], beats:4, bpm:52, rounds:2, easy:true},
+       {id:"c", type:"change", title:"Troca Em ↔ Am, 2 tempos cada", seq:["Em","Am"], beats:2, bpm:60, rounds:3}]},
   {id:"gc2", title:"Ritmo: batida para baixo", notes:[], intro:"Agora a mão direita: uma batida para baixo em cada clique do metrônomo. O app ouve se você bate no tempo.",
    ex:[{id:"a", type:"strum", title:"Quatro para baixo em Em", chord:"Em", pattern:"D.D.D.D.", bars:4, bpm:66},
        {id:"b", type:"strum", title:"Em e Am, um compasso cada", seq:["Em","Am"], pattern:"D.D.D.D.", bars:4, bpm:66}]},
   {id:"gc3", title:"Ré e Lá maior", notes:[], chords:["D", "A"], intro:"O Ré forma um triângulo nas três cordas mais finas; toque só da 4ª corda para baixo. No Lá, os três dedos ficam lado a lado na 2ª casa.",
-   ex:[{id:"a", type:"chord", title:"Ré maior (D)", chord:"D", strums:4},
-       {id:"b", type:"chord", title:"Lá maior (A)", chord:"A", strums:4},
+   ex:[{id:"a", type:"chord", title:"Ré maior (D)", chord:"D", strums:4, easy:true},
+       {id:"b", type:"chord", title:"Lá maior (A)", chord:"A", strums:4, easy:true},
+       {id:"s", type:"swap", title:"Troca no seu tempo: D ↔ A", pair:["D","A"], count:6, easy:true},
        {id:"c", type:"change", title:"Troca D ↔ A", seq:["D","A"], beats:4, bpm:60, rounds:2},
        {id:"d", type:"strum", title:"D e A no ritmo", seq:["D","A"], pattern:"D.D.D.D.", bars:4, bpm:70}]},
   {id:"gc4", title:"Sol e Dó", notes:[], chords:["G", "C"], intro:"Os dois acordes mais usados nas músicas populares. No Sol, as seis cordas soam; no Dó, não toque a 6ª corda.",
-   ex:[{id:"a", type:"chord", title:"Sol maior (G)", chord:"G", strums:4},
-       {id:"b", type:"chord", title:"Dó maior (C)", chord:"C", strums:4},
+   ex:[{id:"a", type:"chord", title:"Sol maior (G)", chord:"G", strums:4, easy:true},
+       {id:"b", type:"chord", title:"Dó maior (C)", chord:"C", strums:4, easy:true},
+       {id:"s", type:"swap", title:"Troca no seu tempo: G ↔ C", pair:["G","C"], count:6, easy:true},
        {id:"c", type:"change", title:"Troca G ↔ C", seq:["G","C"], beats:4, bpm:60, rounds:2},
        {id:"d", type:"change", title:"G, C, D e G", seq:["G","C","D","G"], beats:4, bpm:64, rounds:1}]},
   {id:"gc5", title:"Batida para baixo e para cima", notes:[], intro:"A mão direita vai e volta sem parar, como um pêndulo: para baixo no número (1, 2, 3, 4) e para cima no “e”. Quando um movimento não tem batida, a mão passa no ar.",
@@ -3258,13 +3286,15 @@ function startDrill(l, e){
     sustain: `Toque ${n ? ptName(n) + " " + n.octave : ""} e segure o máximo que conseguir, com o som parado. Meta: ${(e.goals || []).join(" s, ")} s para 1, 2 e 3 estrelas.`,
     dyn: `Toque ${n ? ptName(n) + " " + n.octave : ""} em três partes de ${e.phase} segundos: fraco, forte e fraco de novo, sem deixar a nota subir ou descer.`,
     stacc: `Depois da contagem, toque ${e.count} notas ${n ? ptName(n) + " " + n.octave : ""} curtas, uma em cada clique, começando cada uma com “tu”.`,
+    tune: "Afine corda por corda, da 6ª (a mais grossa) até a 1ª. Toque só a corda pedida; o ponteiro mostra se ela está alta ou baixa. Quando o ponteiro parar no meio, o app passa para a próxima.",
+    swap: e.pair ? `Troque entre ${e.pair[0]} e ${e.pair[1]} no seu tempo, sem metrônomo. Monte, bata uma vez e, quando o app confirmar, troque. Faça ${e.count} trocas certas.` : "",
     chord: e.chord ? `Monte o ${e.chord} (${G_CHORDS[e.chord].nm}) e bata as cordas de cima para baixo. Faça ${e.strums} batidas limpas: o app confere as notas de cada uma.` : "",
     change: e.seq ? `Troque ${e.seq.length > 4 ? "os acordes" : e.seq.join(" → ")} no tempo do metrônomo, ${e.beats} tempos em cada acorde. Bata no começo de cada acorde (ou em todos os tempos).` : "",
     strum: e.pattern ? `Batida ${arrowsOf(e.pattern)}, seguindo os cliques. ↓ é para baixo, ↑ para cima e · é a mão passando no ar.` : ""
   }[e.type];
   $("#drHow").textContent = how;
   $("#drTips").innerHTML = TECH_TIPS[e.type === "hiss" ? "breath" : e.type] || "";
-  const gt = ["chord","change","strum"].includes(e.type);
+  const gt = ["chord","change","strum","tune","swap"].includes(e.type);
   $("#drGuitarWrap").hidden = !gt;
   if (gt && !DR.guitar){ DR.guitar = createGuitar($("#guitarDrill")); legendG($("#legendDrillG")); }
   const fw = $("#drFluteWrap"); fw.hidden = !e.m;
@@ -3286,7 +3316,7 @@ async function runDrill(){
   const {e} = lessonRun; $("#drStart").hidden = true;
   if (e.type === "breath") return runBreath(e);
   const ok = await drillMic(); if (!ok){ $("#drStart").hidden = false; drMicFail(); return; }
-  DR.on = true; ({hiss:runHold, sustain:runHold, dyn:runDyn, stacc:runStacc, chord:runChord, change:runChange, strum:runStrum})[e.type](e);
+  DR.on = true; ({hiss:runHold, sustain:runHold, dyn:runDyn, stacc:runStacc, chord:runChord, change:runChange, strum:runStrum, tune:runTune, swap:runSwap})[e.type](e);
 }
 function runBreath(e){
   const c = $("#bCircle"), ph = $("#bPhase"), ct = $("#bCount"), rd = $("#bRound");
@@ -3400,6 +3430,8 @@ function runStacc(e){
   DR.raf = requestAnimationFrame(loop);
 }
 /* ---------- Treinos de violão: acorde, troca e batida ---------- */
+TECH_TIPS.tune = `<ul class="drills"><li>Toque só a corda pedida e deixe soar. As outras podem ficar paradas.</li><li>Gire a tarraxa devagar, um pouquinho de cada vez, olhando o ponteiro.</li><li>Se a nota passou do ponto, afrouxe um pouco e suba de novo até o meio.</li></ul>`;
+TECH_TIPS.swap = `<ul class="drills"><li>Sem pressa: aqui não tem metrônomo. Troque, confira os dedos e bata.</li><li>Tire todos os dedos juntos e pouse todos juntos, como um bloco.</li><li>Olhe o desenho do próximo acorde antes de trocar.</li></ul>`;
 TECH_TIPS.chord = `<ul class="drills"><li>Monte o acorde antes de bater e confira: dedos em pé, pontas logo atrás do traste.</li><li>Toque uma corda de cada vez, devagar. A que sair abafada mostra qual dedo ajeitar.</li><li>Bata de cima para baixo, começando na corda certa (as com × ficam de fora).</li></ul>`;
 TECH_TIPS.change = `<ul class="drills"><li>Antes do metrônomo, treine a troca no ar: tire os dedos juntos e pouse juntos.</li><li>Procure o dedo guia: o que fica no lugar ou só escorrega pela corda.</li><li>Se não der tempo, bata as cordas soltas no último tempo enquanto a mão troca. O ritmo não para.</li></ul>`;
 TECH_TIPS.strum = `<ul class="drills"><li>A mão direita não para: desce no número e sobe no “e”, mesmo quando passa no ar.</li><li>Pulso solto, como quem sacode água da mão. O braço quase não mexe.</li><li>Para cima, pegue só as 3 ou 4 cordas mais finas, mais leve.</li></ul>`;
@@ -3417,6 +3449,23 @@ const pcsHeard = ch => { const mx = Math.max(...ch); return [...ch].map((v, i) =
 function gdrShow(k){ if (DR.guitar && k) DR.guitar(null, {chord:k}); }
 function drStageGuitar(e){
   const st = $("#drStage");
+  if (e.type === "tune"){
+    const T = G_TUNINGS.std.m;
+    st.innerHTML = `<div class="gtune">${T.map((m, i) => { const n = spellMidi(m, false); return `<span data-s="${i}"><b>${6 - i}ª</b><small>${ptName(n)}</small></span>`; }).join("")}</div>
+      <div class="gcount" id="dCount">${gTuneLabel(0)}</div>
+      <div class="tuner" aria-hidden="true" style="max-width:420px; margin:0 auto"><div class="scale"></div><div class="mid"></div><div class="needle" id="gNeedle"></div><div class="lbls"><span>baixo</span><span id="gCents">—</span><span>alto</span></div></div>
+      <p class="hint center" id="dSub">Toque a corda e deixe soar com o ponteiro no meio. Se o som acabar, toque de novo.</p>
+      <div class="row" style="justify-content:center"><button class="btn sm" id="gHear">Ouvir a corda</button><button class="btn sm" id="gSkip">Já está afinada, pular</button></div>`;
+    $("#gHear").onclick = () => { const ctx = audio.ensure(); if (ctx){ audio.tone(T[GDR.ti || 0], ctx.currentTime + 0.02, 2.5, true); GDR.mute = performance.now() + 2700; } };
+    $("#gSkip").onclick = () => { GDR.skip = true; };
+    GDR.ti = 0; gdrShow("Soltas"); return;
+  }
+  if (e.type === "swap"){
+    st.innerHTML = `<div class="gdr"><div class="gch-big" id="gNow"></div><div class="gdr-side"><div class="gnext" id="gNext"></div>
+      <div class="beats">${Array.from({length:e.count}, (_, i) => `<i data-b="${i}"></i>`).join("")}</div>
+      <div class="gcount" id="dCount">0 de ${e.count}</div><p class="hint center" id="dSub">Sem metrônomo: troque no seu tempo.</p></div></div>`;
+    gChangeShow({seq:e.pair}, 0); return;
+  }
   if (e.type === "chord"){
     st.innerHTML = `<div class="gdr"><div class="gch-big"><b>${e.chord}</b><span>${G_CHORDS[e.chord].nm}</span>${chordDiagram(e.chord).outerHTML}</div>
       <div class="gdr-side"><div class="beats">${Array.from({length:e.strums}, (_, i) => `<i data-b="${i}"></i>`).join("")}</div><div class="gcount" id="dCount">0 de ${e.strums}</div><p class="hint center" id="dSub">Cada batida limpa acende uma bolinha.</p>
@@ -3450,6 +3499,69 @@ function gStrumShow(e, bar){
   $("#gNow").innerHTML = `<b>${k}</b><span>${G_CHORDS[k].nm}</span>${chordDiagram(k).outerHTML}`;
   gdrShow(k);
 }
+const gTuneLabel = i => { const m = G_TUNINGS.std.m[i]; return `${6 - i}ª corda · ${ptName(spellMidi(m, false))}`; };
+function runTune(e){
+  const T = G_TUNINGS.std.m, chips = document.querySelectorAll(".gtune span");
+  let i = 0, ema = null, okSince = 0, skipped = 0, lastAt = 0, badSince = 0; GDR.ti = 0; GDR.skip = false; GDR.mute = 0;
+  const mark = () => chips.forEach((c, k) => { c.classList.toggle("on", k === i); c.classList.toggle("done", k < i); });
+  const next = () => { i++; GDR.ti = i; ema = null; okSince = 0; mark(); setTimeout(() => {}, 0);
+    if (i >= T.length){ DR.on = false; drillStopMic(); finishRun({stars: skipped ? 2 : 3, detail: skipped ? `Violão afinado, pulando ${skipped} corda${skipped > 1 ? "s" : ""}. Afine sempre antes de estudar.` : "As 6 cordas afinadas! Faça isso toda vez antes de estudar: violão desafinado faz o acorde soar errado mesmo com os dedos certos."}); return true; }
+    $("#dCount").textContent = gTuneLabel(i); drMsg(`Agora a ${gTuneLabel(i)}.`, "ok"); GDR.mute = performance.now() + 500; return false; };
+  mark(); drMsg(`Toque a ${gTuneLabel(0)}, a mais grossa.`, "");
+  const loop = () => {
+    if (!DR.on) return;
+    const now = performance.now();
+    if (GDR.skip){ GDR.skip = false; skipped++; if (next()) return; }
+    DR.analyser.getFloatTimeDomainData(DR.buf);
+    let rms = 0; for (let k = 0; k < DR.buf.length; k++) rms += DR.buf[k] * DR.buf[k]; rms = Math.sqrt(rms / DR.buf.length);
+    const p = now > (GDR.mute || 0) && rms > 0.003 ? yin(DR.buf, DR.analyser.context.sampleRate, 60) : null;
+    const nd = $("#gNeedle");
+    if (p && p.f >= 62 && p.f < 1200 && p.clarity > 0.85){
+      lastAt = now;
+      const mf = 69 + 12 * Math.log2(p.f / A4REF); let c0 = (mf - T[i]) * 100; const ko = Math.round(c0 / 1200); if (ko && Math.abs(c0 - 1200 * ko) < 100) c0 -= 1200 * ko;
+      if (Math.abs(c0) > 600){ if (!badSince) badSince = now; if (now - badSince > 300){ drMsg(`Parece outra corda (${noteLabel(Math.round(mf))}). Toque a ${gTuneLabel(i)}.`, "err"); okSince = 0; } }
+      else {
+        ema = ema == null ? c0 : ema * 0.7 + c0 * 0.3;
+        const c = Math.round(ema), show = Math.max(-50, Math.min(50, c));
+        nd.style.left = `calc(${50 + show}% - 2px)`; $("#gCents").textContent = (c > 0 ? "+" : "") + c;
+        if (Math.abs(c0) < 600) badSince = 0;
+        if (Math.abs(c) <= 8){ nd.className = "needle ok"; if (!okSince) okSince = now; drMsg("Isso! Segure…", "ok");
+          if (now - okSince > 650){ if (next()) return; } }
+        else { nd.className = "needle err"; if (Math.abs(c) > 15) okSince = 0;
+          drMsg(Math.abs(c) > 100 ? `Bem ${c > 0 ? "alta" : "baixa"}: ${c > 0 ? "afrouxe" : "estique"} girando a tarraxa devagar.` : c > 0 ? "Um pouco alta: afrouxe um tiquinho e suba de novo até o meio." : "Um pouco baixa: estique girando a tarraxa bem devagar.", "err"); }
+      }
+    } else if (now - lastAt > 700){ okSince = 0; nd.className = "needle"; nd.style.left = "calc(50% - 2px)"; $("#gCents").textContent = "—"; }
+    DR.raf = requestAnimationFrame(loop);
+  };
+  DR.raf = requestAnimationFrame(loop);
+}
+function runSwap(e){
+  let good = 0, bad = 0, cur = 0, pend = null;
+  const dots = document.querySelectorAll("#drStage .beats i");
+  drMsg(`Monte o ${e.pair[0]} e bata uma vez.`, "");
+  const loop = () => {
+    if (!DR.on) return;
+    const now = performance.now(), r = drRms();
+    if (gOnset(r.rms, now) && !pend) pend = {t:now, acc:null};
+    if (pend){
+      const dt = now - pend.t;
+      if (dt > 140 && dt < 650) pend.acc = chromaAdd(pend.acc, gChroma());
+      if (dt >= 650){
+        const acc = pend.acc; pend = null; const k = e.pair[cur];
+        if (acc){
+          const j = judgeChord(acc, k, e.easy);
+          if (j.ok){ good++; if (dots[good - 1]) dots[good - 1].classList.add("on"); $("#dCount").textContent = `${good} de ${e.count}`;
+            if (good >= e.count){ DR.on = false; drillStopMic(); const stars = bad === 0 ? 3 : bad <= 3 ? 2 : 1;
+              finishRun({stars, detail:`${good} trocas certas${bad ? `, com ${bad} tentativa${bad > 1 ? "s" : ""} que não soou` : " sem errar nenhuma"}. Quando ficar fácil, faça a versão com metrônomo.`}); return; }
+            cur = 1 - cur; gChangeShow({seq:e.pair}, cur); drMsg(`${k} certo! Agora troque para o ${e.pair[cur]}.`, "ok"); }
+          else { bad++; drMsg(`${k}: ${chordFeedback(j, k)}`, "err"); }
+        }
+      }
+    }
+    DR.raf = requestAnimationFrame(loop);
+  };
+  DR.raf = requestAnimationFrame(loop);
+}
 function runChord(e){
   let good = 0, bad = 0, pend = null;
   const dots = document.querySelectorAll("#drStage .beats i");
@@ -3464,8 +3576,8 @@ function runChord(e){
       if (dt >= 700){
         const acc = pend.acc; pend = null;
         if (acc){
-          const j = judgeChord(acc, e.chord);
-          if (j.ok){ good++; if (dots[good - 1]) dots[good - 1].classList.add("on"); $("#dCount").textContent = `${good} de ${e.strums}`; drMsg(good < e.strums ? "Acorde limpo! De novo." : "Acorde limpo!", "ok"); }
+          const j = judgeChord(acc, e.chord, e.easy);
+          if (j.ok){ good++; if (dots[good - 1]) dots[good - 1].classList.add("on"); $("#dCount").textContent = `${good} de ${e.strums}`; const fb = chordFeedback(j, e.chord); drMsg(fb === "Acorde limpo!" ? (good < e.strums ? "Acorde limpo! De novo." : "Acorde limpo!") : fb, "ok"); }
           else { bad++; drMsg(chordFeedback(j, e.chord), "err"); }
           $("#dSub").textContent = `Ouvi: ${pcsHeard(acc)}`;
           if (good >= e.strums){
@@ -3490,7 +3602,7 @@ function runChange(e){
   const res = [];
   const beatsEl = () => document.querySelectorAll("#gBeats i");
   drMsg("Conte 4 cliques e bata o primeiro acorde no quinto.", "");
-  const judge = i => { const k = e.seq[i % e.seq.length]; const j = acc && heard ? judgeChord(acc, k) : null; res.push(!!(j && j.ok)); if (j && j.ok) good++;
+  const judge = i => { const k = e.seq[i % e.seq.length]; const j = acc && heard ? judgeChord(acc, k, e.easy) : null; res.push(!!(j && j.ok)); if (j && j.ok) good++;
     $("#dCount").textContent = `${good} de ${total}`; drMsg(j ? (j.ok ? `${k} certo!` : `${k}: ${chordFeedback(j, k)}`) : `Não ouvi o ${k}. Bata pelo menos uma vez em cada acorde.`, j && j.ok ? "ok" : "err"); };
   const loop = () => {
     if (!DR.on) return;

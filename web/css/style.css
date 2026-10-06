@@ -363,6 +363,10 @@ select, input[type=text], input[type=number]{border:1px solid var(--line); backg
 .gpat span{display:flex; flex-direction:column; align-items:center; border:1px solid var(--line); border-radius:10px; padding:6px 0; background:var(--surface-2)}
 .gpat span b{font-size:24px; line-height:1} .gpat span small{font:500 11px var(--mono); color:var(--ink-2)}
 .gpat span.on{background:var(--accent); border-color:var(--accent); color:#fff} .gpat span.on small{color:#fff}
+.gtune{display:grid; grid-template-columns:repeat(6, 1fr); gap:6px; max-width:420px; margin:8px auto}
+.gtune span{display:flex; flex-direction:column; align-items:center; border:1px solid var(--line); border-radius:10px; padding:6px 0; background:var(--surface-2)}
+.gtune span b{font-family:var(--display); font-size:16px} .gtune span small{font-size:11px; color:var(--ink-2)}
+.gtune span.on{border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-soft)} .gtune span.done{background:var(--ok); border-color:var(--ok); color:#fff} .gtune span.done small{color:#fff}
 .newchords{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px}
 .newchords button{border:1px solid var(--line); background:var(--surface-2); color:var(--ink); border-radius:10px; padding:4px 8px; cursor:pointer; font:700 16px var(--display); width:84px}
 .newchords svg{width:64px; display:block; margin:0 auto}
