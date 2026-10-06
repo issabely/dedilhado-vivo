@@ -2778,8 +2778,18 @@ document.addEventListener("visibilitychange", () => { if (document.hidden && CON
 window.addEventListener("online", () => { if (CONTA.pending) pushNow(); });
 
 async function signIn(){
+  if (window.ReactNativeWebView){
+    // No app: o Google não deixa entrar dentro da tela embutida, então o app abre o navegador do sistema
+    try {
+      $("#acctGo").disabled = true;
+      const sb = await ensureClient();
+      const {data, error} = await sb.auth.signInWithOAuth({provider:"google", options:{redirectTo:window.DV_APP_REDIRECT || "dedilhadovivo://auth", skipBrowserRedirect:true}});
+      if (error) throw error;
+      window.ReactNativeWebView.postMessage(JSON.stringify({type:"oauth", url:data.url}));
+    } catch(e){ $("#acctGo").disabled = false; toast("Não consegui abrir o login do Google. Confira a internet e tente de novo."); }
+    return;
+  }
   if (location.protocol === "file:"){ toast("Para entrar, abra o app pelo “Abrir Dedilhado Vivo.bat” ou pelo site publicado."); return; }
-  if (window.ReactNativeWebView){ toast("No app de celular, o login chega na próxima etapa. Por enquanto, entre pelo site."); return; }
   try {
     $("#acctGo").disabled = true;
     const sb = await ensureClient();
@@ -2787,6 +2797,19 @@ async function signIn(){
     if (error) throw error;
   } catch(e){ $("#acctGo").disabled = false; toast("Não consegui abrir o login do Google. Confira a internet e tente de novo."); }
 }
+// chamado pelo app de celular quando o navegador do sistema volta com o código do login
+window.__dvOAuthDone = async url => {
+  try {
+    const sb = await ensureClient();
+    const q = new URL(url.replace(/^[a-z]+:\/\/[^?#]*/i, "https://x/")), code = q.searchParams.get("code");
+    if (!code) throw new Error(q.searchParams.get("error_description") || "sem código");
+    const {error} = await sb.auth.exchangeCodeForSession(code);
+    if (error) throw error;
+    toast("Pronto, você entrou na sua conta.");
+  } catch(e){ toast("Não consegui concluir o login. Tente de novo."); }
+  const b = $("#acctGo"); if (b) b.disabled = false;
+};
+window.__dvOAuthCancel = () => { const b = $("#acctGo"); if (b) b.disabled = false; };
 async function signOut(){
   if (CONTA.pushT) await pushNow();
   try { await CONTA.sb.auth.signOut(); } catch(e){}

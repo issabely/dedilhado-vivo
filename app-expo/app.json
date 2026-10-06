@@ -36,6 +36,10 @@
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#172033"
-    }
+    },
+    "plugins": [
+      "expo-web-browser"
+    ],
+    "scheme": "dedilhadovivo"
   }
 }

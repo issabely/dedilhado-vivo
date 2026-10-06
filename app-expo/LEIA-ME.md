@@ -22,6 +22,30 @@ O Expo Go precisa ser da mesma versão do Expo do projeto (SDK 57). Se der erro 
 
 O build acontece nos servidores da Expo. Ao terminar, aparece um link para baixar o arquivo.
 
+## Login com Google no app
+
+O app usa o mesmo login do site. Ao tocar em **Entrar com Google**, ele abre o navegador do celular. Depois de escolher a conta, você volta para o app já logada.
+
+- **No Expo Go:** o endereço de volta é `exp://…`. Ele já está liberado no Supabase.
+- **No app instalado (APK ou Play Store):** o endereço de volta é `dedilhadovivo://auth`, que também já está liberado.
+- **Depois de atualizar o projeto:** rode `npm install`, porque entraram os pacotes `expo-web-browser` e `expo-linking`.
+
+## Publicar na Play Store
+
+1. **Crie a conta de desenvolvedor** no **Google Play Console** (play.google.com/console). Há uma taxa única. Contas pessoais novas passam por um teste fechado com testadores antes de liberar a publicação; confira as regras atuais lá.
+2. **Gere o arquivo da loja:** rode `eas build -p android --profile production`. Sai um `.aab`.
+3. **Crie o app no Play Console:**
+   - nome **Dedilhado Vivo**;
+   - envie o `.aab`;
+   - preencha a ficha da loja e a classificação de conteúdo;
+   - em **Política de privacidade**, use `https://dedilhadovivo.com/privacidade.html`.
+4. **Responda o formulário "Segurança dos dados":**
+   - o app coleta nome, e-mail e foto (para a conta) e o progresso (dados do app);
+   - nada é compartilhado com terceiros;
+   - o usuário pode pedir para apagar;
+   - o microfone é usado só no aparelho e o áudio não é enviado.
+5. **Teste antes:** comece pela trilha de **Teste interno** e depois passe para **Produção**.
+
 ## Quando mudar o app
 
 1. Gere o arquivo único novo e coloque no lugar de `web/app.html`.
