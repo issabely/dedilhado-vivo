@@ -21,7 +21,7 @@
 <div class="wrap">
   <header class="top">
     <div class="brand"><h1>Dedilhado Vivo</h1><span id="brandSub">flauta transversal · sistema Boehm</span></div>
-    <div class="seg instsw" id="instSeg" role="group" aria-label="Instrumento"><button data-i="flute" aria-pressed="true">Flauta</button><button data-i="violin" aria-pressed="false">Violino</button><button data-i="piano" aria-pressed="false">Piano</button></div>
+    <div class="seg instsw" id="instSeg" role="group" aria-label="Instrumento"><button data-i="flute" aria-pressed="true">Flauta</button><button data-i="violin" aria-pressed="false">Violino</button><button data-i="piano" aria-pressed="false">Piano</button><button data-i="guitar" aria-pressed="false">Violão</button></div>
     <button class="btn themebtn" id="themeBtn" title="Mudar entre tema claro, escuro e automático"><svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></svg><span id="themeLbl">Automático</span></button>
     <button class="btn acctbtn" id="acctBtn" aria-label="Entrar com sua conta"><span class="lbl">Entrar</span></button>
     <nav class="tabs" role="tablist" aria-label="Seções">
@@ -42,7 +42,7 @@
       <div class="stat"><b id="stStars">0</b><span>estrelas</span></div>
       <div class="stat"><b id="stDone">0/0</b><span>lições</span></div>
     </div>
-    <div class="seg tracksw inst-flute" id="trackSeg" role="group" aria-label="Trilha"><button data-t="notes" aria-pressed="true">Notas e músicas</button><button data-t="tech" aria-pressed="false">Sopro e técnica</button></div>
+    <div class="seg tracksw inst-track" id="trackSeg" role="group" aria-label="Trilha"><button data-t="notes" aria-pressed="true">Notas e músicas</button><button data-t="tech" aria-pressed="false">Sopro e técnica</button></div>
     <div class="panel ldetail" id="lessonDetail" hidden></div>
     <div class="lgrid" id="lessonGrid"></div>
   </section>
@@ -94,6 +94,7 @@
         <div class="inst-flute"><div class="flute-scroll" id="fluteMain"></div></div>
         <div class="inst-violin" hidden><div class="flute-scroll" id="violinMain"></div></div>
         <div class="inst-piano" hidden><div class="flute-scroll" id="pianoMain"></div></div>
+        <div class="inst-guitar" hidden><div class="flute-scroll" id="guitarMain"></div></div>
         <div class="legend" id="legendMain"></div>
       </div>
     </div>
@@ -103,6 +104,7 @@
       <div class="panel hands inst-flute" id="handsMain"></div>
       <div class="panel hands inst-violin" id="vhandsMain" hidden></div>
       <div class="panel hands inst-piano" id="phandsMain" hidden></div>
+      <div class="panel hands inst-guitar" id="ghandsMain" hidden></div>
       <div class="panel tip" id="tipMain"></div>
     </div>
   </section>
@@ -114,6 +116,7 @@
         <div class="inst-flute"><div class="flute-scroll" id="fluteChart"></div></div>
         <div class="inst-violin" hidden><div class="flute-scroll" id="violinChart"></div></div>
         <div class="inst-piano" hidden><div class="flute-scroll" id="pianoChart"></div></div>
+        <div class="inst-guitar" hidden><div class="flute-scroll" id="guitarChart"></div></div>
         <div class="legend" id="legendChart"></div>
       </div>
     </div>
@@ -122,7 +125,14 @@
       <div class="panel hands inst-flute" id="handsChart"></div>
       <div class="panel hands inst-violin" id="vhandsChart" hidden></div>
       <div class="panel hands inst-piano" id="phandsChart" hidden></div>
+      <div class="panel hands inst-guitar" id="ghandsChart" hidden></div>
       <div class="panel tip" id="tipChart"></div>
+    </div>
+    <div class="panel inst-guitar" id="chordLibWrap" hidden style="margin-top:14px">
+      <div class="toolbar" style="border-bottom:1px solid var(--line)">
+        <div class="grow"><b style="font-family:var(--display)">Acordes</b><br><span class="hint">Toque num acorde para ver no braço e ouvir. Os números são os dedos; ○ corda solta; × não tocar.</span></div>
+      </div>
+      <div class="gchords" id="chordLib"></div>
     </div>
     <div class="panel" style="margin-top:14px">
       <div class="toolbar" style="border-bottom:1px solid var(--line)">
@@ -148,6 +158,10 @@
       <div class="panel flute-panel" id="drFluteWrap" hidden>
         <div class="flute-scroll" id="fluteDrill"></div>
         <div class="legend" id="legendDrill"></div>
+      </div>
+      <div class="panel flute-panel" id="drGuitarWrap" hidden>
+        <div class="flute-scroll" id="guitarDrill"></div>
+        <div class="legend" id="legendDrillG"></div>
       </div>
     </div>
   </section>
@@ -179,6 +193,7 @@
       <div class="panel tuner-side">
         <h3 id="tgTitle">Notas para afinar</h3>
         <p class="hint" id="tgMode">Automático: o afinador descobre a nota sozinho.</p>
+        <div class="seg inst-guitar tunesw" id="tgTuneSeg" role="group" aria-label="Afinação do violão" hidden><button data-g="std">Padrão</button><button data-g="half">Meio tom abaixo</button><button data-g="dropd">Drop D</button></div>
         <div id="tgTargets" class="tcards"></div>
         <div id="tgHelp"></div>
       </div>

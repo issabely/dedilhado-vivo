@@ -342,6 +342,34 @@ select, input[type=text], input[type=number]{border:1px solid var(--line); backg
   .lower{margin-top:10px; gap:10px}
 }
 
+/* ---- violão ---- */
+.gdiag{display:block; width:100%; height:auto}
+.flute-scroll svg.gneck{width:100%; min-width:0 !important; max-width:760px; height:auto; display:block; margin:0 auto}
+.fcard svg.gdiag{width:72px}
+.gneck .keylabel{font-size:15px}
+.gcount{font-family:var(--display); font-size:30px; font-weight:700; text-align:center; font-variant-numeric:tabular-nums}
+.gchords{display:grid; grid-template-columns:repeat(auto-fill, minmax(96px,1fr)); gap:10px; padding:14px}
+.gch{border:1px solid var(--line); background:var(--surface-2); border-radius:12px; padding:8px 6px 4px; cursor:pointer; text-align:center; color:var(--ink)}
+.gch:hover{border-color:var(--ink-2)} .gch[aria-pressed="true"]{border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-soft)}
+.gch b{font-family:var(--display); font-size:18px; display:block} .gch small{display:block; font-size:11px; color:var(--ink-2); min-height:2.4em; line-height:1.2}
+.gch svg{max-width:96px; margin:2px auto 0}
+.gdr{display:grid; grid-template-columns:minmax(0,200px) minmax(0,1fr); gap:16px; align-items:center; margin:8px 0}
+.gch-big{text-align:center} .gch-big b{font-family:var(--display); font-size:40px; display:block; line-height:1} .gch-big span{font-size:13px; color:var(--ink-2)}
+.gch-big svg{max-width:190px; margin:4px auto 0}
+.gdr-side{display:flex; flex-direction:column; align-items:center; gap:6px}
+.gdr-side .bigtime{font-size:40px}
+.gnext{display:flex; align-items:center; gap:8px} .gnext b{font-family:var(--display); font-size:22px} .gnext svg{width:56px}
+.gpat{display:grid; gap:4px; width:100%; max-width:420px}
+.gpat span{display:flex; flex-direction:column; align-items:center; border:1px solid var(--line); border-radius:10px; padding:6px 0; background:var(--surface-2)}
+.gpat span b{font-size:24px; line-height:1} .gpat span small{font:500 11px var(--mono); color:var(--ink-2)}
+.gpat span.on{background:var(--accent); border-color:var(--accent); color:#fff} .gpat span.on small{color:#fff}
+.newchords{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px}
+.newchords button{border:1px solid var(--line); background:var(--surface-2); color:var(--ink); border-radius:10px; padding:4px 8px; cursor:pointer; font:700 16px var(--display); width:84px}
+.newchords svg{width:64px; display:block; margin:0 auto}
+.tunesw{margin:4px 0 10px; flex-wrap:wrap} .tunesw button{font-size:13px}
+.gfig svg{max-width:170px; margin:0 auto}
+@media (max-width:600px){ .gdr{grid-template-columns:1fr; gap:8px} .gch-big svg{max-width:150px} .gch-big b{font-size:32px} .gchords{grid-template-columns:repeat(auto-fill, minmax(84px,1fr)); gap:8px; padding:10px} }
+
 /* ---- conta e perfil ---- */
 .appfoot{max-width:1180px; margin:-24px auto 0; padding:0 16px 28px; text-align:center; font-size:13px; color:var(--ink-2)}
 .appfoot a, .acct-dlg .hint a{color:var(--accent)}

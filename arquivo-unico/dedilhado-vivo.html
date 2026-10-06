@@ -348,6 +348,34 @@ select, input[type=text], input[type=number]{border:1px solid var(--line); backg
   .lower{margin-top:10px; gap:10px}
 }
 
+/* ---- violão ---- */
+.gdiag{display:block; width:100%; height:auto}
+.flute-scroll svg.gneck{width:100%; min-width:0 !important; max-width:760px; height:auto; display:block; margin:0 auto}
+.fcard svg.gdiag{width:72px}
+.gneck .keylabel{font-size:15px}
+.gcount{font-family:var(--display); font-size:30px; font-weight:700; text-align:center; font-variant-numeric:tabular-nums}
+.gchords{display:grid; grid-template-columns:repeat(auto-fill, minmax(96px,1fr)); gap:10px; padding:14px}
+.gch{border:1px solid var(--line); background:var(--surface-2); border-radius:12px; padding:8px 6px 4px; cursor:pointer; text-align:center; color:var(--ink)}
+.gch:hover{border-color:var(--ink-2)} .gch[aria-pressed="true"]{border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-soft)}
+.gch b{font-family:var(--display); font-size:18px; display:block} .gch small{display:block; font-size:11px; color:var(--ink-2); min-height:2.4em; line-height:1.2}
+.gch svg{max-width:96px; margin:2px auto 0}
+.gdr{display:grid; grid-template-columns:minmax(0,200px) minmax(0,1fr); gap:16px; align-items:center; margin:8px 0}
+.gch-big{text-align:center} .gch-big b{font-family:var(--display); font-size:40px; display:block; line-height:1} .gch-big span{font-size:13px; color:var(--ink-2)}
+.gch-big svg{max-width:190px; margin:4px auto 0}
+.gdr-side{display:flex; flex-direction:column; align-items:center; gap:6px}
+.gdr-side .bigtime{font-size:40px}
+.gnext{display:flex; align-items:center; gap:8px} .gnext b{font-family:var(--display); font-size:22px} .gnext svg{width:56px}
+.gpat{display:grid; gap:4px; width:100%; max-width:420px}
+.gpat span{display:flex; flex-direction:column; align-items:center; border:1px solid var(--line); border-radius:10px; padding:6px 0; background:var(--surface-2)}
+.gpat span b{font-size:24px; line-height:1} .gpat span small{font:500 11px var(--mono); color:var(--ink-2)}
+.gpat span.on{background:var(--accent); border-color:var(--accent); color:#fff} .gpat span.on small{color:#fff}
+.newchords{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px}
+.newchords button{border:1px solid var(--line); background:var(--surface-2); color:var(--ink); border-radius:10px; padding:4px 8px; cursor:pointer; font:700 16px var(--display); width:84px}
+.newchords svg{width:64px; display:block; margin:0 auto}
+.tunesw{margin:4px 0 10px; flex-wrap:wrap} .tunesw button{font-size:13px}
+.gfig svg{max-width:170px; margin:0 auto}
+@media (max-width:600px){ .gdr{grid-template-columns:1fr; gap:8px} .gch-big svg{max-width:150px} .gch-big b{font-size:32px} .gchords{grid-template-columns:repeat(auto-fill, minmax(84px,1fr)); gap:8px; padding:10px} }
+
 /* ---- conta e perfil ---- */
 .appfoot{max-width:1180px; margin:-24px auto 0; padding:0 16px 28px; text-align:center; font-size:13px; color:var(--ink-2)}
 .appfoot a, .acct-dlg .hint a{color:var(--accent)}
@@ -384,7 +412,7 @@ fieldset.pf-f{flex-direction:row; flex-wrap:wrap; gap:8px 16px}
 <div class="wrap">
   <header class="top">
     <div class="brand"><h1>Dedilhado Vivo</h1><span id="brandSub">flauta transversal · sistema Boehm</span></div>
-    <div class="seg instsw" id="instSeg" role="group" aria-label="Instrumento"><button data-i="flute" aria-pressed="true">Flauta</button><button data-i="violin" aria-pressed="false">Violino</button><button data-i="piano" aria-pressed="false">Piano</button></div>
+    <div class="seg instsw" id="instSeg" role="group" aria-label="Instrumento"><button data-i="flute" aria-pressed="true">Flauta</button><button data-i="violin" aria-pressed="false">Violino</button><button data-i="piano" aria-pressed="false">Piano</button><button data-i="guitar" aria-pressed="false">Violão</button></div>
     <button class="btn themebtn" id="themeBtn" title="Mudar entre tema claro, escuro e automático"><svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></svg><span id="themeLbl">Automático</span></button>
     <button class="btn acctbtn" id="acctBtn" aria-label="Entrar com sua conta"><span class="lbl">Entrar</span></button>
     <nav class="tabs" role="tablist" aria-label="Seções">
@@ -405,7 +433,7 @@ fieldset.pf-f{flex-direction:row; flex-wrap:wrap; gap:8px 16px}
       <div class="stat"><b id="stStars">0</b><span>estrelas</span></div>
       <div class="stat"><b id="stDone">0/0</b><span>lições</span></div>
     </div>
-    <div class="seg tracksw inst-flute" id="trackSeg" role="group" aria-label="Trilha"><button data-t="notes" aria-pressed="true">Notas e músicas</button><button data-t="tech" aria-pressed="false">Sopro e técnica</button></div>
+    <div class="seg tracksw inst-track" id="trackSeg" role="group" aria-label="Trilha"><button data-t="notes" aria-pressed="true">Notas e músicas</button><button data-t="tech" aria-pressed="false">Sopro e técnica</button></div>
     <div class="panel ldetail" id="lessonDetail" hidden></div>
     <div class="lgrid" id="lessonGrid"></div>
   </section>
@@ -457,6 +485,7 @@ fieldset.pf-f{flex-direction:row; flex-wrap:wrap; gap:8px 16px}
         <div class="inst-flute"><div class="flute-scroll" id="fluteMain"></div></div>
         <div class="inst-violin" hidden><div class="flute-scroll" id="violinMain"></div></div>
         <div class="inst-piano" hidden><div class="flute-scroll" id="pianoMain"></div></div>
+        <div class="inst-guitar" hidden><div class="flute-scroll" id="guitarMain"></div></div>
         <div class="legend" id="legendMain"></div>
       </div>
     </div>
@@ -466,6 +495,7 @@ fieldset.pf-f{flex-direction:row; flex-wrap:wrap; gap:8px 16px}
       <div class="panel hands inst-flute" id="handsMain"></div>
       <div class="panel hands inst-violin" id="vhandsMain" hidden></div>
       <div class="panel hands inst-piano" id="phandsMain" hidden></div>
+      <div class="panel hands inst-guitar" id="ghandsMain" hidden></div>
       <div class="panel tip" id="tipMain"></div>
     </div>
   </section>
@@ -477,6 +507,7 @@ fieldset.pf-f{flex-direction:row; flex-wrap:wrap; gap:8px 16px}
         <div class="inst-flute"><div class="flute-scroll" id="fluteChart"></div></div>
         <div class="inst-violin" hidden><div class="flute-scroll" id="violinChart"></div></div>
         <div class="inst-piano" hidden><div class="flute-scroll" id="pianoChart"></div></div>
+        <div class="inst-guitar" hidden><div class="flute-scroll" id="guitarChart"></div></div>
         <div class="legend" id="legendChart"></div>
       </div>
     </div>
@@ -485,7 +516,14 @@ fieldset.pf-f{flex-direction:row; flex-wrap:wrap; gap:8px 16px}
       <div class="panel hands inst-flute" id="handsChart"></div>
       <div class="panel hands inst-violin" id="vhandsChart" hidden></div>
       <div class="panel hands inst-piano" id="phandsChart" hidden></div>
+      <div class="panel hands inst-guitar" id="ghandsChart" hidden></div>
       <div class="panel tip" id="tipChart"></div>
+    </div>
+    <div class="panel inst-guitar" id="chordLibWrap" hidden style="margin-top:14px">
+      <div class="toolbar" style="border-bottom:1px solid var(--line)">
+        <div class="grow"><b style="font-family:var(--display)">Acordes</b><br><span class="hint">Toque num acorde para ver no braço e ouvir. Os números são os dedos; ○ corda solta; × não tocar.</span></div>
+      </div>
+      <div class="gchords" id="chordLib"></div>
     </div>
     <div class="panel" style="margin-top:14px">
       <div class="toolbar" style="border-bottom:1px solid var(--line)">
@@ -511,6 +549,10 @@ fieldset.pf-f{flex-direction:row; flex-wrap:wrap; gap:8px 16px}
       <div class="panel flute-panel" id="drFluteWrap" hidden>
         <div class="flute-scroll" id="fluteDrill"></div>
         <div class="legend" id="legendDrill"></div>
+      </div>
+      <div class="panel flute-panel" id="drGuitarWrap" hidden>
+        <div class="flute-scroll" id="guitarDrill"></div>
+        <div class="legend" id="legendDrillG"></div>
       </div>
     </div>
   </section>
@@ -542,6 +584,7 @@ fieldset.pf-f{flex-direction:row; flex-wrap:wrap; gap:8px 16px}
       <div class="panel tuner-side">
         <h3 id="tgTitle">Notas para afinar</h3>
         <p class="hint" id="tgMode">Automático: o afinador descobre a nota sozinho.</p>
+        <div class="seg inst-guitar tunesw" id="tgTuneSeg" role="group" aria-label="Afinação do violão" hidden><button data-g="std">Padrão</button><button data-g="half">Meio tom abaixo</button><button data-g="dropd">Drop D</button></div>
         <div id="tgTargets" class="tcards"></div>
         <div id="tgHelp"></div>
       </div>
@@ -673,8 +716,8 @@ const KEY_NAME = {B:"chave do polegar",Bb:"alavanca Si♭ do polegar (empurra ju
 const FINGER_COLOR = {thumb:"var(--f-thumb)",index:"var(--f-index)",middle:"var(--f-middle)",ring:"var(--f-ring)",pinky:"var(--f-pinky)"};
 const FINGER_PT = {thumb:"Polegar",index:"Indicador",middle:"Médio",ring:"Anelar",pinky:"Mínimo"};
 
-function register(m){ return INSTR === "violin" ? vRegister(m) : INSTR === "piano" ? pRegister(m) : fRegister(m); }
-function tipFor(m){ return INSTR === "violin" ? vTip(m) : INSTR === "piano" ? pTip(m) : fTip(m); }
+function register(m){ return INSTR === "violin" ? vRegister(m) : INSTR === "piano" ? pRegister(m) : INSTR === "guitar" ? gRegister(m) : fRegister(m); }
+function tipFor(m){ return INSTR === "violin" ? vTip(m) : INSTR === "piano" ? pTip(m) : INSTR === "guitar" ? gTip(m) : fTip(m); }
 function fRegister(m){
   if (m < 74) return {n:1, label:"1ª oitava (grave)"};
   if (m < 86) return {n:2, label:"2ª oitava (média)"};
@@ -775,8 +818,9 @@ const audio = {
     if (this.ctx.state === "suspended") this.ctx.resume();
     return this.ctx;
   },
-  tone(m, start, dur){
+  tone(m, start, dur, sounding){
     const ctx = this.ensure(); if (!ctx) return;
+    if (INSTR === "guitar") return this.guitar(sounding ? m : m - G_OCT, start, dur);
     if (INSTR === "violin") return this.violin(m, start, dur);
     if (INSTR === "piano") return this.piano(m, start, dur);
     const f = freq(m), end = start + Math.max(0.08, dur);
@@ -828,6 +872,35 @@ const audio = {
     const ng = ctx.createGain(); ng.gain.setValueAtTime(0, start); ng.gain.linearRampToValueAtTime(0.03, start + 0.04); ng.gain.linearRampToValueAtTime(0.008, start + 0.15);
     ns.connect(hp); hp.connect(ng); ng.connect(g);
     [o, vib, ns].forEach(n => { n.start(start); n.stop(end + 0.05); this.live.add(n); n.onended = () => this.live.delete(n); });
+  },
+  gbufs:{},
+  gbuf(m){
+    // corda dedilhada (Karplus-Strong), guardada por nota
+    const ctx = this.ctx, key = m + "@" + A4REF; if (this.gbufs[key]) return this.gbufs[key];
+    const sr = ctx.sampleRate, f = freq(m), P = sr / f, N = Math.max(2, Math.round(P)), len = Math.floor(sr * 3);
+    const buf = ctx.createBuffer(1, len, sr), d = buf.getChannelData(0);
+    const t60 = Math.max(1.1, Math.min(4.2, 4.2 - (m - 40) * 0.09)), rho = Math.pow(0.001, 1 / (f * t60));
+    let prev = 0; for (let i = 0; i < N; i++){ const w = Math.random() * 2 - 1; prev = prev * 0.55 + w * 0.45; d[i] = prev; }
+    const pick = Math.max(1, Math.round(N * 0.18)); for (let i = N - 1; i >= pick; i--) d[i] -= d[i - pick] * 0.5;
+    for (let i = N; i < len; i++) d[i] = rho * 0.5 * (d[i - N] + d[i - N - 1 < 0 ? 0 : i - N - 1]);
+    let mx = 0; for (let i = 0; i < N * 4 && i < len; i++) mx = Math.max(mx, Math.abs(d[i]));
+    if (mx) for (let i = 0; i < len; i++) d[i] /= mx;
+    return this.gbufs[key] = {buf, rate: f * N / sr};
+  },
+  guitar(m, start, dur, vol = 1){
+    const ctx = this.ctx, {buf, rate} = this.gbuf(m), end = start + Math.max(0.2, dur) + 0.12;
+    const src = ctx.createBufferSource(); src.buffer = buf; src.playbackRate.value = rate;
+    const lp = ctx.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 4200;
+    const body = ctx.createBiquadFilter(); body.type = "peaking"; body.frequency.value = 110; body.gain.value = 5; body.Q.value = 1.2;
+    const g = ctx.createGain(); g.gain.setValueAtTime(0.26 * vol, start); g.gain.setValueAtTime(0.26 * vol, Math.max(start, end - 0.12)); g.gain.linearRampToValueAtTime(0, end);
+    src.connect(lp); lp.connect(body); body.connect(g); g.connect(this.master);
+    src.start(start); src.stop(end + 0.02); this.live.add(src); src.onended = () => this.live.delete(src);
+  },
+  strum(k, start, down = true, vol = 1, dur = 1.6){
+    const ctx = this.ensure(); if (!ctx || !G_CHORDS[k]) return;
+    let ms = G_CHORDS[k].f.map((fr, i) => fr < 0 ? null : G_OPEN[i] + fr).filter(x => x != null);
+    if (!down) ms = ms.slice(-4).reverse();
+    ms.forEach((m, i) => this.guitar(m, start + i * (down ? 0.016 : 0.012), dur, vol * (down ? 0.75 : 0.55)));
   },
   click(start, accent){
     const ctx = this.ensure(); if (!ctx) return;
@@ -1518,6 +1591,380 @@ const VIOLIN_LESSONS = [
    ex:[{id:"a", title:"Parabéns pra Você", song:"b-parabens"}, {id:"b", title:"When the Saints Go Marching In", song:"b-saints"}, {id:"c", title:"Minueto em Sol", song:"b-minueto"}, {id:"d", title:"Jingle Bells (refrão)", song:"b-jingle"}, {id:"e", title:"Für Elise (início)", song:"b-elise"}]}
 ];
 
+/* ---------- Violão ----------
+   A partitura do violão é escrita uma oitava acima do som real (clave de Sol com 8 embaixo).
+   As notas das lições e músicas são guardadas na altura ESCRITA; o som e o microfone corrigem a oitava. */
+const G_OPEN = [40, 45, 50, 55, 59, 64]; // cordas 6 a 1 (Mi Lá Ré Sol Si Mi), som real
+const G_STR = [{n:6, k:"E", pt:"Mi grave"}, {n:5, k:"A", pt:"Lá"}, {n:4, k:"D", pt:"Ré"}, {n:3, k:"G", pt:"Sol"}, {n:2, k:"B", pt:"Si"}, {n:1, k:"e", pt:"Mi aguda"}];
+const G_MIN = 52, G_MAX = 81, G_OCT = 12;
+const G_TUNINGS = {
+  std:{nm:"Padrão", sub:"E A D G B E", m:[40, 45, 50, 55, 59, 64], flat:false},
+  half:{nm:"Meio tom abaixo", sub:"E♭ A♭ D♭ G♭ B♭ E♭", m:[39, 44, 49, 54, 58, 63], flat:true},
+  dropd:{nm:"Drop D", sub:"D A D G B E", m:[38, 45, 50, 55, 59, 64], flat:false}
+};
+let GTUNE = store.get("dv-gtune", "std"); if (!G_TUNINGS[GTUNE]) GTUNE = "std";
+function gFinger(m){
+  if (m < G_MIN || m > G_MAX) return null;
+  const s = m - G_OCT;
+  for (let i = 5; i >= 0; i--){ const fr = s - G_OPEN[i]; if (fr >= 0 && fr <= 4) return {si:i, str:G_STR[i], fret:fr, finger:fr}; }
+  if (s - G_OPEN[5] === 5) return {si:5, str:G_STR[5], fret:5, finger:4, stretch:true};
+  return null;
+}
+// f: casa de cada corda (6 → 1), -1 = não tocar; d: dedo (0 = solta)
+const G_CHORDS = {
+  Em:{nm:"Mi menor", f:[0,2,2,0,0,0], d:[0,2,3,0,0,0]},
+  Am:{nm:"Lá menor", f:[-1,0,2,2,1,0], d:[0,0,2,3,1,0]},
+  D:{nm:"Ré maior", f:[-1,-1,0,2,3,2], d:[0,0,0,1,3,2]},
+  A:{nm:"Lá maior", f:[-1,0,2,2,2,0], d:[0,0,1,2,3,0]},
+  G:{nm:"Sol maior", f:[3,2,0,0,0,3], d:[2,1,0,0,0,3]},
+  C:{nm:"Dó maior", f:[-1,3,2,0,1,0], d:[0,3,2,0,1,0]},
+  E:{nm:"Mi maior", f:[0,2,2,1,0,0], d:[0,2,3,1,0,0]},
+  Dm:{nm:"Ré menor", f:[-1,-1,0,2,3,1], d:[0,0,0,2,3,1]},
+  E7:{nm:"Mi com sétima", f:[0,2,0,1,0,0], d:[0,2,0,1,0,0]},
+  A7:{nm:"Lá com sétima", f:[-1,0,2,0,2,0], d:[0,0,2,0,3,0]},
+  D7:{nm:"Ré com sétima", f:[-1,-1,0,2,1,2], d:[0,0,0,2,1,3]},
+  G7:{nm:"Sol com sétima", f:[3,2,0,0,0,1], d:[3,2,0,0,0,1]},
+  C7:{nm:"Dó com sétima", f:[-1,3,2,3,1,0], d:[0,3,2,4,1,0]},
+  B7:{nm:"Si com sétima", f:[-1,2,1,2,0,2], d:[0,2,1,3,0,4]},
+  Fmaj7:{nm:"Fá com sétima maior (o Fá fácil)", f:[-1,-1,3,2,1,0], d:[0,0,3,2,1,0]},
+  F:{nm:"Fá maior, com pestana", f:[1,3,3,2,1,1], d:[1,3,4,2,1,1], barre:{fret:1, from:0, to:5}},
+  Bm:{nm:"Si menor, com pestana", f:[-1,2,4,4,3,2], d:[0,1,3,4,2,1], barre:{fret:2, from:1, to:5}}
+};
+const G_CHORD_ORDER = ["Em","Am","D","A","G","C","E","Dm","E7","A7","D7","G7","C7","B7","Fmaj7","F","Bm"];
+const PC_PT = ["Dó","Dó♯","Ré","Mi♭","Mi","Fá","Fá♯","Sol","Sol♯","Lá","Si♭","Si"];
+const chordMidis = k => G_CHORDS[k].f.map((fr, i) => fr < 0 ? null : G_OPEN[i] + fr).filter(x => x != null);
+const chordPCs = k => [...new Set(chordMidis(k).map(m => m % 12))];
+const G_INFO = {
+  head:"Mão (cabeça) com as tarraxas: giram para afinar. Apertar a corda sobe a nota; afrouxar desce.",
+  nut:"Pestana (rastilho): a peça branca onde as cordas saem para o braço. A corda solta vibra daqui até o cavalete.",
+  board:"Escala: a madeira do braço onde os dedos apertam. Os trastes (as barrinhas de metal) dividem as casas.",
+  fret:"Casa: o espaço entre dois trastes. Aperte logo atrás do traste, não no meio da casa, e o som sai limpo com menos força.",
+  dots:"Marcações nas casas 3, 5 e 7: servem de referência para achar a casa sem contar desde o começo.",
+  strings:"Cordas: desenhadas como você vê olhando para baixo, a 6ª (mais grossa, Mi grave) em cima e a 1ª (mais fina, Mi aguda) embaixo."
+};
+
+function fretDiagram(cells, o = {}){
+  // cells: 6 itens (corda 6 → 1): null = sem marca, -1 = não tocar, {fret, finger}
+  const nf = o.frets || 4, W = 120, sx = 22, gap = 15.2, top = 30, fh = o.fh || 24;
+  const svg = el("svg", {viewBox:`0 0 ${W} ${top + nf * fh + (o.labels ? 22 : 8)}`, class:"gdiag", "aria-hidden":"true"});
+  el("rect", {x:sx, y:top, width:gap * 5, height:nf * fh, fill:"var(--surface-2)"}, svg);
+  for (let j = 0; j <= nf; j++) el("line", {x1:sx, x2:sx + gap * 5, y1:top + j * fh, y2:top + j * fh, stroke:"var(--ink-2)", "stroke-width": j === 0 ? 5 : 1.4}, svg);
+  for (let i = 0; i < 6; i++) el("line", {x1:sx + i * gap, x2:sx + i * gap, y1:top, y2:top + nf * fh, stroke:"var(--ink-2)", "stroke-width":1 + (5 - i) * 0.25}, svg);
+  if (o.barre){ const b = o.barre, y = top + (b.fret - 0.5) * fh;
+    el("rect", {x:sx + b.from * gap - 7, y:y - 7, width:(b.to - b.from) * gap + 14, height:14, rx:7, fill:FINGER_COLOR.index, opacity:.9}, svg); }
+  cells.forEach((c, i) => {
+    const x = sx + i * gap;
+    if (c === -1){ const t = el("text", {x, y:top - 9, "text-anchor":"middle", "font-size":13, "font-weight":700, fill:"var(--ink-2)"}, svg); t.textContent = "×"; return; }
+    if (!c) return;
+    if (c.fret === 0){ el("circle", {cx:x, cy:top - 13, r:5, fill:"none", stroke:"var(--ink)", "stroke-width":2}, svg); return; }
+    const y = top + (c.fret - 0.5) * fh, col = FINGER_COLOR[V_FINGER[c.finger]] || "var(--accent)";
+    el("circle", {cx:x, cy:y, r:7.4, fill:col, stroke:"#fff", "stroke-width":1.2}, svg);
+    const t = el("text", {x, y:y + 4, "text-anchor":"middle", "font-size":10.5, "font-weight":700, fill:"#fff"}, svg); t.textContent = c.finger;
+  });
+  if (o.labels) ["E","A","D","G","B","E"].forEach((s, i) => { const t = el("text", {x:sx + i * gap, y:top + nf * fh + 16, "text-anchor":"middle", "font-size":10, fill:"var(--ink-2)"}, svg); t.textContent = s; });
+  if (o.startFret > 1){ const t = el("text", {x:sx + gap * 5 + 6, y:top + fh * 0.5 + 4, "font-size":11, fill:"var(--ink-2)"}, svg); t.textContent = o.startFret + "ª"; }
+  return svg;
+}
+function chordDiagram(k, o = {}){
+  const c = G_CHORDS[k];
+  const cells = c.f.map((fr, i) => fr < 0 ? -1 : {fret:fr, finger:c.d[i]});
+  if (c.barre) cells.forEach((x, i) => { if (x && x !== -1 && x.fret === c.barre.fret && x.finger === 1 && i > c.barre.from && i < c.barre.to) x.hideOnBarre = true; });
+  const svg = fretDiagram(cells, {barre:c.barre, labels:o.labels !== false});
+  svg.setAttribute("role", "img"); svg.setAttribute("aria-label", `Acorde ${k}, ${c.nm}`); svg.removeAttribute("aria-hidden");
+  return svg;
+}
+function miniGuitar(m){
+  const f = gFinger(m), cells = [null, null, null, null, null, null];
+  if (f) cells[f.si] = {fret:f.fret, finger:f.finger};
+  return fretDiagram(cells, {frets:5, fh:21, labels:true});
+}
+function gRegister(m){ const f = gFinger(m); return f ? {label:`${f.str.n}ª corda (${f.str.pt})`} : {label:"fora da 1ª posição"}; }
+function gTip(m){
+  const f = gFinger(m), t = [];
+  if (!f) return {t:["Essa nota fica fora da 1ª posição do violão (Mi 3 a Lá 5 na partitura). Ela existe no violão, mas pede outra região do braço, que vem depois."], alt:""};
+  const n = spellMidi(m - G_OCT, flatPref(m));
+  t.push(`Soa como ${ptName(n)} ${n.octave}: a partitura do violão é escrita uma oitava acima do som real.`);
+  if (f.fret === 0) t.push(`${f.str.n}ª corda (${f.str.pt}) solta: nenhum dedo da mão esquerda.`);
+  else t.push(`Dedo ${f.finger} na ${f.fret}ª casa da ${f.str.n}ª corda (${f.str.pt}). Aperte com a ponta do dedo, logo atrás do traste, sem encostar nas cordas vizinhas.`);
+  if (f.stretch) t.push("Aqui o mínimo se estica até a 5ª casa: deixe a mão inteira chegar um pouco para a frente.");
+  t.push(f.si <= 2 ? "Mão direita: toque com o polegar (p), de cima para baixo." : "Mão direita: alterne indicador (i) e médio (m), puxando a corda para dentro da boca do violão. Com palheta, toque para baixo.");
+  const alt = f.fret === 0 && f.si > 0 && f.si !== 4 ? `Alternativa: dedo 4 na 5ª casa da ${G_STR[f.si - 1].n}ª corda dá a mesma nota.` : f.fret === 0 && f.si === 4 ? "Alternativa: dedo 4 na 4ª casa da 3ª corda dá a mesma nota." : "";
+  return {t, alt};
+}
+function chordTip(k){
+  const c = G_CHORDS[k], t = [];
+  const used = c.f.map((fr, i) => ({fr, i, d:c.d[i]})).filter(x => x.fr > 0);
+  const names = {1:"indicador", 2:"médio", 3:"anelar", 4:"mínimo"};
+  if (c.barre) t.push(`Pestana: o indicador deita sobre as cordas ${G_STR[c.barre.to].n} a ${G_STR[c.barre.from].n} na ${c.barre.fret}ª casa. Use o lado do dedo (mais duro), bem perto do traste, e puxe com o braço, não só com o polegar.`);
+  used.filter(x => !(c.barre && x.fr === c.barre.fret && x.d === 1)).forEach(x => t.push(`Dedo ${x.d} (${names[x.d]}): ${x.fr}ª casa da ${G_STR[x.i].n}ª corda.`));
+  const muted = c.f.map((fr, i) => fr < 0 ? G_STR[i].n : null).filter(x => x);
+  const first = c.f.findIndex(fr => fr >= 0);
+  t.push(muted.length ? `Não toque a${muted.length > 1 ? "s cordas " + muted.join(" e ") : " corda " + muted[0]} (×): comece a batida na ${G_STR[first].n}ª corda.` : "Todas as seis cordas soam: comece a batida na 6ª corda.");
+  t.push("Confira corda por corda: toque uma de cada vez, devagar. Se alguma sair abafada, encoste menos o dedo vizinho ou deixe os dedos mais em pé.");
+  return t;
+}
+function createGuitar(container){
+  const NF = 5, NX = 104, EX = 630, top = 62, gap = 30, yS = i => top + i * gap; // i: 0 = 6ª corda (em cima)
+  const fx = n => NX + (EX - NX) * (1 - Math.pow(2, -n / 12)) / (1 - Math.pow(2, -NF / 12));
+  const svg = el("svg", {viewBox:"0 0 640 300", class:"gneck", role:"img", "aria-label":"Braço do violão deitado, com os dedos coloridos"});
+  const info = document.createElement("p"); info.className = "keyinfo"; info.textContent = "Toque numa parte do braço para saber o nome. A corda mais grossa fica em cima, como você vê olhando para baixo.";
+  const tip = (node, k) => { const t = el("title", {}, node); t.textContent = G_INFO[k]; node.style.cursor = "pointer"; node.addEventListener("click", () => info.textContent = G_INFO[k]); return node; };
+  const text = (x, y, s, cls = "keylabel", anchor = "middle") => { const t = el("text", {x, y, "text-anchor":anchor, class:cls}, svg); t.textContent = s; return t; };
+  text(8, 18, "VIOLÃO · braço visto de cima", "keylabel caps strong", "start");
+  tip(el("path", {d:`M52 ${top - 20} L${NX - 8} ${top - 14} L${NX - 8} ${yS(5) + 14} L52 ${yS(5) + 20} Z`, fill:"#6b3d1c", stroke:"#3b1c08"}, svg), "head");
+  const board = el("rect", {x:NX, y:top - 14, width:EX - NX + 10, height:yS(5) - top + 28, fill:"#2a1d14"}, svg); tip(board, "board");
+  const dots = el("g", {}, svg);
+  [3, 5].forEach(n => el("circle", {cx:(fx(n - 1) + fx(n)) / 2, cy:(yS(2) + yS(3)) / 2, r:8, fill:"#d9cdb4", opacity:.55}, dots));
+  tip(dots, "dots");
+  const frets = el("g", {}, svg);
+  for (let n = 1; n <= NF; n++){ el("rect", {x:fx(n) - 2.5, y:top - 14, width:5, height:yS(5) - top + 28, fill:"#c9c9c9"}, frets); text(fx(n - 0.5), yS(5) + 40, String(n), "keylabel muted"); }
+  tip(frets, "fret");
+  
+  tip(el("rect", {x:NX - 8, y:top - 14, width:9, height:yS(5) - top + 28, fill:"#efe6d2", stroke:"#8a7a5a"}, svg), "nut");
+  const strs = [], sg = el("g", {}, svg);
+  G_STR.forEach((s, i) => {
+    el("line", {x1:NX - 8, x2:640, y1:yS(i), y2:yS(i), stroke: i < 3 ? "#c8a96a" : "#dcdcdc", "stroke-width":3.2 - i * 0.42}, sg);
+    strs.push(el("line", {x1:NX, x2:640, y1:yS(i), y2:yS(i), stroke:"transparent", "stroke-width":4.5, "stroke-linecap":"round"}, svg));
+    const t = el("text", {x:46, y:yS(i) + 4, "text-anchor":"end", class:"keylabel"}, svg); t.textContent = `${s.n}ª ${s.k}`;
+  });
+  tip(sg, "strings");
+  const marks = el("g", {}, svg);
+  const caption = text(330, 292, "", "keylabel strong");
+  container.appendChild(svg); container.parentNode.insertBefore(info, container.nextSibling);
+  const put = (i, fret, finger, hide) => {
+    if (fret < 0){ const t = el("text", {x:NX - 24, y:yS(i) + 6, "text-anchor":"middle", "font-size":20, "font-weight":700, fill:"var(--ink-2)"}, marks); t.textContent = "×"; return; }
+    if (fret === 0){ el("circle", {cx:NX - 24, cy:yS(i), r:10, fill:"var(--surface)", stroke:"var(--ink)", "stroke-width":3}, marks); strs[i].setAttribute("stroke", "#f6efd9"); strs[i].setAttribute("x1", NX); return; }
+    const x = fx(fret) - (fx(fret) - fx(fret - 1)) * 0.32, col = FINGER_COLOR[V_FINGER[finger]];
+    strs[i].setAttribute("stroke", col); strs[i].setAttribute("x1", x);
+    if (hide) return;
+    el("circle", {cx:x, cy:yS(i), r:13, fill:col, stroke:"#fff", "stroke-width":2}, marks);
+    const t = el("text", {x, y:yS(i) + 5, "text-anchor":"middle", "font-size":14, "font-weight":700, fill:"#fff"}, marks); t.textContent = finger;
+  };
+  return function update(midi, o = {}){
+    marks.innerHTML = ""; caption.textContent = "";
+    strs.forEach(s => { s.setAttribute("stroke", "transparent"); s.style.filter = ""; });
+    if (o.chord && G_CHORDS[o.chord]){
+      const c = G_CHORDS[o.chord];
+      if (c.barre){ const b = c.barre, x = fx(b.fret) - (fx(b.fret) - fx(b.fret - 1)) * 0.32;
+        el("rect", {x:x - 12, y:yS(b.from) - 14, width:24, height:yS(b.to) - yS(b.from) + 28, rx:12, fill:FINGER_COLOR.index, stroke:"#fff", "stroke-width":2}, marks);
+        const t = el("text", {x, y:yS(b.to) + 5, "text-anchor":"middle", "font-size":14, "font-weight":700, fill:"#fff"}, marks); t.textContent = "1"; }
+      c.f.forEach((fr, i) => put(i, fr, c.d[i], c.barre && fr === c.barre.fret && c.d[i] === 1));
+      caption.textContent = `${o.chord} · ${c.nm}. As partes coloridas vibram.`;
+      return;
+    }
+    const f = midi != null ? gFinger(midi) : null;
+    if (f){ put(f.si, f.fret, f.finger); strs[f.si].style.filter = "drop-shadow(0 0 4px #fff)";
+      caption.textContent = f.fret ? `Dedo ${f.finger} na ${f.fret}ª casa da ${f.str.n}ª corda. A parte colorida é a que vibra.` : `${f.str.n}ª corda solta: ela vibra inteira, da pestana ao cavalete.`; }
+  };
+}
+function createHandsG(container){
+  container.innerHTML = ""; const parts = {};
+  [["L","Mão esquerda","aperta as cordas"],["R","Mão direita","toca as cordas"]].forEach(([s, t, sub]) => {
+    const box = document.createElement("div"); box.className = "hand";
+    box.innerHTML = `<h3>${t} <span class="hint" style="font-weight:400">· ${sub}</span></h3>`;
+    const {svg, fingers} = handSVG(s); box.appendChild(svg);
+    const ul = document.createElement("ul"); box.appendChild(ul);
+    container.appendChild(box); parts[s] = {fingers, ul};
+  });
+  const names = {index:"Indicador (1)", middle:"Médio (2)", ring:"Anelar (3)", pinky:"Mínimo (4)"};
+  const light = (s, k, col) => { const r = parts[s].fingers[k]; r.classList.add("on"); r.style.fill = col; r.style.stroke = col; };
+  return function update(midi, o = {}){
+    for (const s of ["L","R"]) for (const k in parts[s].fingers){ const r = parts[s].fingers[k]; r.classList.remove("on"); r.style.fill = ""; r.style.stroke = ""; }
+    const used = {};
+    let rTxt = `<li class="off"><i style="background:var(--line)"></i>Mão parada</li>`;
+    if (o.chord && G_CHORDS[o.chord]){
+      const c = G_CHORDS[o.chord];
+      c.f.forEach((fr, i) => { if (fr > 0){ const k = V_FINGER[c.d[i]]; (used[k] = used[k] || []).push(`${fr}ª casa, ${G_STR[i].n}ª corda`); } });
+      if (c.barre) used.index = [`pestana na ${c.barre.fret}ª casa`];
+      const first = c.f.findIndex(fr => fr >= 0);
+      light("R", "thumb", "var(--accent)");
+      rTxt = `<li><i style="background:var(--accent)"></i><span><b>Batida</b>: polegar ou palheta, da ${G_STR[first].n}ª corda até a 1ª</span></li>
+        <li><i style="background:var(--accent)"></i><span><b>↓ para baixo</b>: pulso solto, como quem sacode água da mão</span></li>
+        <li class="off"><i style="background:var(--line)"></i>↑ para cima: pega só as cordas mais finas</li>`;
+    } else {
+      const f = midi != null ? gFinger(midi) : null;
+      if (f && f.fret) used[V_FINGER[f.finger]] = [`${f.fret}ª casa, ${f.str.n}ª corda`];
+      if (f){ if (f.si <= 2){ light("R", "thumb", "var(--accent)"); rTxt = `<li><i style="background:var(--accent)"></i><span><b>Polegar (p)</b> toca a ${f.str.n}ª corda</span></li><li class="off"><i style="background:var(--line)"></i>Indicador e médio descansam nas cordas agudas</li>`; }
+        else { light("R", "index", "var(--accent)"); light("R", "middle", "var(--accent)"); rTxt = `<li><i style="background:var(--accent)"></i><span><b>Indicador (i) e médio (m)</b> alternam na ${f.str.n}ª corda</span></li><li class="off"><i style="background:var(--line)"></i>Polegar apoiado na 6ª corda</li>`; } }
+    }
+    Object.keys(used).forEach(k => light("L", k, FINGER_COLOR[k]));
+    parts.L.ul.innerHTML = `<li class="off"><i style="background:var(--line)"></i>Polegar: atrás do braço, mais ou menos atrás do dedo 2</li>` +
+      ["index","middle","ring","pinky"].map(k => used[k] ? `<li><i style="background:${FINGER_COLOR[k]}"></i><span><b>${names[k]}</b>: ${used[k].join("; ")}</span></li>` : `<li class="off"><i style="background:var(--line)"></i>${names[k]}: levantado, perto das cordas</li>`).join("");
+    parts.R.ul.innerHTML = rTxt;
+  };
+}
+function legendG(container){
+  container.innerHTML = [["index","Dedo 1 · indicador"],["middle","Dedo 2 · médio"],["ring","Dedo 3 · anelar"],["pinky","Dedo 4 · mínimo"]].map(([f, t]) => `<span><i style="background:${FINGER_COLOR[f]}"></i>${t}</span>`).join("") + `<span><i style="background:var(--surface); border:2px solid var(--ink); box-sizing:border-box"></i>corda solta</span><span><b style="margin-right:5px">×</b>não tocar</span>`;
+}
+/* Acordes pelo microfone: cromagrama (energia de cada uma das 12 notas) a partir do espectro */
+const CHORD_CANDS = (() => {
+  const c = G_CHORD_ORDER.map(k => ({k, pcs:chordPCs(k)}));
+  for (let r = 0; r < 12; r++){ c.push({k:"~M" + r, pcs:[r, (r + 4) % 12, (r + 7) % 12]}); c.push({k:"~m" + r, pcs:[r, (r + 3) % 12, (r + 7) % 12]}); }
+  return c;
+})();
+function chromaFrom(an, fbuf){
+  an.getFloatFrequencyData(fbuf);
+  const binHz = an.context.sampleRate / an.fftSize, c = new Float32Array(12);
+  const k0 = Math.ceil(70 / binHz), k1 = Math.min(fbuf.length - 2, Math.floor(1000 / binHz));
+  let tot = 0;
+  for (let k = k0; k <= k1; k++){
+    const db = fbuf[k]; if (db < -85 || db < fbuf[k - 1] || db < fbuf[k + 1]) continue;
+    const mag = Math.pow(10, db / 20), m = 69 + 12 * Math.log2(k * binHz / A4REF), pc = ((Math.round(m) % 12) + 12) % 12;
+    c[pc] += mag; tot += mag;
+  }
+  return tot > 0 ? c : null;
+}
+function chordScore(ch, pcs){
+  let dot = 0, n2 = 0; for (let i = 0; i < 12; i++) n2 += ch[i] * ch[i];
+  pcs.forEach(p => dot += ch[p]);
+  return n2 ? dot / Math.sqrt(n2 * pcs.length) : 0;
+}
+function judgeChord(ch, k){
+  const pcs = chordPCs(k), s = chordScore(ch, pcs);
+  let best = null, bs = -1;
+  CHORD_CANDS.forEach(c => { if (c.k === k) return; const v = chordScore(ch, c.pcs); if (v > bs){ bs = v; best = c; } });
+  const max = Math.max(...ch), missing = pcs.filter(p => ch[p] < max * 0.12), extra = [];
+  for (let p = 0; p < 12; p++) if (!pcs.includes(p) && ch[p] > max * 0.45) extra.push(p);
+  const ok = s >= 0.72 && s >= bs - 0.02 && !missing.length;
+  return {ok, s, missing, extra};
+}
+function chordFeedback(j, k){
+  if (j.ok) return "Acorde limpo!";
+  const c = G_CHORDS[k], tips = [];
+  if (j.extra.length) tips.push(`Apareceu ${j.extra.map(p => PC_PT[p]).join(", ").replace(/, ([^,]*)$/, " e $1")}, que não ${j.extra.length > 1 ? "são" : "é"} do ${k}: confira as casas e se não está tocando uma corda com ×.`);
+  if (j.missing.length){
+    const strs = c.f.map((fr, i) => fr < 0 ? null : {i, pc:(G_OPEN[i] + fr) % 12}).filter(x => x && j.missing.includes(x.pc)).map(x => G_STR[x.i].n + "ª");
+    tips.push(`Quase não ouvi ${j.missing.map(p => PC_PT[p]).join(" e ")}${strs.length ? " (corda " + strs.join(", ") + ")" : ""}: algum dedo pode estar abafando. Deixe os dedos mais em pé.`);
+  }
+  return tips.join(" ") || "Ainda não soou como o acorde: aperte um pouco mais perto do traste e toque todas as cordas.";
+}
+const G_PATTERNS = {
+  "D.D.D.D.":"quatro para baixo", "DUDUDUDU":"baixo e cima", "D.DU.UDU":"pop (baixo, baixo-cima, cima-baixo-cima)",
+  "D.DUDU":"valsa (3 tempos)", ".U.U.U.U":"contratempo (reggae)", "D.D.DUDU":"balada"
+};
+const arrowsOf = p => [...p].map(c => c === "D" ? "↓" : c === "U" ? "↑" : "·").join(" ");
+
+const GUIDE_GUITAR_HTML = () => `
+<div class="guide">
+  <div class="guide-grid">
+    <figure class="gfig">${chordDiagram("Em").outerHTML}<figcaption><b>Como ler o diagrama:</b> as linhas em pé são as cordas (a 6ª, mais grossa, à esquerda); a linha grossa em cima é a pestana; as bolinhas mostram a casa e o número do dedo. ○ = corda solta, × = não tocar.</figcaption></figure>
+    <ol class="steps">
+      <li><b>Sente bem.</b> Violão apoiado na perna direita, encostado na barriga, com o braço um pouco para cima. As costas ficam retas; não deite o violão para olhar as cordas.</li>
+      <li><b>Afine antes.</b> Use a aba <b>Afinador</b>, da 6ª corda para a 1ª. Violão desafinado faz o acorde soar errado mesmo com os dedos certos.</li>
+      <li><b>Polegar esquerdo atrás do braço</b>, mais ou menos atrás do dedo 2. A palma não encosta no braço.</li>
+      <li><b>Dedos em pé, ponta do dedo.</b> Aperte logo atrás do traste: assim precisa de menos força e não abafa as cordas vizinhas.</li>
+      <li><b>Mão direita:</b> para acordes, bata com o polegar, com as costas das unhas ou com uma palheta. Para melodias, alterne indicador (i) e médio (m); o polegar (p) toca as cordas graves.</li>
+      <li><b>Dói no começo.</b> As pontas dos dedos ficam sensíveis nas primeiras semanas e depois criam calo. Estude 10 a 15 minutos várias vezes, em vez de uma hora seguida.</li>
+    </ol>
+  </div>
+  <h3>Problemas comuns</h3>
+  <table class="probs"><thead><tr><th>O que acontece</th><th>O que fazer</th></tr></thead><tbody>
+    <tr><td>Corda trastejando (zumbido)</td><td>Aperte mais perto do traste, não no meio da casa.</td></tr>
+    <tr><td>Corda abafada (som curto, “tuc”)</td><td>Um dedo vizinho está encostando nela. Deixe os dedos mais curvados e em pé.</td></tr>
+    <tr><td>Acorde soa estranho com os dedos certos</td><td>O violão está desafinado ou você tocou uma corda marcada com ×.</td></tr>
+    <tr><td>Troca de acorde demora</td><td>Treine só a troca, devagar, sem bater. Procure o dedo que fica no lugar ou só escorrega (o “dedo guia”).</td></tr>
+  </tbody></table>
+</div>`;
+const GUIDE_GUITAR_NOTES = `
+<div class="guide">
+  <ol class="steps">
+    <li><b>A partitura do violão soa uma oitava abaixo.</b> A clave de Sol com um 8 embaixo avisa isso. O app já faz a conta: o som e o microfone usam a altura certa.</li>
+    <li><b>Cordas pelo número:</b> a 1ª é a mais fina (Mi agudo) e a 6ª a mais grossa (Mi grave). O braço deitado mostra as cordas como você vê olhando para baixo: a 6ª em cima.</li>
+    <li><b>1ª posição:</b> cada dedo cuida de uma casa: dedo 1 na casa 1, dedo 2 na casa 2, dedo 3 na casa 3 e dedo 4 na casa 4.</li>
+    <li><b>Mão direita:</b> alterne indicador (i) e médio (m) nas cordas 1, 2 e 3, e use o polegar (p) nas cordas 4, 5 e 6. Com palheta, toque para baixo.</li>
+    <li><b>Deixe a nota soar</b> até a próxima. O microfone ouve o ataque da corda, então para repetir uma nota é só tocar a corda de novo.</li>
+  </ol>
+</div>`;
+
+const GUITAR_CHORD_LESSONS = [
+  {id:"gc0", guide:"guitar", title:"Antes de tocar: violão e diagramas", notes:[], chords:["Em"], intro:"Como sentar, como ler o diagrama de acorde e o primeiro acorde, o Mi menor, que usa só dois dedos. Afine o violão na aba Afinador antes de começar.",
+   ex:[{id:"a", type:"chord", title:"Primeiro acorde: Mi menor (Em)", chord:"Em", strums:4}]},
+  {id:"gc1", title:"Mi menor e Lá menor", notes:[], chords:["Em", "Am"], intro:"O Lá menor tem a mesma forma do Mi menor, uma corda abaixo, mais o indicador na 2ª corda. Na troca, os dedos 2 e 3 descem juntos, sem se separar.",
+   ex:[{id:"a", type:"chord", title:"Lá menor (Am)", chord:"Am", strums:4},
+       {id:"b", type:"change", title:"Troca Em ↔ Am, 4 tempos cada", seq:["Em","Am"], beats:4, bpm:60, rounds:2},
+       {id:"c", type:"change", title:"Troca Em ↔ Am, 2 tempos cada", seq:["Em","Am"], beats:2, bpm:66, rounds:3}]},
+  {id:"gc2", title:"Ritmo: batida para baixo", notes:[], intro:"Agora a mão direita: uma batida para baixo em cada clique do metrônomo. O app ouve se você bate no tempo.",
+   ex:[{id:"a", type:"strum", title:"Quatro para baixo em Em", chord:"Em", pattern:"D.D.D.D.", bars:4, bpm:66},
+       {id:"b", type:"strum", title:"Em e Am, um compasso cada", seq:["Em","Am"], pattern:"D.D.D.D.", bars:4, bpm:66}]},
+  {id:"gc3", title:"Ré e Lá maior", notes:[], chords:["D", "A"], intro:"O Ré forma um triângulo nas três cordas mais finas; toque só da 4ª corda para baixo. No Lá, os três dedos ficam lado a lado na 2ª casa.",
+   ex:[{id:"a", type:"chord", title:"Ré maior (D)", chord:"D", strums:4},
+       {id:"b", type:"chord", title:"Lá maior (A)", chord:"A", strums:4},
+       {id:"c", type:"change", title:"Troca D ↔ A", seq:["D","A"], beats:4, bpm:60, rounds:2},
+       {id:"d", type:"strum", title:"D e A no ritmo", seq:["D","A"], pattern:"D.D.D.D.", bars:4, bpm:70}]},
+  {id:"gc4", title:"Sol e Dó", notes:[], chords:["G", "C"], intro:"Os dois acordes mais usados nas músicas populares. No Sol, as seis cordas soam; no Dó, não toque a 6ª corda.",
+   ex:[{id:"a", type:"chord", title:"Sol maior (G)", chord:"G", strums:4},
+       {id:"b", type:"chord", title:"Dó maior (C)", chord:"C", strums:4},
+       {id:"c", type:"change", title:"Troca G ↔ C", seq:["G","C"], beats:4, bpm:60, rounds:2},
+       {id:"d", type:"change", title:"G, C, D e G", seq:["G","C","D","G"], beats:4, bpm:64, rounds:1}]},
+  {id:"gc5", title:"Batida para baixo e para cima", notes:[], intro:"A mão direita vai e volta sem parar, como um pêndulo: para baixo no número (1, 2, 3, 4) e para cima no “e”. Quando um movimento não tem batida, a mão passa no ar.",
+   ex:[{id:"a", type:"strum", title:"Baixo e cima em Em", chord:"Em", pattern:"DUDUDUDU", bars:4, bpm:60},
+       {id:"b", type:"strum", title:"Batida pop em G", chord:"G", pattern:"D.DU.UDU", bars:4, bpm:66},
+       {id:"c", type:"strum", title:"Batida pop: G e C", seq:["G","C"], pattern:"D.DU.UDU", bars:4, bpm:70}]},
+  {id:"gc6", title:"A progressão das músicas pop", notes:[], intro:"Sol, Ré, Mi menor e Dó: com esses quatro acordes, nessa ordem, dá para acompanhar centenas de músicas.",
+   ex:[{id:"a", type:"change", title:"G, D, Em, C", seq:["G","D","Em","C"], beats:4, bpm:66, rounds:2},
+       {id:"b", type:"strum", title:"G, D, Em, C com a batida pop", seq:["G","D","Em","C"], pattern:"D.DU.UDU", bars:8, bpm:72}]},
+  {id:"gc7", title:"Acordes com sétima e o blues", notes:[], chords:["E7", "A7", "B7"], intro:"A sétima dá um som de “quero continuar”, típico do blues. Com Mi, Lá e Si com sétima você toca o blues de 12 compassos em Mi.",
+   ex:[{id:"a", type:"chord", title:"Mi com sétima (E7)", chord:"E7", strums:4},
+       {id:"b", type:"chord", title:"Lá com sétima (A7)", chord:"A7", strums:4},
+       {id:"c", type:"chord", title:"Si com sétima (B7)", chord:"B7", strums:4},
+       {id:"d", type:"change", title:"Blues de 12 compassos em Mi", seq:["E7","E7","E7","E7","A7","A7","E7","E7","B7","A7","E7","B7"], beats:4, bpm:80, rounds:1}]},
+  {id:"gc8", title:"Ré menor e Mi maior", notes:[], chords:["Dm", "E"], intro:"Com Lá menor, Ré menor e Mi maior você tem os três acordes de uma música em Lá menor. Repare que o Mi maior é o Mi menor com o indicador na 3ª corda.",
+   ex:[{id:"a", type:"chord", title:"Ré menor (Dm)", chord:"Dm", strums:4},
+       {id:"b", type:"chord", title:"Mi maior (E)", chord:"E", strums:4},
+       {id:"c", type:"change", title:"Am, Dm, E, Am", seq:["Am","Dm","E","Am"], beats:4, bpm:64, rounds:2}]},
+  {id:"gc9", title:"Ritmo de valsa (3 tempos)", notes:[], chords:["G7", "D7"], intro:"Na valsa o compasso tem 3 tempos: forte, fraco, fraco. A batida é baixo, baixo-cima, baixo-cima.",
+   ex:[{id:"a", type:"chord", title:"Sol com sétima (G7)", chord:"G7", strums:4},
+       {id:"b", type:"strum", title:"Valsa em C e G7", seq:["C","G7"], pattern:"D.DUDU", meter:3, bars:4, bpm:90},
+       {id:"c", type:"change", title:"Ré com sétima (D7) na valsa: G, D7", seq:["G","D7"], beats:3, bpm:80, rounds:3}]},
+  {id:"gc10", title:"Contratempo: a batida do reggae", notes:[], intro:"Só para cima, nos “e” entre os cliques. A mão desce no ar no número e bate subindo, pegando as cordas mais finas.",
+   ex:[{id:"a", type:"strum", title:"Contratempo em Am", chord:"Am", pattern:".U.U.U.U", bars:4, bpm:70},
+       {id:"b", type:"strum", title:"Contratempo: Am e D", seq:["Am","D"], pattern:".U.U.U.U", bars:4, bpm:76}]},
+  {id:"gc11", title:"Fá: a primeira pestana", notes:[], chords:["Fmaj7", "F"], intro:"Comece pelo Fá fácil (Fmaj7), sem pestana. Depois o Fá com pestana: o indicador deita sobre todas as cordas na 1ª casa. Leva semanas para sair limpo; é normal.",
+   ex:[{id:"a", type:"chord", title:"Fá fácil (Fmaj7)", chord:"Fmaj7", strums:4},
+       {id:"b", type:"change", title:"C ↔ Fmaj7", seq:["C","Fmaj7"], beats:4, bpm:60, rounds:2},
+       {id:"c", type:"chord", title:"Fá com pestana (F)", chord:"F", strums:3},
+       {id:"d", type:"change", title:"Am, F, C, G", seq:["Am","F","C","G"], beats:4, bpm:60, rounds:1}]},
+  {id:"gc12", title:"Si menor com pestana", notes:[], chords:["Bm"], intro:"Pestana na 2ª casa, da 5ª corda para baixo (a 6ª não toca). Os outros dedos fazem a forma do Lá menor duas casas acima.",
+   ex:[{id:"a", type:"chord", title:"Si menor (Bm)", chord:"Bm", strums:3},
+       {id:"b", type:"change", title:"D, Bm, G, A", seq:["D","Bm","G","A"], beats:4, bpm:60, rounds:2}]},
+  {id:"gc13", title:"Repertório de progressões", notes:[], chords:["C7", "D7"], intro:"Sequências que aparecem em muitas músicas. Escolha uma batida e repita até as trocas saírem sem parar o ritmo.",
+   ex:[{id:"a", type:"change", title:"C, G, Am, F", seq:["C","G","Am","F"], beats:4, bpm:70, rounds:2},
+       {id:"b", type:"strum", title:"Em, C, G, D com batida pop", seq:["Em","C","G","D"], pattern:"D.DU.UDU", bars:8, bpm:76},
+       {id:"c", type:"change", title:"Blues em Lá: A7, D7, E7", seq:["A7","A7","D7","A7","E7","D7","A7","E7"], beats:4, bpm:84, rounds:1},
+       {id:"d", type:"change", title:"C, C7, F, G", seq:["C","C7","F","G"], beats:4, bpm:66, rounds:2},
+       {id:"e", type:"strum", title:"Balada: Am, F, C, G", seq:["Am","F","C","G"], pattern:"D.D.DUDU", bars:8, bpm:72}]}
+];
+const GUITAR_NOTE_LESSONS = [
+  {id:"gm0", guide:"guitarNotes", title:"Antes de tocar: notas no violão", notes:[], intro:"Como a partitura do violão funciona, os números das cordas e a mão direita com indicador e médio. Depois, duas cordas soltas com o microfone ligado.",
+   ex:[{id:"a", title:"Cordas soltas: 1ª e 2ª", txt:"E5:2 E5:2 B4:2 B4:2 E5:2 B4:2 E5:4", bpm:66}]},
+  {id:"gm1", title:"1ª corda: Mi, Fá e Sol", notes:[76, 77, 79], intro:"Na corda mais fina: solta é Mi, dedo 1 na casa 1 é Fá, dedo 3 na casa 3 é Sol.",
+   ex:[{id:"a", title:"Mi, Fá, Sol", txt:"E5:2 F5:2 G5:2 F5:2 E5:4", bpm:66},
+       {id:"b", title:"Subindo e descendo", txt:"E5:1 F5:1 G5:2 G5:1 F5:1 E5:2 E5:1 G5:1 F5:1 G5:1 E5:4", bpm:72}]},
+  {id:"gm2", title:"2ª corda: Si, Dó e Ré", notes:[71, 72, 74], intro:"Na 2ª corda a mão fica igual: solta é Si, dedo 1 é Dó, dedo 3 é Ré. Juntando com a 1ª corda já sai a Ode à Alegria.",
+   ex:[{id:"a", title:"Si, Dó, Ré", txt:"B4:2 C5:2 D5:2 C5:2 B4:4", bpm:66},
+       {id:"b", title:"Duas cordas", txt:"B4:1 C5:1 D5:1 E5:1 F5:1 G5:1 F5:2 E5:1 D5:1 C5:1 B4:1 C5:4", bpm:72},
+       {id:"c", title:"Ode à Alegria (em Dó)", txt:"E5:1 E5:1 F5:1 G5:1 G5:1 F5:1 E5:1 D5:1 C5:1 C5:1 D5:1 E5:1 E5:1.5 D5:0.5 D5:2 E5:1 E5:1 F5:1 G5:1 G5:1 F5:1 E5:1 D5:1 C5:1 C5:1 D5:1 E5:1 D5:1.5 C5:0.5 C5:2", bpm:84}]},
+  {id:"gm3", title:"3ª corda: Sol e Lá", notes:[67, 69], intro:"A 3ª corda solta é Sol; o dedo 2 na casa 2 faz Lá. Com as três cordas mais finas, as primeiras músicas inteiras.",
+   ex:[{id:"a", title:"Sol, Lá, Si", txt:"G4:2 A4:2 B4:2 A4:2 G4:4", bpm:66},
+       {id:"b", title:"Brilha, Brilha Estrelinha (em Sol)", txt:"G4:1 G4:1 D5:1 D5:1 E5:1 E5:1 D5:2 C5:1 C5:1 B4:1 B4:1 A4:1 A4:1 G4:2 D5:1 D5:1 C5:1 C5:1 B4:1 B4:1 A4:2 D5:1 D5:1 C5:1 C5:1 B4:1 B4:1 A4:2 G4:1 G4:1 D5:1 D5:1 E5:1 E5:1 D5:2 C5:1 C5:1 B4:1 B4:1 A4:1 A4:1 G4:2", bpm:84}]},
+  {id:"gm4", title:"4ª corda: Ré, Mi e Fá", notes:[62, 64, 65], intro:"Agora o polegar (p) toca: 4ª corda solta é Ré, dedo 2 é Mi, dedo 3 é Fá.",
+   ex:[{id:"a", title:"Ré, Mi, Fá", txt:"D4:2 E4:2 F4:2 E4:2 D4:4", bpm:66},
+       {id:"b", title:"Do Ré ao Ré", txt:"D4:1 E4:1 F4:1 G4:1 A4:1 B4:1 C5:1 D5:2 C5:1 B4:1 A4:1 G4:1 F4:1 E4:1 D4:2", bpm:72}]},
+  {id:"gm5", title:"5ª corda: Lá, Si e Dó", notes:[57, 59, 60], intro:"5ª corda solta é Lá, dedo 2 é Si, dedo 3 é Dó. Com ela sai a escala de Dó maior inteira.",
+   ex:[{id:"a", title:"Lá, Si, Dó", txt:"A3:2 B3:2 C4:2 B3:2 A3:4", bpm:66},
+       {id:"b", title:"Escala de Dó maior", txt:"C4:1 D4:1 E4:1 F4:1 G4:1 A4:1 B4:1 C5:2 B4:1 A4:1 G4:1 F4:1 E4:1 D4:1 C4:2", bpm:72},
+       {id:"c", title:"Maria Tinha um Carneirinho (em Dó)", txt:"E4:1 D4:1 C4:1 D4:1 E4:1 E4:1 E4:2 D4:1 D4:1 D4:2 E4:1 G4:1 G4:2 E4:1 D4:1 C4:1 D4:1 E4:1 E4:1 E4:1 E4:1 D4:1 D4:1 E4:1 D4:1 C4:4", bpm:92}]},
+  {id:"gm6", title:"6ª corda: Mi, Fá e Sol graves", notes:[52, 53, 55], intro:"A corda mais grossa tem as mesmas notas da 1ª, duas oitavas abaixo: solta é Mi, dedo 1 é Fá, dedo 3 é Sol.",
+   ex:[{id:"a", title:"Mi, Fá, Sol graves", txt:"E3:2 F3:2 G3:2 F3:2 E3:4", bpm:66},
+       {id:"b", title:"Todas as notas naturais", txt:"E3:1 F3:1 G3:1 A3:1 B3:1 C4:1 D4:1 E4:1 F4:1 G4:1 A4:1 B4:1 C5:1 D5:1 E5:1 F5:1 G5:4", bpm:72}]},
+  {id:"gm7", title:"Sustenidos: Fá♯ e Sol♯", notes:[66, 68, 78], intro:"Sustenido é uma casa para a frente. O Fá♯ da 4ª corda fica na casa 4 (dedo 4) e o da 1ª corda na casa 2 (dedo 2).",
+   ex:[{id:"a", title:"Escala de Sol maior", txt:"G3:1 A3:1 B3:1 C4:1 D4:1 E4:1 F#4:1 G4:2 F#4:1 E4:1 D4:1 C4:1 B3:1 A3:1 G3:2", bpm:72},
+       {id:"b", title:"Escala de Lá menor harmônica", txt:"A3:1 B3:1 C4:1 D4:1 E4:1 F4:1 G#4:1 A4:2 G#4:1 F4:1 E4:1 D4:1 C4:1 B3:1 A3:2", bpm:66},
+       {id:"c", title:"Riff em Mi menor", txt:"E3:0.5 E3:0.5 G3:1 A3:1 E3:0.5 E3:0.5 B3:1 A3:1 G3:1 E3:0.5 E3:0.5 G3:1 A3:1 G3:1 E3:2", bpm:80}]},
+  {id:"gm8", title:"Repertório", notes:[], intro:"Músicas conhecidas que cabem na 1ª posição do violão.",
+   ex:[{id:"a", title:"Parabéns pra Você", song:"b-parabens"}, {id:"b", title:"When the Saints Go Marching In", song:"b-saints"}, {id:"c", title:"Jingle Bells (refrão)", song:"b-jingle"}, {id:"d", title:"Frère Jacques", song:"b-jacques"}, {id:"e", title:"Minueto em Sol", song:"b-minueto"}, {id:"f", title:"Für Elise (início)", song:"b-elise"}]}
+];
+
 /* ---------- Piano ---------- */
 const P_MIN = 48, P_MAX = 84;
 const isBlack = m => [1, 3, 6, 8, 10].includes(((m % 12) + 12) % 12);
@@ -1744,6 +2191,7 @@ function renderStaff(container, song, opts){
   const bass = song.clef === "bass";
   const clef = el("text", {x:bass ? 20 : 18, y:bass ? yOf(6) + G * 2.05 : yOf(2) + 0, "font-size":bass ? G * 3.4 : G * 5.8, fill:"var(--staff)", style:`font-family:${getComputedStyle(document.documentElement).getPropertyValue("--music")}`}, svg);
   clef.textContent = bass ? "𝄢" : "𝄞";
+  if (!bass && INSTR === "guitar" && !(opts && opts.noOct)){ const o8 = el("text", {x:30, y:yOf(-2) + G * 0.9, "text-anchor":"middle", "font-size":G * 1.3, "font-style":"italic", fill:"var(--staff)", style:"font-family:Georgia, serif"}, svg); o8.textContent = "8"; }
   const ts = (txt, p) => { const t = el("text", {x:70, y:yOf(p) + 8, "text-anchor":"middle", "font-size":24, "font-weight":700, fill:"var(--staff)", style:"font-family:Georgia, serif"}, svg); t.textContent = txt; };
   if (!(opts && opts.noTime)){ ts(String(beats), 6); ts(String(beatType), 2); }
   bars.forEach(bx => el("line", {x1:bx, x2:bx, y1:yOf(8), y2:yOf(0), stroke:"var(--staff)", "stroke-width":1.2}, svg));
@@ -1874,10 +2322,13 @@ const violinMain = createViolin($("#violinMain")), vhandsMain = createHandsV($("
 const violinChart = createViolin($("#violinChart")), vhandsChart = createHandsV($("#vhandsChart"));
 const pianoMain = createPiano($("#pianoMain")), phandsMain = createHandsP($("#phandsMain"));
 const pianoChart = createPiano($("#pianoChart")), phandsChart = createHandsP($("#phandsChart"));
+const guitarMain = createGuitar($("#guitarMain")), ghandsMain = createHandsG($("#ghandsMain"));
+const guitarChart = createGuitar($("#guitarChart")), ghandsChart = createHandsG($("#ghandsChart"));
 $("#midiBtn").addEventListener("click", connectMidi);
 function display(where, midi, o){
   if (INSTR === "violin"){ (where === "main" ? violinMain : violinChart)(midi, o); (where === "main" ? vhandsMain : vhandsChart)(midi, o); }
   else if (INSTR === "piano"){ (where === "main" ? pianoMain : pianoChart)(midi, o); (where === "main" ? phandsMain : phandsChart)(midi, o); }
+  else if (INSTR === "guitar"){ (where === "main" ? guitarMain : guitarChart)(midi, o); (where === "main" ? ghandsMain : ghandsChart)(midi, o); }
   else { (where === "main" ? fluteMain : fluteChart)(midi); (where === "main" ? handsMain : handsChart)(midi); }
 }
 function legendV(container){
@@ -1905,6 +2356,7 @@ function noteCardHTML(n, extra){
 }
 function tipHTML(n){
   if (!n) return "";
+  if (n.rest && INSTR === "guitar") return `<h3>Dica</h3><p>Na pausa, encoste a palma da mão direita nas cordas para parar o som. Já deixe o dedo da próxima nota pronto.</p>`;
   if (n.rest && INSTR === "piano") return `<h3>Dica</h3><p>Na pausa, levante a mão de leve, sem perder a posição. Aproveite para olhar a próxima nota.</p>`;
   if (n.rest) return INSTR === "violin" ? `<h3>Dica</h3><p>Na pausa, deixe o arco parado na corda ou levante-o de leve. Prepare a direção da próxima nota.</p>` : `<h3>Dica</h3><p>Use as pausas para encher o pulmão pelo canto da boca, sem tirar a flauta do lugar.</p>`;
   const {t, alt} = tipFor(n.midi);
@@ -2081,20 +2533,40 @@ function miniChart(m){
 }
 function drawChart(){
   const flat = $("#flatChk").checked, grid = $("#chartGrid"); grid.innerHTML = "";
-  (INSTR === "piano" ? [[48,59,"Oitava 3","grave, mão esquerda"],[60,71,"Oitava 4","começa no Dó central"],[72,84,"Oitava 5","aguda"]] : INSTR === "violin" ? [[55,61,"Corda Sol","a mais grave e grossa"],[62,68,"Corda Ré",""],[69,75,"Corda Lá",""],[76,83,"Corda Mi","a mais aguda"]] : [[60,73,"1ª oitava (grave)","sopro lento"],[74,85,"2ª oitava (média)","mesmos dedos, sopro mais rápido"],[86,96,"3ª oitava (aguda)","dedilhados próprios"]]).forEach(([a, b, t, sub]) => {
+  (INSTR === "guitar" ? [[52,56,"6ª corda · Mi grave","a mais grossa"],[57,61,"5ª corda · Lá",""],[62,66,"4ª corda · Ré",""],[67,70,"3ª corda · Sol",""],[71,75,"2ª corda · Si",""],[76,81,"1ª corda · Mi aguda","a mais fina"]] : INSTR === "piano" ? [[48,59,"Oitava 3","grave, mão esquerda"],[60,71,"Oitava 4","começa no Dó central"],[72,84,"Oitava 5","aguda"]] : INSTR === "violin" ? [[55,61,"Corda Sol","a mais grave e grossa"],[62,68,"Corda Ré",""],[69,75,"Corda Lá",""],[76,83,"Corda Mi","a mais aguda"]] : [[60,73,"1ª oitava (grave)","sopro lento"],[74,85,"2ª oitava (média)","mesmos dedos, sopro mais rápido"],[86,96,"3ª oitava (aguda)","dedilhados próprios"]]).forEach(([a, b, t, sub]) => {
     const h = document.createElement("div"); h.className = "oct-head"; h.innerHTML = sub ? `${t} <span>· ${sub}</span>` : t; grid.appendChild(h);
     for (let m = a; m <= b; m++){
       const n = spellMidi(m, flat);
       const c = document.createElement("button"); c.className = "fcard"; c.setAttribute("aria-pressed", String(m === chartSel));
       c.setAttribute("aria-label", `${ptName(n)} ${n.octave}`);
       c.innerHTML = `<b>${ptName(n)}<sup style="font-size:10px;color:var(--ink-2)">${n.octave}</sup></b><small>${cifra(n)}${n.octave}</small>`;
-      c.appendChild(INSTR === "violin" ? miniViolin(m) : INSTR === "piano" ? miniPiano(m) : miniChart(m));
+      c.appendChild(INSTR === "violin" ? miniViolin(m) : INSTR === "piano" ? miniPiano(m) : INSTR === "guitar" ? miniGuitar(m) : miniChart(m));
       c.addEventListener("click", () => { chartSel = m; selectChart(true); });
       grid.appendChild(c);
     }
   });
 }
+let chordSel = null;
+function drawChordLib(){
+  const box = $("#chordLib"); box.innerHTML = "";
+  G_CHORD_ORDER.forEach(k => {
+    const b = document.createElement("button"); b.className = "gch"; b.dataset.k = k; b.setAttribute("aria-pressed", String(k === chordSel));
+    b.innerHTML = `<b>${k}</b><small>${G_CHORDS[k].nm}</small>`; b.appendChild(chordDiagram(k));
+    b.addEventListener("click", () => selectChord(k, true)); box.appendChild(b);
+  });
+}
+function selectChord(k, sound){
+  chordSel = k; const c = G_CHORDS[k];
+  document.querySelectorAll("#chordLib .gch").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.k === k)));
+  document.querySelectorAll("#chartGrid .fcard").forEach(c => c.setAttribute("aria-pressed", "false"));
+  const notes = [...new Set(chordMidis(k).map(m => PC_PT[m % 12]))].join(", ");
+  $("#noteCard2").innerHTML = `<div class="eyebrow">Acorde</div><div class="big">${k}</div><div class="cifra">${c.nm}</div><div class="chips"><span class="chip">notas: ${notes}</span></div><div class="progress">Toque nos acordes da lista</div>`;
+  display("chart", null, {chord:k});
+  $("#tipChart").innerHTML = `<h3>Como montar o ${k}</h3>${chordTip(k).map(x => `<p>${x}</p>`).join("")}`;
+  if (sound){ const ctx = audio.ensure(); if (ctx) audio.strum(k, ctx.currentTime + 0.02, true, 1); }
+}
 function selectChart(sound){
+  chordSel = null; document.querySelectorAll("#chordLib .gch").forEach(b => b.setAttribute("aria-pressed", "false"));
   const n = spellMidi(chartSel, $("#flatChk").checked);
   n.midi = chartSel;
   $("#noteCard2").innerHTML = noteCardHTML(n, `<div class="progress">Toque nas notas abaixo</div>`);
@@ -2177,8 +2649,8 @@ $("#edSave").addEventListener("click", () => { const r = edSaveSong(); if (r) { 
 $("#edPractice").addEventListener("click", () => { const r = edSaveSong(); if (!r) return; loadSong(state.songs.find(s => s.id === r.song.id)); showView("pratica"); });
 
 /* ---------- Escuta pelo microfone ---------- */
-function yin(buf, sr){
-  const W = 1024, tmin = Math.max(2, Math.floor(sr / 2400)), tmax = Math.min(W - 2, Math.ceil(sr / 175));
+function yin(buf, sr, minF = 175){
+  const W = 1024, tmin = Math.max(2, Math.floor(sr / 2400)), tmax = Math.min(W - 2, Math.ceil(sr / minF));
   const c = new Float32Array(tmax + 2); let run = 0;
   c[0] = 1;
   for (let tau = 1; tau <= tmax + 1; tau++){
@@ -2193,6 +2665,7 @@ function yin(buf, sr){
   return {f: sr / better, clarity: 1 - x1};
 }
 const flatPref = m => [3, 10].includes(m % 12);
+const LOWF = () => INSTR === "guitar" ? 65 : 180, HPF = () => INSTR === "guitar" ? 55 : 150, MIC_OFF = () => INSTR === "guitar" ? G_OCT : 0;
 const noteLabel = m => { const n = spellMidi(m, flatPref(m)); return `${ptName(n)} ${n.octave}`; };
 const L = {
   on:false, marks:[], errs:[], finished:false, holdStart:null, lastPitchAt:0, needRelease:false, prevMidi:null,
@@ -2207,7 +2680,7 @@ const L = {
     } catch(e){ micUnavailable(); return; }
     const ctx = audio.ensure();
     const src = ctx.createMediaStreamSource(this.stream);
-    const hp = ctx.createBiquadFilter(); hp.type = "highpass"; hp.frequency.value = 150;
+    const hp = ctx.createBiquadFilter(); hp.type = "highpass"; hp.frequency.value = HPF();
     this.analyser = ctx.createAnalyser(); this.analyser.fftSize = 2048; src.connect(hp); hp.connect(this.analyser);
     this.buf = new Float32Array(2048); this.on = true; this.src = src;
     if (this.finished || state.idx >= state.song.notes.length - 1 && this.marks[state.idx]){ this.resetRun(); state.idx = 0; }
@@ -2243,14 +2716,14 @@ const L = {
     if (state.song.legato && this.prevMidi != null && (rms < this.peak * 0.3 || now - this.lastPitchAt > 120)) this.broke = true;
     const n = state.song.notes[state.idx]; if (!n || n.rest) return;
     const T = n.midi;
-    const p = rms > 0.008 ? yin(this.buf, this.analyser.context.sampleRate) : null;
+    const p = rms > 0.008 ? yin(this.buf, this.analyser.context.sampleRate, LOWF() * 0.95) : null;
     const needle = $("#needle");
-    if (!p || p.f < 180 || p.f > 2400){
+    if (!p || p.f < LOWF() || p.f > 2400){
       if (now - this.lastPitchAt > 160){ this.holdStart = null; this.needRelease = false; this.wrongMidi = null; setHold(0); $("#detName").textContent = "—"; needle.style.left = "50%"; needle.className = "needle"; }
       return;
     }
     this.lastPitchAt = now;
-    const mf = 69 + 12 * Math.log2(p.f / A4REF), nearest = Math.round(mf), cents = Math.round((mf - nearest) * 100);
+    const mf = 69 + 12 * Math.log2(p.f / A4REF) + MIC_OFF(), nearest = Math.round(mf), cents = Math.round((mf - nearest) * 100);
     $("#detName").textContent = `${noteLabel(nearest)} ${cents >= 0 ? "+" : ""}${cents}`;
     const off = nearest === T ? cents : Math.max(-50, Math.min(50, (mf - T) * 100));
     needle.style.left = `calc(${50 + Math.max(-50, Math.min(50, off))}% - 2px)`;
@@ -2258,21 +2731,23 @@ const L = {
     if (nearest === T && Math.abs(cents) <= 45){
       needle.className = "needle ok"; this.wrongMidi = null;
       if (this.holdStart == null){ this.holdStart = now; setMsg("Isso! Segure a nota…", "ok"); }
-      const need = INSTR === "piano" ? 180 : Math.min(1200, Math.max(250, n.dur * 60 / bpm() * 1000 * 0.6));
+      const need = INSTR === "piano" || INSTR === "guitar" ? 180 : Math.min(1200, Math.max(250, n.dur * 60 / bpm() * 1000 * 0.6));
       const prog = (now - this.holdStart) / need; setHold(prog);
       if (prog >= 1) this.success();
       return;
     }
     needle.className = "needle err";
     this.holdStart = null; setHold(0);
-    if (nearest === T){ setMsg(`Quase! A nota está ${cents > 0 ? "alta: relaxe o sopro e role a flauta um pouquinho para fora" : "baixa: sopre um pouco mais rápido e role a flauta um pouquinho para dentro"}.`, "err"); return; }
+    if (nearest === T){ setMsg(INSTR === "guitar" ? `Quase! A nota está ${cents > 0 ? "alta" : "baixa"}: confira a afinação da corda na aba Afinador e não empurre a corda para o lado.` : INSTR === "violin" ? `Quase! A nota está ${cents > 0 ? "alta: recue o dedo um pouquinho" : "baixa: avance o dedo um pouquinho"}.` : `Quase! A nota está ${cents > 0 ? "alta: relaxe o sopro e role a flauta um pouquinho para fora" : "baixa: sopre um pouco mais rápido e role a flauta um pouquinho para dentro"}.`, "err"); return; }
     if (nearest === this.prevMidi) return; // ainda segurando a nota anterior
     if (this.wrongMidi !== nearest){ this.wrongMidi = nearest; this.wrongSince = now; return; }
     if (now - this.wrongSince > 260 && !this.counted.has(nearest)){
       this.counted.add(nearest); this.errs[state.idx] = (this.errs[state.idx] || 0) + 1; this.marks[state.idx] = "err";
       const d = nearest - T;
-      if (Math.abs(d) === 12) setMsg(d > 0 ? "Saiu uma oitava acima. Os dedos estão certos: sopre mais devagar, com os lábios mais soltos." : "Saiu uma oitava abaixo. Os dedos estão certos: sopre mais rápido, com a abertura dos lábios menor.", "err");
-      else setMsg(`Saiu ${noteLabel(nearest)} em vez de ${noteLabel(T)}. Confira os dedos na flauta abaixo.`, "err");
+      if (Math.abs(d) === 12 && INSTR === "guitar") setMsg(`Saiu ${noteLabel(nearest)}, uma oitava ${d > 0 ? "acima" : "abaixo"}: a nota certa está noutra corda. Confira o braço abaixo.`, "err");
+      else if (Math.abs(d) === 12 && INSTR !== "flute") setMsg(`Saiu ${noteLabel(nearest)}, uma oitava ${d > 0 ? "acima" : "abaixo"} de ${noteLabel(T)}.`, "err");
+      else if (Math.abs(d) === 12) setMsg(d > 0 ? "Saiu uma oitava acima. Os dedos estão certos: sopre mais devagar, com os lábios mais soltos." : "Saiu uma oitava abaixo. Os dedos estão certos: sopre mais rápido, com a abertura dos lábios menor.", "err");
+      else setMsg(`Saiu ${noteLabel(nearest)} em vez de ${noteLabel(T)}. Confira os dedos ${INSTR === "guitar" ? "no braço do violão" : INSTR === "violin" ? "no violino" : INSTR === "piano" ? "no teclado" : "na flauta"} abaixo.`, "err");
       drawPractice();
     }
   },
@@ -2287,7 +2762,7 @@ const L = {
     if (!more || state.idx >= notes.length){ this.finish(); return; }
     const next = notes[state.idx];
     this.resetNote(); this.needRelease = next.midi === cur.midi;
-    setMsg(this.needRelease ? `Agora de novo ${noteLabel(next.midi)}: ${INSTR === "piano" ? "solte a tecla e toque de novo" : INSTR === "violin" ? "troque a direção do arco" : "separe com a língua (“tu”)"}.` : `Agora ${noteLabel(next.midi)}.`, "ok");
+    setMsg(this.needRelease ? `Agora de novo ${noteLabel(next.midi)}: ${INSTR === "piano" ? "solte a tecla e toque de novo" : INSTR === "guitar" ? "toque a corda de novo" : INSTR === "violin" ? "troque a direção do arco" : "separe com a língua (“tu”)"}.` : `Agora ${noteLabel(next.midi)}.`, "ok");
     drawPractice();
   },
   finish(){
@@ -2482,8 +2957,9 @@ function drawLessons(){
     const min = Math.min(...l.ex.map(e => exStars(l, e)));
     const b = document.createElement("button"); b.className = `panel lcard${un ? "" : " locked"}${done ? " done" : ""}`;
     const notes = l.notes.length ? "Notas novas: " + l.notes.map(m => noteLabel(m)).join(", ") : `${l.ex.length} música${l.ex.length > 1 ? "s" : ""}`;
+    if (l.chords && !l.guide){ b.innerHTML = `<span class="num">${lessonLabel(l, i)}${un ? "" : " · bloqueada"}</span><h3>${l.title}</h3><p>Acordes novos: ${l.chords.join(", ")}</p>${starsHTML(done ? min : 0)}`; b.addEventListener("click", () => { openLessonId = l.id; drawLessons(); $("#lessonDetail").scrollIntoView({behavior:"smooth", block:"start"}); }); grid.appendChild(b); return; }
     if (l.guide) b.classList.add("start");
-    b.innerHTML = `<span class="num">${lessonLabel(l, i)}${un ? "" : " · bloqueada"}</span><h3>${l.title}</h3><p>${l.guide ? (l.guide === "flute" ? "Como soprar, montar a flauta e respirar" : l.guide === "piano" ? "Como sentar, formar a mão e numerar os dedos" : "Como apoiar o violino e segurar o arco") : l.notes.length ? notes : l.ex.length + " exercício" + (l.ex.length > 1 ? "s" : "")}</p>${starsHTML(done ? min : 0)}`;
+    b.innerHTML = `<span class="num">${lessonLabel(l, i)}${un ? "" : " · bloqueada"}</span><h3>${l.title}</h3><p>${l.guide ? (l.guide === "guitar" ? "Como sentar, ler o diagrama e o primeiro acorde" : l.guide === "guitarNotes" ? "Partitura do violão, cordas e mão direita" : l.guide === "flute" ? "Como soprar, montar a flauta e respirar" : l.guide === "piano" ? "Como sentar, formar a mão e numerar os dedos" : "Como apoiar o violino e segurar o arco") : l.notes.length ? notes : l.ex.length + " exercício" + (l.ex.length > 1 ? "s" : "")}</p>${starsHTML(done ? min : 0)}`;
     b.addEventListener("click", () => { openLessonId = l.id; drawLessons(); $("#lessonDetail").scrollIntoView({behavior:"smooth", block:"start"}); });
     grid.appendChild(b);
   });
@@ -2491,13 +2967,15 @@ function drawLessons(){
   if (i < 0){ det.hidden = true; return; }
   const l = LESSONS[i], un = lessonUnlocked(i); det.hidden = false;
   det.innerHTML = `<div class="row" style="justify-content:space-between"><span class="num hint" style="font-weight:700">${lessonLabel(l, i).toUpperCase()}</span><button class="btn" id="lessonClose">Fechar</button></div>
-    <h2>${l.title}</h2><p class="intro">${l.intro}</p>${l.guideHTML ? TECH_TIPS[l.guideHTML] : ""}${l.guide === "flute" ? GUIDE_FLUTE : l.guide === "violin" ? GUIDE_VIOLIN : l.guide === "piano" ? PIANO_GUIDE : ""}${l.guide ? "<h3>Exercício</h3>" : ""}
+    <h2>${l.title}</h2><p class="intro">${l.intro}</p>${l.guideHTML ? TECH_TIPS[l.guideHTML] : ""}${l.guide === "flute" ? GUIDE_FLUTE : l.guide === "violin" ? GUIDE_VIOLIN : l.guide === "piano" ? PIANO_GUIDE : l.guide === "guitar" ? GUIDE_GUITAR_HTML() : l.guide === "guitarNotes" ? GUIDE_GUITAR_NOTES : ""}${l.guide ? "<h3>Exercício</h3>" : ""}
+    ${l.chords && l.chords.length ? `<div class="newchords" id="newChords">${l.chords.map(k => `<button data-k="${k}" title="Ver o acorde ${k}">${k}${chordDiagram(k, {labels:false}).outerHTML}</button>`).join("")}</div>` : ""}
     ${l.notes.length ? `<div class="newnotes" id="newNotes">${l.notes.map(m => { const n = spellMidi(m, flatPref(m)); return `<button data-m="${m}" title="Ver o dedilhado">${ptName(n)} ${n.octave}<small>${cifra(n)}${n.octave}</small></button>`; }).join("")}</div>` : ""}
     ${un ? "" : `<p class="hint">Esta lição abre quando você termina a anterior. <button class="btn" id="lessonForce" style="margin-left:6px">Abrir mesmo assim</button></p>`}
     <div class="exlist">${l.ex.map((e, k) => `<div class="ex"><div class="grow"><b>${k + 1}. ${e.title}</b></div>${starsHTML(exStars(l, e))}<button class="btn ${un ? "primary" : ""}" data-ex="${e.id}" ${un ? "" : "disabled"}>${exStars(l, e) ? "Tocar de novo" : "Começar"}</button></div>`).join("")}</div>`;
   $("#lessonClose").addEventListener("click", () => { openLessonId = null; drawLessons(); });
   const f = $("#lessonForce"); if (f) f.addEventListener("click", () => { progress.open[l.id] = true; store.set("dv-progress", progress); drawLessons(); });
   det.querySelectorAll("#newNotes button").forEach(b => b.addEventListener("click", () => { chartSel = +b.dataset.m; showView("dedilhados"); selectChart(true); }));
+  det.querySelectorAll("#newChords button").forEach(b => b.addEventListener("click", () => { showView("dedilhados"); selectChord(b.dataset.k, true); $("#chordLibWrap").scrollIntoView({block:"start"}); }));
   det.querySelectorAll("[data-ex]").forEach(b => b.addEventListener("click", () => startExercise(l, l.ex.find(e => e.id === b.dataset.ex))));
 }
 function startExercise(l, e){
@@ -2557,7 +3035,12 @@ const TUNE_TARGETS = {
   piano: [{m:60, name:"Dó central", sub:"Dó 4 · ponto de partida do teclado"}, {m:69, name:"Lá 4", sub:"a nota de referência de 440 Hz"}],
   flute: [{m:69, name:"Lá 4", sub:"nota de afinação mais usada"}, {m:70, name:"Si♭ 4", sub:"usada em bandas"}, {m:81, name:"Lá 5", sub:"confira a oitava de cima"}]
 };
-function tunerTargets(){ return TUNE_TARGETS[INSTR]; }
+function tunerTargets(){
+  if (INSTR !== "guitar") return TUNE_TARGETS[INSTR];
+  const T = G_TUNINGS[GTUNE];
+  return T.m.map((m, i) => { const n = spellMidi(m, T.flat); return {m, name:`${6 - i}ª · ${ptName(n)}`, sub: i === 0 ? "a corda mais grossa" : i === 5 ? "a corda mais fina" : i === 1 && GTUNE === "std" ? "o Lá de referência fica na 5ª casa da 6ª" : "", flat:T.flat}; });
+}
+const tunerSpell = m => spellMidi(m, INSTR === "guitar" && G_TUNINGS[GTUNE].flat ? true : flatPref(m));
 function buildTuner(){
   const g = $("#tgGauge"); g.innerHTML = "";
   const svg = el("svg", {viewBox:"0 0 360 200", role:"img", "aria-label":"Ponteiro do afinador"}, g);
@@ -2580,17 +3063,24 @@ function buildTuner(){
 function drawTargets(){
   const box = $("#tgTargets"); box.innerHTML = "";
   tunerTargets().forEach(t => {
-    const n = spellMidi(t.m, flatPref(t.m));
+    const n = tunerSpell(t.m);
     const c = document.createElement("div"); c.className = "tcard" + (TN.target === t.m ? " sel" : ""); c.dataset.m = t.m;
     c.innerHTML = `<button class="tpick" title="Afinar só esta nota"><b>${t.name}</b><small>${cifra(n)}${n.octave} · ${freq(t.m).toFixed(1)} Hz</small><span>${t.sub}</span></button><button class="btn sm tplay" title="Tocar o som de referência">Ouvir</button>`;
     c.querySelector(".tpick").addEventListener("click", () => { TN.target = TN.target === t.m ? null : t.m; drawTargets(); $("#tgMode").textContent = TN.target ? `Afinando só ${t.name}. Toque de novo para voltar ao automático.` : "Automático: o afinador descobre a nota sozinho."; });
-    c.querySelector(".tplay").addEventListener("click", () => { const ctx = audio.ensure(); if (!ctx) return; audio.tone(t.m, ctx.currentTime + 0.02, 3); TN.muteUntil = performance.now() + 3300; });
+    c.querySelector(".tplay").addEventListener("click", () => { const ctx = audio.ensure(); if (!ctx) return; audio.tone(t.m, ctx.currentTime + 0.02, 3, true); TN.muteUntil = performance.now() + 3300; });
     box.appendChild(c);
   });
-  $("#tgTitle").textContent = INSTR === "violin" ? "Cordas do violino" : INSTR === "piano" ? "Notas de referência do piano" : "Notas para afinar a flauta";
+  document.querySelectorAll("#tgTuneSeg button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.g === GTUNE)));
+  $("#tgTitle").textContent = INSTR === "guitar" ? `Cordas do violão · ${G_TUNINGS[GTUNE].nm}` : INSTR === "violin" ? "Cordas do violino" : INSTR === "piano" ? "Notas de referência do piano" : "Notas para afinar a flauta";
 }
 function drawTunerHelp(){
-  $("#tgHelp").innerHTML = INSTR === "piano" ? `<h3>Afinação do piano</h3><ol class="steps">
+  $("#tgHelp").innerHTML = INSTR === "guitar" ? `<h3>Como afinar o violão</h3><ol class="steps">
+    <li>Toque uma corda solta e deixe soar. O afinador acha sozinho a corda mais perto; para travar numa corda, toque no cartão dela.</li>
+    <li><b>Ponteiro à esquerda (baixo):</b> estique a corda, girando a tarraxa devagar.</li>
+    <li><b>Ponteiro à direita (alto):</b> afrouxe um pouco abaixo da nota e suba de novo até o meio. Afinar sempre subindo segura melhor a corda.</li>
+    <li>Gire pouco de cada vez e espere o ponteiro parar. Na dúvida sobre qual tarraxa é de qual corda, siga a corda com o dedo até a mão do violão.</li>
+    <li><b>Meio tom abaixo:</b> todas as cordas meio tom mais graves, usada em muito rock e para cantar mais grave. <b>Drop D:</b> só a 6ª corda desce para Ré.</li>
+    <li>As lições e o microfone usam a <b>afinação padrão</b>. Volte para ela antes de praticar.</li></ol>` : INSTR === "piano" ? `<h3>Afinação do piano</h3><ol class="steps">
     <li>O <b>teclado digital</b> já vem afinado e não desafina. Se o app e o teclado não baterem, confira o “Lá de referência” aqui e o ajuste “tune” do teclado.</li>
     <li>O <b>piano acústico</b> desafina com o tempo e com a umidade. A afinação é feita por um técnico, em geral uma ou duas vezes por ano.</li>
     <li>Use o afinador para conferir: toque o Lá 4 e veja se o ponteiro fica no meio. Se várias notas estiverem longe, é hora de chamar o afinador.</li>
@@ -2615,11 +3105,11 @@ async function tunerStart(){
     TN.stream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false, noiseSuppression:false, autoGainControl:false}});
   } catch(e){ tunerNoMic(); return; }
   const ctx = audio.ensure(); TN.src = ctx.createMediaStreamSource(TN.stream);
-  const hp = ctx.createBiquadFilter(); hp.type = "highpass"; hp.frequency.value = 150;
+  const hp = ctx.createBiquadFilter(); hp.type = "highpass"; hp.frequency.value = HPF();
   TN.analyser = ctx.createAnalyser(); TN.analyser.fftSize = 2048; TN.src.connect(hp); hp.connect(TN.analyser);
   TN.buf = new Float32Array(2048); TN.on = true; TN.fs = []; TN.ema = null; TN.hist = [];
   $("#tgMic").textContent = "Desligar microfone"; $("#tgMic").classList.add("on");
-  tunerMsg(INSTR === "violin" ? "Toque uma corda solta." : INSTR === "piano" ? "Toque uma tecla e deixe soar." : "Toque o Lá 4 com o sopro normal.", "");
+  tunerMsg(INSTR === "violin" || INSTR === "guitar" ? "Toque uma corda solta." : INSTR === "piano" ? "Toque uma tecla e deixe soar." : "Toque o Lá 4 com o sopro normal.", "");
   const loop = () => { if (!TN.on) return; tunerTick(); TN.raf = requestAnimationFrame(loop); }; TN.raf = requestAnimationFrame(loop);
 }
 function tunerStop(){
@@ -2642,8 +3132,8 @@ function tunerTick(){
   let rms = 0; for (let i = 0; i < TN.buf.length; i++) rms += TN.buf[i] * TN.buf[i]; rms = Math.sqrt(rms / TN.buf.length);
   $("#tgLevel").style.width = Math.min(100, rms * 500) + "%";
   if (now < TN.muteUntil) return;
-  const p = rms > 0.006 ? yin(TN.buf, TN.analyser.context.sampleRate) : null;
-  if (!p || p.f < 180 || p.f > 2400 || p.clarity < 0.85){
+  const p = rms > 0.006 ? yin(TN.buf, TN.analyser.context.sampleRate, LOWF() * 0.95) : null;
+  if (!p || p.f < LOWF() || p.f > 2400 || p.clarity < 0.85){
     if (now - TN.lastAt > 600){ TN.fs = []; TN.ema = null; $("#tgNeedle").style.transform = "rotate(0deg)"; $("#tgNeedle").style.opacity = ".35"; }
     pushHist(null); return;
   }
@@ -2652,18 +3142,20 @@ function tunerTick(){
   const mf = 69 + 12 * Math.log2(f / A4REF);
   let target;
   if (TN.target) target = TN.target;
+  else if (INSTR === "guitar") target = tunerTargets().reduce((best, t) => Math.abs(t.m - mf) < Math.abs(best.m - mf) ? t : best).m;
   else if (INSTR === "violin") target = TUNE_TARGETS.violin.reduce((best, t) => Math.abs(t.m - mf) < Math.abs(best.m - mf) ? t : best).m;
   else target = Math.round(mf);
   const cents = (mf - target) * 100;
   TN.ema = TN.ema == null ? cents : TN.ema * 0.75 + cents * 0.25;
   const c = TN.ema, show = Math.max(-50, Math.min(50, c));
   const nd = $("#tgNeedle"); nd.style.opacity = "1"; nd.style.transform = `rotate(${show / 50 * 80}deg)`;
-  const n = spellMidi(target, flatPref(target));
+  const n = tunerSpell(target);
   $("#tgNote").textContent = ptName(n); $("#tgOct").textContent = n.octave; $("#tgCifra").textContent = cifra(n) + n.octave;
   $("#tgHz").textContent = `${f.toFixed(1)} Hz · alvo ${freq(target).toFixed(1)} Hz · ${c >= 0 ? "+" : ""}${Math.round(c)} cents`;
   document.querySelectorAll("#tgTargets .tcard").forEach(card => card.classList.toggle("live", +card.dataset.m === target));
   pushHist(c);
   const v = INSTR === "violin";
+  if (INSTR === "guitar"){ tunerMsg(Math.abs(c) <= 5 ? `${ptName(n)} afinado.` : Math.abs(c) > 50 ? `Bem longe do ${ptName(n)}: confira se é essa a corda e gire a tarraxa devagar.` : c > 0 ? `Um pouco alto (+${Math.round(c)}): afrouxe um pouco abaixo e suba de novo até o meio.` : `Um pouco baixo (${Math.round(c)}): estique a corda girando a tarraxa devagar.`, Math.abs(c) <= 5 ? "ok" : "err"); return; }
   if (INSTR === "piano"){ tunerMsg(Math.abs(c) <= 5 ? `${ptName(n)} afinado.` : `${ptName(n)} está ${c > 0 ? "alto" : "baixo"} ${Math.abs(Math.round(c))} cents.${Math.abs(c) > 15 ? " Num piano acústico, vale chamar um afinador." : ""}`, Math.abs(c) <= 5 ? "ok" : "err"); return; }
   if (Math.abs(c) <= 5) tunerMsg(`${ptName(n)} afinado.`, "ok");
   else if (Math.abs(c) > 50) tunerMsg(v ? `Bem longe do ${ptName(n)}: ajuste com a cravelha, devagar, empurrando para dentro enquanto gira.` : `Longe do ${ptName(n)}. Confira se é essa a nota que você está tocando e se o sopro está calmo.`, "err");
@@ -2680,6 +3172,7 @@ function pushHist(c){
   $("#tgTrail").setAttribute("d", path);
 }
 $("#tgMic").addEventListener("click", () => TN.on ? tunerStop() : tunerStart());
+document.querySelectorAll("#tgTuneSeg button").forEach(b => b.addEventListener("click", () => { GTUNE = b.dataset.g; store.set("dv-gtune", GTUNE); TN.target = null; drawTargets(); $("#tgMode").textContent = "Automático: o afinador descobre a corda sozinho."; }));
 $("#tgMinus").addEventListener("click", () => setA4(A4REF - 1));
 $("#tgPlus").addEventListener("click", () => setA4(A4REF + 1));
 function setA4(v){ A4REF = Math.max(430, Math.min(446, v)); store.set("dv-a4", A4REF); $("#tgA4").textContent = A4REF; drawTargets(); }
@@ -2699,15 +3192,16 @@ async function drillMic(){
     DR.stream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false, noiseSuppression:false, autoGainControl:false}});
   } catch(e){ return false; }
   const ctx = audio.ensure(); DR.src = ctx.createMediaStreamSource(DR.stream);
-  const hp = ctx.createBiquadFilter(); hp.type = "highpass"; hp.frequency.value = 120;
+  const hp = ctx.createBiquadFilter(); hp.type = "highpass"; hp.frequency.value = INSTR === "guitar" ? 60 : 120;
   DR.analyser = ctx.createAnalyser(); DR.analyser.fftSize = 2048; DR.src.connect(hp); hp.connect(DR.analyser); DR.buf = new Float32Array(2048);
+  if (INSTR === "guitar"){ GDR.an = ctx.createAnalyser(); GDR.an.fftSize = 8192; GDR.an.smoothingTimeConstant = 0; hp.connect(GDR.an); GDR.fbuf = new Float32Array(GDR.an.frequencyBinCount); GDR.hist = []; GDR.lastOn = 0; }
   return true;
 }
 function drillStopMic(){
   cancelAnimationFrame(DR.raf); DR.on = false; DR.run = null;
   try { DR.src && DR.src.disconnect(); } catch(e){}
   if (DR.stream) DR.stream.getTracks().forEach(t => t.stop());
-  DR.stream = DR.src = DR.analyser = null;
+  DR.stream = DR.src = DR.analyser = null; GDR.an = null;
 }
 function drillRead(){
   DR.analyser.getFloatTimeDomainData(DR.buf);
@@ -2736,13 +3230,19 @@ function startDrill(l, e){
     hiss: "Puxe bastante ar e solte num “sss” fino e constante, perto do microfone. O cronômetro mede quanto tempo você consegue manter.",
     sustain: `Toque ${n ? ptName(n) + " " + n.octave : ""} e segure o máximo que conseguir, com o som parado. Meta: ${(e.goals || []).join(" s, ")} s para 1, 2 e 3 estrelas.`,
     dyn: `Toque ${n ? ptName(n) + " " + n.octave : ""} em três partes de ${e.phase} segundos: fraco, forte e fraco de novo, sem deixar a nota subir ou descer.`,
-    stacc: `Depois da contagem, toque ${e.count} notas ${n ? ptName(n) + " " + n.octave : ""} curtas, uma em cada clique, começando cada uma com “tu”.`
+    stacc: `Depois da contagem, toque ${e.count} notas ${n ? ptName(n) + " " + n.octave : ""} curtas, uma em cada clique, começando cada uma com “tu”.`,
+    chord: e.chord ? `Monte o ${e.chord} (${G_CHORDS[e.chord].nm}) e bata as cordas de cima para baixo. Faça ${e.strums} batidas limpas: o app confere as notas de cada uma.` : "",
+    change: e.seq ? `Troque ${e.seq.length > 4 ? "os acordes" : e.seq.join(" → ")} no tempo do metrônomo, ${e.beats} tempos em cada acorde. Bata no começo de cada acorde (ou em todos os tempos).` : "",
+    strum: e.pattern ? `Batida ${arrowsOf(e.pattern)}, seguindo os cliques. ↓ é para baixo, ↑ para cima e · é a mão passando no ar.` : ""
   }[e.type];
   $("#drHow").textContent = how;
   $("#drTips").innerHTML = TECH_TIPS[e.type === "hiss" ? "breath" : e.type] || "";
+  const gt = ["chord","change","strum"].includes(e.type);
+  $("#drGuitarWrap").hidden = !gt;
+  if (gt && !DR.guitar){ DR.guitar = createGuitar($("#guitarDrill")); legendG($("#legendDrillG")); }
   const fw = $("#drFluteWrap"); fw.hidden = !e.m;
   if (e.m){ if (!DR.flute){ DR.flute = createFlute($("#fluteDrill")); legend($("#legendDrill")); } DR.flute(e.m); }
-  drStage(e); drMsg(e.type === "breath" ? "Toque em Começar quando estiver pronta." : "Toque em Começar e permita o microfone.", "");
+  if (gt){ drStageGuitar(e); gdrShow(e.chord || (e.seq && e.seq[0])); } else drStage(e); drMsg(e.type === "breath" ? "Toque em Começar quando estiver pronta." : "Toque em Começar e permita o microfone.", "");
   $("#drStart").hidden = false; $("#drStart").textContent = "Começar";
 }
 function drStage(e){
@@ -2759,7 +3259,7 @@ async function runDrill(){
   const {e} = lessonRun; $("#drStart").hidden = true;
   if (e.type === "breath") return runBreath(e);
   const ok = await drillMic(); if (!ok){ $("#drStart").hidden = false; drMicFail(); return; }
-  DR.on = true; ({hiss:runHold, sustain:runHold, dyn:runDyn, stacc:runStacc})[e.type](e);
+  DR.on = true; ({hiss:runHold, sustain:runHold, dyn:runDyn, stacc:runStacc, chord:runChord, change:runChange, strum:runStrum})[e.type](e);
 }
 function runBreath(e){
   const c = $("#bCircle"), ph = $("#bPhase"), ct = $("#bCount"), rd = $("#bRound");
@@ -2872,6 +3372,163 @@ function runStacc(e){
   };
   DR.raf = requestAnimationFrame(loop);
 }
+/* ---------- Treinos de violão: acorde, troca e batida ---------- */
+TECH_TIPS.chord = `<ul class="drills"><li>Monte o acorde antes de bater e confira: dedos em pé, pontas logo atrás do traste.</li><li>Toque uma corda de cada vez, devagar. A que sair abafada mostra qual dedo ajeitar.</li><li>Bata de cima para baixo, começando na corda certa (as com × ficam de fora).</li></ul>`;
+TECH_TIPS.change = `<ul class="drills"><li>Antes do metrônomo, treine a troca no ar: tire os dedos juntos e pouse juntos.</li><li>Procure o dedo guia: o que fica no lugar ou só escorrega pela corda.</li><li>Se não der tempo, bata as cordas soltas no último tempo enquanto a mão troca. O ritmo não para.</li></ul>`;
+TECH_TIPS.strum = `<ul class="drills"><li>A mão direita não para: desce no número e sobe no “e”, mesmo quando passa no ar.</li><li>Pulso solto, como quem sacode água da mão. O braço quase não mexe.</li><li>Para cima, pegue só as 3 ou 4 cordas mais finas, mais leve.</li></ul>`;
+const GDR = {an:null, fbuf:null, hist:[], lastOn:0};
+function gOnset(rms, now){
+  // ataque: volume sobe bem acima do mínimo recente
+  GDR.hist.push(rms); if (GDR.hist.length > 6) GDR.hist.shift();
+  const low = Math.min(...GDR.hist.slice(0, -1));
+  if (rms > 0.012 && rms > low * 1.45 + 0.004 && now - GDR.lastOn > 120){ GDR.lastOn = now; return true; }
+  return false;
+}
+function gChroma(){ return GDR.an ? chromaFrom(GDR.an, GDR.fbuf) : null; }
+function chromaAdd(acc, c){ if (!c) return acc; let s = 0; for (let i = 0; i < 12; i++) s += c[i]; if (!s) return acc; acc = acc || new Float32Array(12); for (let i = 0; i < 12; i++) acc[i] += c[i] / s; return acc; }
+const pcsHeard = ch => { const mx = Math.max(...ch); return [...ch].map((v, i) => [v, i]).filter(x => x[0] > mx * 0.3).sort((a, b) => b[0] - a[0]).slice(0, 5).map(x => PC_PT[x[1]]).join(", "); };
+function gdrShow(k){ if (DR.guitar && k) DR.guitar(null, {chord:k}); }
+function drStageGuitar(e){
+  const st = $("#drStage");
+  if (e.type === "chord"){
+    st.innerHTML = `<div class="gdr"><div class="gch-big"><b>${e.chord}</b><span>${G_CHORDS[e.chord].nm}</span>${chordDiagram(e.chord).outerHTML}</div>
+      <div class="gdr-side"><div class="beats">${Array.from({length:e.strums}, (_, i) => `<i data-b="${i}"></i>`).join("")}</div><div class="gcount" id="dCount">0 de ${e.strums}</div><p class="hint center" id="dSub">Cada batida limpa acende uma bolinha.</p>
+      <button class="btn sm" id="gHear">Ouvir o acorde</button></div></div>`;
+    $("#gHear").onclick = () => { const ctx = audio.ensure(); if (ctx) audio.strum(e.chord, ctx.currentTime + 0.02, true, 1); };
+  } else if (e.type === "change"){
+    st.innerHTML = `<div class="gdr"><div class="gch-big" id="gNow"></div><div class="gdr-side"><div class="gnext" id="gNext"></div>
+      <div class="beats" id="gBeats">${Array.from({length:e.beats}, (_, i) => `<i data-b="${i}"></i>`).join("")}</div>
+      <div class="gcount" id="dCount">0 de ${e.seq.length * e.rounds}</div><p class="hint center" id="dSub">Acordes certos aparecem aqui.</p></div></div>`;
+    gChangeShow(e, 0);
+  } else {
+    const p = e.pattern, beats = e.meter || 4, cnt = Array.from({length:p.length}, (_, i) => i % 2 ? "e" : String(i / 2 + 1));
+    st.innerHTML = `<div class="gdr"><div class="gch-big" id="gNow"></div><div class="gdr-side">
+      <div class="gpat" style="grid-template-columns:repeat(${p.length}, 1fr)">${[...p].map((c, i) => `<span data-s="${i}"><b>${c === "D" ? "↓" : c === "U" ? "↑" : "·"}</b><small>${cnt[i]}</small></span>`).join("")}</div>
+      <p class="hint center">Batida ${G_PATTERNS[p] || ""} · ${beats} tempos por compasso</p>
+      <div class="gcount" id="dCount">Compasso 0 de ${e.bars}</div><p class="hint center" id="dSub">O app compara cada batida com o tempo certo.</p>
+      <button class="btn sm" id="gHear">Ouvir a batida</button></div></div>`;
+    gStrumShow(e, 0);
+    $("#gHear").onclick = () => { const ctx = audio.ensure(); if (!ctx) return; const spb = 60 / e.bpm, t0 = ctx.currentTime + 0.1, k = (e.seq || [e.chord])[0];
+      for (let b = 0; b < 2; b++) [...p].forEach((c, i) => { const t = t0 + (b * p.length + i) * spb / 2; if (c !== ".") audio.strum(k, t, c === "D", c === "D" ? 1 : 0.6); if (i % 2 === 0) audio.click(t, i === 0); }); };
+  }
+}
+function gChangeShow(e, i){
+  const seq = e.seq, k = seq[i % seq.length], nx = seq[(i + 1) % seq.length];
+  $("#gNow").innerHTML = `<b>${k}</b><span>${G_CHORDS[k].nm}</span>${chordDiagram(k).outerHTML}`;
+  $("#gNext").innerHTML = `<span class="hint">Próximo</span><b>${nx}</b>${chordDiagram(nx, {labels:false}).outerHTML}`;
+  gdrShow(k);
+}
+function gStrumShow(e, bar){
+  const seq = e.seq || [e.chord], k = seq[bar % seq.length];
+  $("#gNow").innerHTML = `<b>${k}</b><span>${G_CHORDS[k].nm}</span>${chordDiagram(k).outerHTML}`;
+  gdrShow(k);
+}
+function runChord(e){
+  let good = 0, bad = 0, pend = null;
+  const dots = document.querySelectorAll("#drStage .beats i");
+  drMsg(`Monte o ${e.chord} e bata as cordas, uma batida de cada vez.`, "");
+  const loop = () => {
+    if (!DR.on) return;
+    const now = performance.now(), r = drRms();
+    if (gOnset(r.rms, now) && !pend) pend = {t:now, acc:null};
+    if (pend){
+      const dt = now - pend.t;
+      if (dt > 140 && dt < 700) pend.acc = chromaAdd(pend.acc, gChroma());
+      if (dt >= 700){
+        const acc = pend.acc; pend = null;
+        if (acc){
+          const j = judgeChord(acc, e.chord);
+          if (j.ok){ good++; if (dots[good - 1]) dots[good - 1].classList.add("on"); $("#dCount").textContent = `${good} de ${e.strums}`; drMsg(good < e.strums ? "Acorde limpo! De novo." : "Acorde limpo!", "ok"); }
+          else { bad++; drMsg(chordFeedback(j, e.chord), "err"); }
+          $("#dSub").textContent = `Ouvi: ${pcsHeard(acc)}`;
+          if (good >= e.strums){
+            DR.on = false; drillStopMic();
+            const stars = bad === 0 ? 3 : bad <= 2 ? 2 : 1;
+            finishRun({stars, detail:`${good} batidas limpas${bad ? ` e ${bad} com alguma corda errada ou abafada` : ", sem nenhum erro"}.${stars < 3 ? " Com todas limpas de primeira você ganha 3 estrelas." : ""}`});
+            return;
+          }
+        }
+      }
+    }
+    DR.raf = requestAnimationFrame(loop);
+  };
+  DR.raf = requestAnimationFrame(loop);
+}
+function runChange(e){
+  const ctx = audio.ensure(), spb = 60 / e.bpm, total = e.seq.length * e.rounds, totBeats = total * e.beats;
+  const t0 = ctx.currentTime + 0.2;
+  for (let b = 0; b < 4 + totBeats; b++) audio.click(t0 + b * spb, b < 4 ? b === 0 : (b - 4) % e.beats === 0);
+  const startAt = performance.now() + 200 + 4 * spb * 1000, slot = e.beats * spb * 1000;
+  let cur = -1, acc = null, heard = false, good = 0;
+  const res = [];
+  const beatsEl = () => document.querySelectorAll("#gBeats i");
+  drMsg("Conte 4 cliques e bata o primeiro acorde no quinto.", "");
+  const judge = i => { const k = e.seq[i % e.seq.length]; const j = acc && heard ? judgeChord(acc, k) : null; res.push(!!(j && j.ok)); if (j && j.ok) good++;
+    $("#dCount").textContent = `${good} de ${total}`; drMsg(j ? (j.ok ? `${k} certo!` : `${k}: ${chordFeedback(j, k)}`) : `Não ouvi o ${k}. Bata pelo menos uma vez em cada acorde.`, j && j.ok ? "ok" : "err"); };
+  const loop = () => {
+    if (!DR.on) return;
+    const now = performance.now(), r = drRms();
+    const on = gOnset(r.rms, now);
+    if (now >= startAt){
+      const i = Math.floor((now - startAt) / slot), into = (now - startAt) % slot;
+      if (i !== cur){
+        if (cur >= 0) judge(cur);
+        if (i >= total){
+          DR.on = false; drillStopMic();
+          const ratio = good / total, stars = ratio >= 0.9 ? 3 : ratio >= 0.6 ? 2 : 1;
+          finishRun({stars, detail:`${good} de ${total} acordes certos no tempo.${stars < 3 ? " Com 90% você ganha 3 estrelas. Se as trocas atrasam, baixe o andamento treinando só a troca." : " Trocas no tempo!"}`});
+          return;
+        }
+        cur = i; acc = null; heard = false; gChangeShow(e, i);
+      }
+      const beat = Math.floor(into / (spb * 1000));
+      beatsEl().forEach((d, k) => d.classList.toggle("on", k <= beat));
+      if (on) heard = true;
+      if (into > 250 && r.rms > 0.008) acc = chromaAdd(acc, gChroma());
+    }
+    DR.raf = requestAnimationFrame(loop);
+  };
+  DR.raf = requestAnimationFrame(loop);
+}
+function runStrum(e){
+  const ctx = audio.ensure(), meter = e.meter || 4, p = e.pattern, spb = 60 / e.bpm, slotS = spb / 2;
+  const t0 = ctx.currentTime + 0.2, beats = 4 + e.bars * meter;
+  for (let b = 0; b < beats; b++) audio.click(t0 + b * spb, b < 4 ? b === 0 : (b - 4) % meter === 0);
+  const startAt = performance.now() + 200 + 4 * spb * 1000, barMs = meter * spb * 1000, slotMs = slotS * 1000;
+  const exp = []; for (let b = 0; b < e.bars; b++) [...p].forEach((c, i) => { if (c !== ".") exp.push({t:startAt + b * barMs + i * slotMs, hit:false}); });
+  const ons = []; let bar = -1;
+  const spans = document.querySelectorAll(".gpat span");
+  drMsg("Conte 4 cliques e comece no quinto.", "");
+  const loop = () => {
+    if (!DR.on) return;
+    const now = performance.now(), r = drRms();
+    if (gOnset(r.rms, now) && now > startAt - 200) ons.push(now);
+    if (now >= startAt){
+      const b = Math.floor((now - startAt) / barMs), s = Math.floor(((now - startAt) % barMs) / slotMs);
+      if (b !== bar && b < e.bars){ bar = b; gStrumShow(e, b); $("#dCount").textContent = `Compasso ${b + 1} de ${e.bars}`; }
+      spans.forEach((x, k) => x.classList.toggle("on", k === s));
+    }
+    if (now > startAt + e.bars * barMs + 250){
+      DR.on = false; drillStopMic(); spans.forEach(x => x.classList.remove("on"));
+      const win = Math.min(130, slotMs * 0.45), used = new Set();
+      let late = 0, early = 0;
+      exp.forEach(x => { let bi = -1, bd = 1e9; ons.forEach((o, k) => { const d = Math.abs(o - x.t); if (!used.has(k) && d < bd){ bd = d; bi = k; } });
+        if (bi >= 0 && bd <= win){ x.hit = true; used.add(bi); const d = ons[bi] - x.t; if (d > 60) late++; else if (d < -60) early++; } });
+      const hits = exp.filter(x => x.hit).length, extra = ons.filter((o, k) => !used.has(k) && o >= startAt - 100).length;
+      const ratio = hits / exp.length, stars = ratio >= 0.85 && extra <= 2 ? 3 : ratio >= 0.6 ? 2 : 1;
+      let tip = "";
+      if (late > hits * 0.4) tip += " Várias batidas saíram atrasadas: deixe a mão já em movimento antes do clique.";
+      else if (early > hits * 0.4) tip += " Várias batidas saíram adiantadas: espere o clique.";
+      if (extra > 2) tip += ` Ouvi ${extra} batidas fora do desenho: na hora do “·”, a mão passa no ar sem tocar.`;
+      finishRun({stars, detail:`${hits} de ${exp.length} batidas no tempo.${tip || (stars === 3 ? " Ritmo firme!" : "")}`});
+      return;
+    }
+    DR.raf = requestAnimationFrame(loop);
+  };
+  DR.raf = requestAnimationFrame(loop);
+}
+function drRms(){ DR.analyser.getFloatTimeDomainData(DR.buf); let s = 0; for (let i = 0; i < DR.buf.length; i++) s += DR.buf[i] * DR.buf[i]; return {rms:Math.sqrt(s / DR.buf.length)}; }
+
 $("#drStart").addEventListener("click", runDrill);
 
 const TECH_LESSONS = [
@@ -2910,10 +3567,18 @@ const TECH_LESSONS = [
 ];
 
 let TRACK = store.get("dv-track", "notes") === "tech" ? "tech" : "notes";
+let GTRACK = store.get("dv-gtrack", "tech") === "notes" ? "notes" : "tech";
+const curTrack = () => INSTR === "guitar" ? GTRACK : TRACK;
+function trackLessons(){ return INSTR === "guitar" ? (GTRACK === "tech" ? GUITAR_CHORD_LESSONS : GUITAR_NOTE_LESSONS) : (TRACK === "tech" ? TECH_LESSONS : FLUTE_LESSONS); }
+function drawTrackSeg(){
+  const [a, b] = document.querySelectorAll("#trackSeg button"), g = INSTR === "guitar";
+  a.textContent = g ? "Melodias" : "Notas e músicas"; b.textContent = g ? "Acordes e ritmo" : "Sopro e técnica";
+  document.querySelectorAll("#trackSeg button").forEach(x => x.setAttribute("aria-pressed", String(x.dataset.t === curTrack())));
+}
 function setTrack(t){
-  TRACK = t; store.set("dv-track", t);
-  document.querySelectorAll("#trackSeg button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.t === t)));
-  if (INSTR === "flute"){ LESSONS = t === "tech" ? TECH_LESSONS : FLUTE_LESSONS; openLessonId = null; drawLessons(); }
+  if (INSTR === "guitar"){ GTRACK = t; store.set("dv-gtrack", t); } else { TRACK = t; store.set("dv-track", t); }
+  drawTrackSeg();
+  if (INSTR === "flute" || INSTR === "guitar"){ LESSONS = trackLessons(); openLessonId = null; drawLessons(); }
 }
 document.querySelectorAll("#trackSeg button").forEach(b => b.addEventListener("click", () => setTrack(b.dataset.t)));
 document.querySelectorAll("#trackSeg button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.t === TRACK)));
@@ -2926,7 +3591,7 @@ function thPlay(m, d = 0.9, when = 0){
   const t = ctx.currentTime + 0.02 + when;
   const prev = INSTR; INSTR = "piano"; audio.tone(m, t, d); INSTR = prev;
 }
-function thPlayAs(inst, m, d = 1.2){ const ctx = audio.ensure(); if (!ctx) return; const prev = INSTR; INSTR = inst; audio.tone(m, ctx.currentTime + 0.02, d); INSTR = prev; }
+function thPlayAs(inst, m, d = 1.2){ const ctx = audio.ensure(); if (!ctx) return; const prev = INSTR; INSTR = inst; audio.tone(m, ctx.currentTime + 0.02, d, true); INSTR = prev; }
 function thFreq(f, d = 1){
   const ctx = audio.ensure(); if (!ctx) return;
   const o = ctx.createOscillator(), g = ctx.createGain(), t = ctx.currentTime + 0.02;
@@ -2975,7 +3640,7 @@ const THEORY = [
      const fb = root.querySelector("#thFreqBtns");
      [[110, "110 Hz (grave)"], [220, "220 Hz"], [440, "440 Hz (Lá)"], [880, "880 Hz (agudo)"]].forEach(([f, t]) => { const b = document.createElement("button"); b.className = "btn"; b.textContent = t; b.onclick = () => thFreq(f * A4REF / 440); fb.appendChild(b); });
      const tb = root.querySelector("#thTimbre");
-     [["flute", "Lá na flauta"], ["violin", "Lá no violino"], ["piano", "Lá no piano"]].forEach(([i, t]) => { const b = document.createElement("button"); b.className = "btn"; b.textContent = t; b.onclick = () => thPlayAs(i, 69); tb.appendChild(b); });
+     [["flute", "Lá na flauta"], ["violin", "Lá no violino"], ["piano", "Lá no piano"], ["guitar", "Lá no violão"]].forEach(([i, t]) => { const b = document.createElement("button"); b.className = "btn"; b.textContent = t; b.onclick = () => thPlayAs(i, 69); tb.appendChild(b); });
    },
    quiz:[{q:"Uma nota mais aguda vibra…", o:["mais devagar", "mais rápido", "com mais força"], a:1, e:"Agudo é vibração mais rápida (frequência maior). Força é volume, não altura."},
          {q:"O que faz o mesmo Lá soar diferente na flauta e no piano?", o:["A altura", "O timbre", "A duração"], a:1, e:"A altura é a mesma (440 Hz); o que muda é o timbre."}]},
@@ -3239,21 +3904,25 @@ function gameEar(host){
 
 /* ---------- Instrumento ---------- */
 function setInstrument(i, initial){
-  INSTR = ["violin", "piano"].includes(i) ? i : "flute"; store.set("dv-instr", INSTR);
-  const v = INSTR === "violin", pn = INSTR === "piano";
-  MIN_MIDI = v ? V_MIN : pn ? P_MIN : 60; MAX_MIDI = v ? V_MAX : pn ? P_MAX : 96;
+  INSTR = ["violin", "piano", "guitar"].includes(i) ? i : "flute"; store.set("dv-instr", INSTR);
+  const v = INSTR === "violin", pn = INSTR === "piano", gt = INSTR === "guitar";
+  MIN_MIDI = v ? V_MIN : pn ? P_MIN : gt ? G_MIN : 60; MAX_MIDI = v ? V_MAX : pn ? P_MAX : gt ? G_MAX : 96;
+  document.querySelectorAll(".inst-guitar").forEach(e => e.hidden = !gt);
+  document.querySelectorAll(".inst-track").forEach(e => e.hidden = !(INSTR === "flute" || gt));
+  drawTrackSeg();
   document.querySelectorAll(".inst-flute").forEach(e => e.hidden = INSTR !== "flute");
   document.querySelectorAll(".inst-violin").forEach(e => e.hidden = !v);
   document.querySelectorAll(".inst-piano").forEach(e => e.hidden = !pn);
-  document.querySelectorAll(".inst-low").forEach(e => e.hidden = !(v || pn));
+  document.querySelectorAll(".inst-low").forEach(e => e.hidden = !(v || pn || gt));
   document.querySelectorAll("#instSeg button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.i === INSTR)));
-  $("#brandSub").textContent = v ? "violino · 1ª posição" : pn ? "piano · teclado de Dó 3 a Dó 6" : "flauta transversal · sistema Boehm";
-  [$("#legendMain"), $("#legendChart")].forEach(c => v ? legendV(c) : pn ? legendP(c) : legend(c));
-  LESSONS = v ? VIOLIN_LESSONS : pn ? PIANO_LESSONS : (TRACK === "tech" ? TECH_LESSONS : FLUTE_LESSONS); openLessonId = null;
-  $("#trailTitle").textContent = v ? "Sua trilha no violino" : pn ? "Sua trilha no piano" : "Sua trilha na flauta";
-  $("#chartTitle").textContent = v ? "Todas as notas da 1ª posição, do Sol grave ao Si" : pn ? "Todas as teclas, do Dó 3 ao Dó 6" : "Todas as notas, do Dó grave ao Dó agudo";
-  $("#chartHint").textContent = v ? "Toque numa nota para ver onde o dedo aperta e ouvir o som. O número é o dedo; 0 é corda solta." : pn ? "Toque numa nota para ver a tecla e ouvir o som. Você também pode tocar direto nas teclas do desenho." : "Toque numa nota para ver o dedilhado e ouvir o som. Bolinha cheia = chave apertada.";
-  if (chartSel < MIN_MIDI || chartSel > MAX_MIDI) chartSel = v ? 69 : pn ? 60 : 67;
+  $("#brandSub").textContent = gt ? "violão · acordes, ritmo e 1ª posição" : v ? "violino · 1ª posição" : pn ? "piano · teclado de Dó 3 a Dó 6" : "flauta transversal · sistema Boehm";
+  [$("#legendMain"), $("#legendChart")].forEach(c => v ? legendV(c) : pn ? legendP(c) : gt ? legendG(c) : legend(c));
+  LESSONS = v ? VIOLIN_LESSONS : pn ? PIANO_LESSONS : trackLessons(); openLessonId = null;
+  $("#trailTitle").textContent = gt ? "Sua trilha no violão" : v ? "Sua trilha no violino" : pn ? "Sua trilha no piano" : "Sua trilha na flauta";
+  $("#chartTitle").textContent = gt ? "Notas da 1ª posição, do Mi grave ao Lá (escritas)" : v ? "Todas as notas da 1ª posição, do Sol grave ao Si" : pn ? "Todas as teclas, do Dó 3 ao Dó 6" : "Todas as notas, do Dó grave ao Dó agudo";
+  $("#chartHint").textContent = gt ? "Toque numa nota para ver a corda e a casa e ouvir o som. O número é o dedo; ○ é corda solta." : v ? "Toque numa nota para ver onde o dedo aperta e ouvir o som. O número é o dedo; 0 é corda solta." : pn ? "Toque numa nota para ver a tecla e ouvir o som. Você também pode tocar direto nas teclas do desenho." : "Toque numa nota para ver o dedilhado e ouvir o som. Bolinha cheia = chave apertada.";
+  if (chartSel < MIN_MIDI || chartSel > MAX_MIDI) chartSel = v ? 69 : pn ? 60 : gt ? 76 : 67;
+  if (gt && !$("#chordLib").children.length) drawChordLib();
   if (ed.oct === 6 && INSTR !== "flute"){ ed.oct = 5; } if (INSTR === "flute" && ed.oct === 3){ ed.oct = 4; }
   document.querySelectorAll("#octSeg button").forEach(b => b.setAttribute("aria-pressed", String(+b.dataset.o === ed.oct)));
   drawChart(); selectChart(false); drawPad(); buildTuner();
@@ -3286,10 +3955,10 @@ $("#themeBtn").addEventListener("click", () => { THEME = {auto:"light", light:"d
 // Os dados do projeto ficam em config.js (window.DV_CONFIG). Sem eles, o app funciona igual, só que sem conta.
 const CFG = Object.assign({supabaseUrl:"", supabaseKey:""}, window.DV_CONFIG || {});
 const ACC_ON = !!(CFG.supabaseUrl && CFG.supabaseKey);
-const SYNC_KEYS = ["dv-progress", "dv-theory", "dv-songs", "dv-a4", "dv-instr", "dv-track", "dv-theme"];
-const PREF_KEYS = ["dv-a4", "dv-instr", "dv-track", "dv-theme"];
+const SYNC_KEYS = ["dv-progress", "dv-theory", "dv-songs", "dv-a4", "dv-instr", "dv-track", "dv-gtrack", "dv-gtune", "dv-theme"];
+const PREF_KEYS = ["dv-a4", "dv-instr", "dv-track", "dv-gtrack", "dv-gtune", "dv-theme"];
 const NIVEIS = {zero:"Começando do zero", pouco:"Já toco um pouco", medio:"Intermediário", avancado:"Avançado"};
-const INST_PT = {flute:"Flauta", violin:"Violino", piano:"Piano"};
+const INST_PT = {flute:"Flauta", violin:"Violino", piano:"Piano", guitar:"Violão"};
 const CONTA = {sb:null, user:null, profile:null, pushT:0, sync:"", pending:false, delStep:false};
 let sbPromise = null;
 function loadSB(){
@@ -3445,7 +4114,7 @@ async function saveProfile(){
   toast(error ? "Não consegui salvar o perfil agora." : "Perfil salvo."); drawAcct();
 }
 function acctStats(){
-  const all = [...FLUTE_LESSONS, ...TECH_LESSONS, ...VIOLIN_LESSONS, ...PIANO_LESSONS];
+  const all = [...FLUTE_LESSONS, ...TECH_LESSONS, ...VIOLIN_LESSONS, ...PIANO_LESSONS, ...GUITAR_CHORD_LESSONS, ...GUITAR_NOTE_LESSONS];
   const stars = Object.values(progress.ex).reduce((a, b) => a + (+b || 0), 0);
   return {stars, done:all.filter(lessonDone).length, total:all.length, streak:streak(), days:progress.days.length,
     th:THEORY.filter(c => TH.prog.read[c.id]).length, thTotal:THEORY.length};
