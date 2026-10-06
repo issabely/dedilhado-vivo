@@ -1,0 +1,18 @@
+# dependências e builds (são recriados com npm install / build)
+node_modules/
+.expo/
+dist/
+web-build/
+app-android/android/.gradle/
+app-android/android/build/
+app-android/android/app/build/
+app-android/android/local.properties
+app-android/android/app/src/main/assets/public/
+
+# arquivos temporários e pacotes
+_to_delete/
+*.zip
+/package-lock.json
+.vscode/
+.DS_Store
+Thumbs.db

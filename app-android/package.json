@@ -1,0 +1,16 @@
+{
+  "name": "dedilhado-vivo-android",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "sync": "cap sync android",
+    "abrir": "cap open android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.5.2",
+    "@capacitor/core": "^8.5.2"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.5.2"
+  }
+}

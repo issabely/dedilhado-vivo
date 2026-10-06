@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Dedilhado Vivo</string>
+    <string name="title_activity_main">Dedilhado Vivo</string>
+    <string name="package_name">br.com.dedilhadovivo</string>
+    <string name="custom_url_scheme">br.com.dedilhadovivo</string>
+</resources>
