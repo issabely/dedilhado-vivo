@@ -44,3 +44,12 @@ create policy "progresso: apagar o seu" on public.progresso for delete to authen
 -- Limite de tamanho do progresso (evita abuso): 1 MB
 alter table public.progresso drop constraint if exists progresso_tamanho;
 alter table public.progresso add constraint progresso_tamanho check (pg_column_size(dados) < 1000000);
+
+-- Limites de tamanho no perfil (defesa extra além do app)
+alter table public.perfis drop constraint if exists perfis_limites;
+alter table public.perfis add constraint perfis_limites check (
+  coalesce(length(nome),0) <= 100
+  and coalesce(length(foto),0) <= 1000
+  and cardinality(instrumentos) <= 5
+  and nivel in ('zero','pouco','medio','avancado')
+);
