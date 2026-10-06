@@ -53,3 +53,21 @@ alter table public.perfis add constraint perfis_limites check (
   and cardinality(instrumentos) <= 5
   and nivel in ('zero','pouco','medio','avancado')
 );
+
+-- Exclusão total da conta (LGPD): a própria pessoa apaga o cadastro de login.
+-- perfis e progresso somem junto (on delete cascade).
+create or replace function public.apagar_minha_conta()
+returns void
+language plpgsql
+security definer
+set search_path = ''
+as $$
+begin
+  if auth.uid() is null then
+    raise exception 'não autenticado';
+  end if;
+  delete from auth.users where id = auth.uid();
+end;
+$$;
+revoke all on function public.apagar_minha_conta() from public, anon;
+grant execute on function public.apagar_minha_conta() to authenticated;

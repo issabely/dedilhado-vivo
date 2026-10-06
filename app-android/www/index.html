@@ -3454,12 +3454,12 @@ async function signOut(){
   toast("Você saiu da conta. O progresso continua neste aparelho.");
 }
 async function deleteCloud(){
-  const id = CONTA.user.id;
-  const r1 = await CONTA.sb.from("progresso").delete().eq("user_id", id);
-  const r2 = await CONTA.sb.from("perfis").delete().eq("id", id);
-  if (r1.error || r2.error){ toast("Não consegui apagar agora. Tente de novo com internet."); return; }
-  await CONTA.sb.auth.signOut(); CONTA.user = null; CONTA.profile = null; store.set("dv-acct", false); drawAcct();
-  toast("Seus dados foram apagados da nuvem. O que está neste aparelho continua aqui.");
+  // Apaga o cadastro de login; perfil e progresso somem junto no banco (LGPD)
+  const {error} = await CONTA.sb.rpc("apagar_minha_conta");
+  if (error){ toast("Não consegui apagar agora. Tente de novo com internet."); return; }
+  try { await CONTA.sb.auth.signOut({scope:"local"}); } catch(e){}
+  CONTA.user = null; CONTA.profile = null; store.set("dv-acct", false); drawAcct();
+  toast("Sua conta e seus dados foram apagados da nuvem. O que está neste aparelho continua aqui.");
 }
 async function saveProfile(){
   const p = CONTA.profile; if (!p) return;
@@ -3512,8 +3512,8 @@ function drawAcct(){
     <label class="pf-f">Seu nível<select id="pfNivel">${Object.entries(NIVEIS).map(([k, v]) => `<option value="${k}" ${pr.nivel === k ? "selected" : ""}>${v}</option>`).join("")}</select></label>
     <div class="pf-actions"><button class="btn primary" id="pfSave">Salvar perfil</button><button class="btn" id="pfOut">Sair da conta</button></div>
     <details class="pf-danger"><summary>Privacidade e dados</summary>
-      <p class="hint">Guardamos seu nome, foto e e-mail do Google, o perfil acima e o seu progresso no app. Nada é compartilhado com outras pessoas. Veja a <a href="privacidade.html" target="_blank" rel="noopener">Política de privacidade</a>.</p>
-      <button class="btn" id="pfDel">${CONTA.delStep ? "Toque de novo para confirmar: apagar tudo da nuvem" : "Apagar meus dados da nuvem"}</button></details>`;
+      <p class="hint">Guardamos seu nome, foto e e-mail do Google, o perfil acima e o seu progresso no app. Nada é compartilhado com outras pessoas. Apagar a conta remove tudo isso da nuvem de forma definitiva. Veja a <a href="privacidade.html" target="_blank" rel="noopener">Política de privacidade</a>.</p>
+      <button class="btn" id="pfDel">${CONTA.delStep ? "Toque de novo para confirmar: apagar minha conta" : "Apagar minha conta e meus dados"}</button></details>`;
   $("#pfSave").addEventListener("click", saveProfile);
   $("#pfOut").addEventListener("click", signOut);
   $("#pfDel").addEventListener("click", () => { if (!CONTA.delStep){ CONTA.delStep = true; drawAcct(); $(".pf-danger").open = true; setTimeout(() => { CONTA.delStep = false; }, 6000); } else { CONTA.delStep = false; deleteCloud(); } });
