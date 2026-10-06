@@ -1128,7 +1128,7 @@ let threePromise = null;
 function loadThree(){
   if (window.THREE) return Promise.resolve(window.THREE);
   if (!threePromise) threePromise = new Promise((res, rej) => {
-    const s = document.createElement("script"); s.src = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js";
+    const s = document.createElement("script"); s.src = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"; s.integrity = "sha384-CI3ELBVUz9XQO+97x6nwMDPosPR5XvsxW2ua7N1Xeygeh1IxtgqtCkGfQY9WWdHu"; s.crossOrigin = "anonymous";
     s.onload = () => res(window.THREE); s.onerror = () => { threePromise = null; rej(new Error("load")); }; document.head.appendChild(s);
   });
   return threePromise;
@@ -3322,10 +3322,12 @@ let sbPromise = null;
 function loadSB(){
   if (window.supabase && window.supabase.createClient) return Promise.resolve(window.supabase);
   if (!sbPromise) sbPromise = new Promise((res, rej) => {
-    const srcs = (location.protocol.startsWith("http") ? ["supabase.js"] : []).concat("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js");
+    const srcs = (location.protocol.startsWith("http") ? ["supabase.js"] : []).concat("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/dist/umd/supabase.js");
     const next = () => {
       const u = srcs.shift(); if (!u){ sbPromise = null; rej(new Error("load")); return; }
       const s = document.createElement("script"); s.src = u;
+      // versão fixa + conferência do arquivo (SRI): se o CDN for adulterado, o navegador recusa
+      if (/^https:/.test(u)){ s.integrity = "sha384-Rj26LVGvoeRVR6+mwQmFfcR3QOBEwT+ZmuCWpuiqeTzJpCs0ER4ITAWGb4Hiy3Ok"; s.crossOrigin = "anonymous"; }
       s.onload = () => (window.supabase && window.supabase.createClient) ? res(window.supabase) : next();
       s.onerror = next; document.head.appendChild(s);
     };
@@ -3435,7 +3437,7 @@ async function signIn(){
   } catch(e){ $("#acctGo").disabled = false; toast("Não consegui abrir o login do Google. Confira a internet e tente de novo."); }
 }
 // chamado pelo app de celular quando o navegador do sistema volta com o código do login
-window.__dvOAuthDone = async url => {
+if (window.ReactNativeWebView) window.__dvOAuthDone = async url => {
   try {
     const sb = await ensureClient();
     const q = new URL(url.replace(/^[a-z]+:\/\/[^?#]*/i, "https://x/")), code = q.searchParams.get("code");
@@ -3446,7 +3448,7 @@ window.__dvOAuthDone = async url => {
   } catch(e){ toast("Não consegui concluir o login. Tente de novo."); }
   const b = $("#acctGo"); if (b) b.disabled = false;
 };
-window.__dvOAuthCancel = () => { const b = $("#acctGo"); if (b) b.disabled = false; };
+if (window.ReactNativeWebView) window.__dvOAuthCancel = () => { const b = $("#acctGo"); if (b) b.disabled = false; };
 async function signOut(){
   if (CONTA.pushT) await pushNow();
   try { await CONTA.sb.auth.signOut(); } catch(e){}
