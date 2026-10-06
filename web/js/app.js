@@ -1279,9 +1279,9 @@ function toast(msg){ const t = $("#toast"); t.textContent = msg; t.hidden = fals
 function fillSongSelect(){
   const sel = $("#songSel"); const cur = state.song && state.song.id;
   const b = state.songs.filter(s => s.builtin), u = state.songs.filter(s => !s.builtin);
-  sel.innerHTML = `<optgroup label="Músicas prontas">${b.map(s => `<option value="${s.id}">${esc(s.title)} · ${esc(s.source)}</option>`).join("")}</optgroup>` +
-    (u.length ? `<optgroup label="Minhas músicas">${u.map(s => `<option value="${s.id}">${esc(s.title)} · ${esc(s.source)}</option>`).join("")}</optgroup>` : "");
-  if (state.song && state.song.lesson) sel.insertAdjacentHTML("afterbegin", `<optgroup label="Lição"><option value="${state.song.id}">${esc(state.song.title)} · ${esc(state.song.source)}</option></optgroup>`);
+  sel.innerHTML = `<optgroup label="Músicas prontas">${b.map(s => `<option value="${esc(s.id)}">${esc(s.title)} · ${esc(s.source)}</option>`).join("")}</optgroup>` +
+    (u.length ? `<optgroup label="Minhas músicas">${u.map(s => `<option value="${esc(s.id)}">${esc(s.title)} · ${esc(s.source)}</option>`).join("")}</optgroup>` : "");
+  if (state.song && state.song.lesson) sel.insertAdjacentHTML("afterbegin", `<optgroup label="Lição"><option value="${esc(state.song.id)}">${esc(state.song.title)} · ${esc(state.song.source)}</option></optgroup>`);
   if (cur) sel.value = cur;
 }
 function esc(s){ return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
