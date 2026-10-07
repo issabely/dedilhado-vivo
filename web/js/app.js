@@ -170,7 +170,7 @@ const store = {
 let userSongs = store.get("dv-songs", []);
 
 function allSongs(){
-  const b = BUILTIN.map(s => ({...s, builtin:true, notes: parseText(s.txt, s.beats)}));
+  const b = [...BUILTIN, ...(window.DV_REPERTOIRE || [])].map(s => ({...s, builtin:true, notes: s.notes || parseText(s.txt, s.beats)}));
   return b.concat(userSongs);
 }
 
