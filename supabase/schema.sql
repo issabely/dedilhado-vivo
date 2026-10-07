@@ -45,15 +45,6 @@ create policy "progresso: apagar o seu" on public.progresso for delete to authen
 alter table public.progresso drop constraint if exists progresso_tamanho;
 alter table public.progresso add constraint progresso_tamanho check (pg_column_size(dados) < 1000000);
 
--- Limites de tamanho no perfil (defesa extra além do app)
-alter table public.perfis drop constraint if exists perfis_limites;
-alter table public.perfis add constraint perfis_limites check (
-  coalesce(length(nome),0) <= 100
-  and coalesce(length(foto),0) <= 1000
-  and cardinality(instrumentos) <= 5
-  and nivel in ('zero','pouco','medio','avancado')
-);
-
 -- Exclusão total da conta (LGPD): a própria pessoa apaga o cadastro de login.
 -- perfis e progresso somem junto (on delete cascade).
 create or replace function public.apagar_minha_conta()
@@ -71,3 +62,52 @@ end;
 $$;
 revoke all on function public.apagar_minha_conta() from public, anon;
 grant execute on function public.apagar_minha_conta() to authenticated;
+
+-- ===== Estatísticas anônimas de uso (só números, sem saber quem) =====
+-- Cada linha = um tipo de ação num dia, com o total. Nenhum dado pessoal, IP ou ID.
+create table if not exists public.uso_diario (
+  dia    date not null default ((now() at time zone 'America/Sao_Paulo')::date),
+  evento text not null check (evento ~ '^[a-z0-9_:-]{1,40}$'),
+  total  bigint not null default 0,
+  primary key (dia, evento)
+);
+alter table public.uso_diario enable row level security;
+-- ninguém lê nem escreve direto pela internet; só a função abaixo soma
+revoke all on table public.uso_diario from public, anon, authenticated;
+
+create or replace function public.contar_evento(eventos text[])
+returns void
+language plpgsql
+security definer
+set search_path = ''
+as $$
+declare e text;
+begin
+  if eventos is null or array_length(eventos, 1) is null or array_length(eventos, 1) > 20 then return; end if;
+  foreach e in array eventos loop
+    -- só nomes da lista conhecida contam (evita lixo e abuso)
+    if e ~ '^(visita|login|conta_nova|app_instalado|microfone|exercicio|exercicio_fim|musica_importada|musica_escrita|aba:(licoes|pratica|dedilhados|afinador|teoria|editor)|inst:(flute|violin|piano|guitar)|origem:[a-z0-9_-]{1,20})$' then
+      insert into public.uso_diario as u (dia, evento, total)
+      values ((now() at time zone 'America/Sao_Paulo')::date, e, 1)
+      on conflict (dia, evento) do update set total = u.total + 1;
+    end if;
+  end loop;
+end;
+$$;
+revoke all on function public.contar_evento(text[]) from public;
+grant execute on function public.contar_evento(text[]) to anon, authenticated;
+
+-- Resumos para você ver no Table Editor / SQL Editor (não ficam abertos na internet)
+create or replace view public.uso_ultimos_30_dias with (security_invoker = true) as
+  select evento, sum(total) as total from public.uso_diario
+  where dia >= ((now() at time zone 'America/Sao_Paulo')::date - 29)
+  group by evento order by total desc;
+create or replace view public.uso_por_dia with (security_invoker = true) as
+  select dia,
+    sum(total) filter (where evento = 'visita') as visitas,
+    sum(total) filter (where evento = 'microfone') as usaram_microfone,
+    sum(total) filter (where evento = 'exercicio') as exercicios,
+    sum(total) filter (where evento = 'login') as logins,
+    sum(total) filter (where evento = 'conta_nova') as contas_novas
+  from public.uso_diario group by dia order by dia desc;
+revoke all on public.uso_ultimos_30_dias, public.uso_por_dia from public, anon, authenticated;

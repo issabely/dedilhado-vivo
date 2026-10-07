@@ -1,5 +1,5 @@
 // Dedilhado Vivo: guarda o app no aparelho para funcionar sem internet.
-const CACHE = "dedilhado-vivo-v21";
+const CACHE = "dedilhado-vivo-v23";
 const FILES = ["./", "./index.html", "./manifest.webmanifest", "./three.min.js", "./config.js", "./css/style.css", "./js/app.js",
   "./icons/icon-192.png", "./icons/icon-512.png", "./icons/maskable-512.png", "./icons/apple-touch-icon.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES))); self.skipWaiting(); });

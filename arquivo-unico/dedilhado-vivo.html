@@ -796,6 +796,29 @@ function songToText(notes){
 function remeasure(notes, beats){ let acc = 0; for (const n of notes){ n.measure = Math.floor(acc / beats + 1e-6); acc += n.dur; } return notes; }
 
 /* ---------- Armazenamento local (por navegador) ---------- */
+/* ---------- Estatística anônima de uso (só totais por dia; sem nome, e-mail, IP ou ID) ---------- */
+var STQ = [], STT = 0, STSEEN = {}, STN = 0;
+function statOn(){
+  const c = window.DV_CONFIG || {};
+  if (!c.supabaseUrl || !c.supabaseKey) return false;
+  if (window.ReactNativeWebView) return true;
+  return /^https:$/.test(location.protocol) && !/^(localhost|127\.|192\.168\.|10\.)/.test(location.hostname);
+}
+function statHit(e, every){
+  try {
+    if (!statOn()) return;
+    if (every){ if (++STN > 40) return; }
+    else { const k = "dv-st:" + e; let seen = STSEEN[e]; try { seen = seen || sessionStorage.getItem(k); sessionStorage.setItem(k, "1"); } catch(x){} if (seen) return; STSEEN[e] = 1; }
+    STQ.push(e); clearTimeout(STT); STT = setTimeout(statFlush, 2000);
+  } catch(x){}
+}
+function statFlush(){
+  if (!STQ.length) return;
+  const c = window.DV_CONFIG, ev = STQ.splice(0, 20);
+  try { fetch(c.supabaseUrl + "/rest/v1/rpc/contar_evento", {method:"POST", keepalive:true, headers:{apikey:c.supabaseKey, "Content-Type":"application/json"}, body:JSON.stringify({eventos:ev})}).catch(() => {}); } catch(x){}
+  if (STQ.length) STT = setTimeout(statFlush, 2000);
+}
+addEventListener("pagehide", statFlush);
 const store = {
   get(k, d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch(e){ return d; } },
   set(k, v){ let ok = true; try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){ ok = false; } if (store.onset) try { store.onset(k); } catch(e){} return ok; },
@@ -2501,7 +2524,7 @@ $("#fileIn").addEventListener("change", async e => {
     userSongs.push(song); const saved = store.set("dv-songs", userSongs);
     state.songs = allSongs(); loadSong(state.songs.find(s => s.id === song.id));
     const nn = song.notes.filter(n => !n.rest).length;
-    toast(`Importada: ${song.title} (${nn} notas)` + (song.shift ? ` · transposta ${song.shift / 12 > 0 ? "+" : ""}${song.shift / 12} oitava para caber na flauta` : "") + (saved ? "" : " · não foi possível guardar neste navegador"));
+    statHit("musica_importada", true); toast(`Importada: ${song.title} (${nn} notas)` + (song.shift ? ` · transposta ${song.shift / 12 > 0 ? "+" : ""}${song.shift / 12} oitava para caber na flauta` : "") + (saved ? "" : " · não foi possível guardar neste navegador"));
   } catch(err){ toast(err.message || "Não consegui abrir esse arquivo."); }
 });
 $("#delSongBtn").addEventListener("click", () => {
@@ -2524,7 +2547,7 @@ document.addEventListener("keydown", e => {
 /* abas */
 document.querySelectorAll("nav.tabs button").forEach(b => b.addEventListener("click", () => showView(b.dataset.view)));
 function showView(v){
-  state.view = v; stop();
+  state.view = v; stop(); if (v !== "treino") statHit("aba:" + v);
   document.querySelectorAll("nav.tabs button").forEach(b => b.setAttribute("aria-selected", String(b.dataset.view === v)));
   ["licoes","pratica","dedilhados","afinador","editor","treino","teoria"].forEach(x => $("#view-" + x).hidden = x !== v);
   if (v === "teoria") drawTheory();
@@ -2670,7 +2693,7 @@ function edSaveSong(){
   const existing = userSongs.find(x => x.source === "Escrita por mim" && x.title === s.title);
   const song = {...s, id: existing ? existing.id : "u-" + Date.now(), source:"Escrita por mim"};
   if (existing) userSongs = userSongs.map(x => x.id === song.id ? song : x); else userSongs.push(song);
-  const ok = store.set("dv-songs", userSongs); state.songs = allSongs();
+  const ok = store.set("dv-songs", userSongs); state.songs = allSongs(); if (!existing) statHit("musica_escrita", true);
   return {song, ok};
 }
 $("#edSave").addEventListener("click", () => { const r = edSaveSong(); if (r) { fillSongSelect(); toast(r.ok ? `“${r.song.title}” salva na biblioteca.` : "Salva só nesta sessão: o navegador não permite guardar."); } });
@@ -2704,7 +2727,7 @@ const L = {
     const msg = $("#micMsg");
     try {
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error("nomedia");
-      this.stream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false, noiseSuppression:false, autoGainControl:false}});
+      this.stream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false, noiseSuppression:false, autoGainControl:false}}); statHit("microfone");
     } catch(e){ micUnavailable(); return; }
     const ctx = audio.ensure();
     const src = ctx.createMediaStreamSource(this.stream);
@@ -3007,6 +3030,7 @@ function drawLessons(){
   det.querySelectorAll("[data-ex]").forEach(b => b.addEventListener("click", () => startExercise(l, l.ex.find(e => e.id === b.dataset.ex))));
 }
 function startExercise(l, e){
+  if (!e.type) statHit("exercicio", true);
   if (e.type) return startDrill(l, e);
   drillStopMic();
   let song;
@@ -3037,6 +3061,7 @@ function nextExercise(){
   return null;
 }
 function finishRun(r){
+  statHit("exercicio_fim", true);
   recordDay();
   let best = r.stars;
   if (lessonRun){ const key = exKey(lessonRun.l, lessonRun.e); best = Math.max(progress.ex[key] || 0, r.stars); progress.ex[key] = best; store.set("dv-progress", progress); }
@@ -3130,7 +3155,7 @@ function drawTunerHelp(){
 async function tunerStart(){
   try {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error("nomedia");
-    TN.stream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false, noiseSuppression:false, autoGainControl:false}});
+    TN.stream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false, noiseSuppression:false, autoGainControl:false}}); statHit("microfone");
   } catch(e){ tunerNoMic(); return; }
   const ctx = audio.ensure(); TN.src = ctx.createMediaStreamSource(TN.stream);
   const hp = ctx.createBiquadFilter(); hp.type = "highpass"; hp.frequency.value = HPF();
@@ -3217,7 +3242,7 @@ async function drillMic(){
   if (DR.analyser) return true;
   try {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error("nomedia");
-    DR.stream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false, noiseSuppression:false, autoGainControl:false}});
+    DR.stream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false, noiseSuppression:false, autoGainControl:false}}); statHit("microfone");
   } catch(e){ return false; }
   const ctx = audio.ensure(); DR.src = ctx.createMediaStreamSource(DR.stream);
   const hp = ctx.createBiquadFilter(); hp.type = "highpass"; hp.frequency.value = INSTR === "guitar" ? 60 : 120;
@@ -3246,6 +3271,7 @@ async function drMicFail(){
   b.addEventListener("click", () => finishRun({stars:1, nomic:true})); m.appendChild(b);
 }
 function startDrill(l, e){
+  if (!(lessonRun && lessonRun.e === e)) statHit("exercicio", true);
   lessonRun = {l, e}; stop(); L.stopMic(); drillStopMic();
   showView("treino"); window.scrollTo({top:0});
   const i = LESSONS.indexOf(l), k = l.ex.indexOf(e);
@@ -4016,7 +4042,7 @@ function gameEar(host){
 
 /* ---------- Instrumento ---------- */
 function setInstrument(i, initial){
-  INSTR = ["violin", "piano", "guitar"].includes(i) ? i : "flute"; store.set("dv-instr", INSTR);
+  INSTR = ["violin", "piano", "guitar"].includes(i) ? i : "flute"; store.set("dv-instr", INSTR); statHit("inst:" + INSTR);
   const v = INSTR === "violin", pn = INSTR === "piano", gt = INSTR === "guitar";
   MIN_MIDI = v ? V_MIN : pn ? P_MIN : gt ? G_MIN : 60; MAX_MIDI = v ? V_MAX : pn ? P_MAX : gt ? G_MAX : 96;
   document.querySelectorAll(".inst-guitar").forEach(e => e.hidden = !gt);
@@ -4151,6 +4177,7 @@ async function loadProfile(){
   const u = CONTA.user, m = u.user_metadata || {};
   const {data} = await CONTA.sb.from("perfis").select("*").eq("id", u.id).maybeSingle();
   if (data){ CONTA.profile = data; if (!data.foto && (m.avatar_url || m.picture)) CONTA.profile.foto = m.avatar_url || m.picture; return; }
+  statHit("conta_nova");
   CONTA.profile = {id:u.id, nome:m.full_name || m.name || (u.email || "").split("@")[0], foto:m.avatar_url || m.picture || "", instrumentos:[INSTR], nivel:"zero"};
   await CONTA.sb.from("perfis").upsert(CONTA.profile);
 }
@@ -4158,6 +4185,7 @@ async function onSession(session){
   const u = session ? session.user : null;
   if ((u && u.id) === (CONTA.user && CONTA.user.id)) return;
   CONTA.user = u;
+  if (u) statHit("login");
   if (!u){ CONTA.profile = null; store.set("dv-acct", false); setSync(""); drawAcct(); return; }
   store.set("dv-acct", true);
   if (/[?&]code=/.test(location.search)) history.replaceState(null, "", location.pathname + location.hash);
@@ -4282,6 +4310,14 @@ drawAcct();
 if (ACC_ON && (store.get("dv-acct", false) || /[?&]code=/.test(location.search))) ensureClient().catch(() => setSync("Não consegui conectar agora."));
 
 /* ---------- Início ---------- */
+statHit("visita");
+try {
+  if (window.ReactNativeWebView || matchMedia("(display-mode: standalone)").matches) statHit("app_instalado");
+  const q = new URLSearchParams(location.search), utm = (q.get("utm_source") || q.get("origem") || "").toLowerCase().replace(/[^a-z0-9_-]/g, "").slice(0, 20);
+  const ref = (document.referrer && !document.referrer.includes(location.host)) ? new URL(document.referrer).hostname : "";
+  const src = utm || (/instagram/.test(ref) ? "instagram" : /facebook|fb\./.test(ref) ? "facebook" : /whatsapp|wa\.me/.test(ref) ? "whatsapp" : /google/.test(ref) ? "google" : /youtube|youtu\.be/.test(ref) ? "youtube" : /tiktok/.test(ref) ? "tiktok" : /t\.co$|twitter|x\.com/.test(ref) ? "x" : ref ? "outro_site" : "direto");
+  statHit("origem:" + src);
+} catch(e){}
 fillSongSelect();
 setInstrument(store.get("dv-instr", "flute"), true);
 loadSong(state.songs.find(s => s.id === "b-brilha"));
