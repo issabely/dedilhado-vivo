@@ -185,8 +185,25 @@ const audio = {
       const len = this.ctx.sampleRate; const buf = this.ctx.createBuffer(1, len, this.ctx.sampleRate);
       const d = buf.getChannelData(0); for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1; this.noise = buf;
     }
-    if (this.ctx.state === "suspended") this.ctx.resume();
+    // iPhone/iPad: o som do Web Audio fica mudo com a chave de silêncio; "playback" faz tocar como um player de música
+    try { if (navigator.audioSession && !this.recording && navigator.audioSession.type !== "playback") navigator.audioSession.type = "playback"; } catch(e){}
+    if (this.ctx.state !== "running") { try { const p = this.ctx.resume(); if (p && p.catch) p.catch(() => {}); } catch(e){} }
     return this.ctx;
+  },
+  recording:0, recSrc:{},
+  setRecording(k, on){
+    this.recSrc[k] = !!on; this.recording = Object.values(this.recSrc).filter(Boolean).length;
+    try { if (navigator.audioSession) navigator.audioSession.type = this.recording ? "play-and-record" : "playback"; } catch(e){}
+  },
+  unlocked:false,
+  unlock(){
+    // chamado no primeiro toque: libera o áudio no iOS (contexto + um som mudo + elemento <audio> silencioso)
+    const ctx = this.ensure(); if (!ctx) return;
+    try { const b = ctx.createBuffer(1, 1, ctx.sampleRate), s = ctx.createBufferSource(); s.buffer = b; s.connect(ctx.destination); s.start(0); } catch(e){}
+    if (!this.unlocked && /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent) && "ontouchend" in document && !navigator.audioSession){
+      try { const a = new Audio("data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA="); a.setAttribute("playsinline", ""); a.loop = true; a.volume = 0.01; const p = a.play(); if (p && p.catch) p.catch(() => {}); this.silentEl = a; } catch(e){}
+    }
+    this.unlocked = true;
   },
   tone(m, start, dur, sounding){
     const ctx = this.ensure(); if (!ctx) return;
@@ -1811,6 +1828,8 @@ function play(){
   const s = state.song; if (!s || !s.notes.length) return;
   const ctx = audio.ensure();
   if (state.idx >= s.notes.length - 1 && !state.playing) state.idx = state.idx >= s.notes.length - 1 ? 0 : state.idx;
+  // pula pausas longas do começo (introduções), senão parece que o som não saiu
+  if (state.idx === 0){ let k = 0, rest = 0; while (k < s.notes.length && s.notes[k].rest){ rest += s.notes[k].dur; k++; } if (k < s.notes.length && rest > (s.beats || 4)) state.idx = k; }
   state.playing = true; setPlayUI(true);
   const spb = 60 / bpm(); const sound = $("#soundChk").checked, metro = $("#metroChk").checked;
   const t0 = ctx ? ctx.currentTime + 0.12 : 0; const perf0 = performance.now() + 120;
@@ -1821,17 +1840,22 @@ function play(){
     lead = nb * spb;
     $("#noteCard").querySelector(".eyebrow") && ($("#noteCard").querySelector(".eyebrow").textContent = "Prepare-se…");
   }
-  let t = lead; const start = state.idx;
-  // pré-calcula duração sonora com ligaduras
+  let t = lead; const start = state.idx, evs = [];
+  // pré-calcula duração sonora com ligaduras; o som é agendado aos poucos (celular aguenta músicas longas)
   for (let i = start; i < s.notes.length; i++){
     const n = s.notes[i], d = n.dur * spb;
     if (ctx && sound && !n.rest && !n.tie){
       let sd = d; for (let j = i + 1; j < s.notes.length && s.notes[j].tie && !s.notes[j].rest; j++) sd += s.notes[j].dur * spb;
-      audio.tone(n.midi, t0 + t, sd - 0.03);
+      evs.push([n.midi, t0 + t, sd - 0.03]);
     }
     const ti = i, at = t;
     state.timers.push(setTimeout(() => { state.idx = ti; drawPractice(); }, perf0 - performance.now() + at * 1000));
     t += d;
+  }
+  if (ctx && evs.length){
+    let k = 0;
+    const pump = () => { if (!state.playing) return; const lim = ctx.currentTime + 1.5; while (k < evs.length && evs[k][1] < lim){ const [m, at, du] = evs[k++]; audio.tone(m, Math.max(at, ctx.currentTime + 0.01), du); } };
+    pump(); state.timers.push(setInterval(pump, 300));
   }
   if (ctx && metro){
     const nb = s.beats || 4, totalBeats = (t - lead) / spb;
@@ -1844,6 +1868,10 @@ function play(){
     if ($("#loopChk").checked){ state.idx = 0; drawPractice(); play(); }
   }, perf0 - performance.now() + t * 1000 + 50));
 }
+
+/* iOS: libera o áudio no primeiro toque em qualquer lugar e volta depois de ligação ou de trocar de app */
+["touchend", "pointerdown", "keydown"].forEach(ev => document.addEventListener(ev, () => audio.unlock(), {capture:true, passive:true}));
+document.addEventListener("visibilitychange", () => { if (!document.hidden && audio.ctx) audio.ensure(); });
 
 /* eventos: prática */
 $("#songSel").addEventListener("change", e => { const s = state.songs.find(x => x.id === e.target.value); if (s) loadSong(s); });
@@ -2070,8 +2098,8 @@ const L = {
     const msg = $("#micMsg");
     try {
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error("nomedia");
-      this.stream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false, noiseSuppression:false, autoGainControl:false}}); statHit("microfone");
-    } catch(e){ micUnavailable(); return; }
+      this.stream = await (audio.setRecording("L", true), navigator).mediaDevices.getUserMedia({audio:{echoCancellation:false, noiseSuppression:false, autoGainControl:false}}); statHit("microfone");
+    } catch(e){ audio.setRecording("L", false); micUnavailable(); return; }
     const ctx = audio.ensure();
     const src = ctx.createMediaStreamSource(this.stream);
     const hp = ctx.createBiquadFilter(); hp.type = "highpass"; hp.frequency.value = HPF();
@@ -2087,7 +2115,7 @@ const L = {
   },
   stopMic(){
     if (!this.on) return;
-    this.on = false; cancelAnimationFrame(this.raf);
+    this.on = false; cancelAnimationFrame(this.raf); audio.setRecording("L", false);
     try { this.src.disconnect(); } catch(e){}
     if (this.stream) this.stream.getTracks().forEach(t => t.stop());
     $("#micBtn").classList.remove("on"); $("#micLbl").textContent = "Ouvir pelo microfone";
@@ -2498,8 +2526,8 @@ function drawTunerHelp(){
 async function tunerStart(){
   try {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error("nomedia");
-    TN.stream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false, noiseSuppression:false, autoGainControl:false}}); statHit("microfone");
-  } catch(e){ tunerNoMic(); return; }
+    TN.stream = await (audio.setRecording("TN", true), navigator).mediaDevices.getUserMedia({audio:{echoCancellation:false, noiseSuppression:false, autoGainControl:false}}); statHit("microfone");
+  } catch(e){ audio.setRecording("TN", false); tunerNoMic(); return; }
   const ctx = audio.ensure(); TN.src = ctx.createMediaStreamSource(TN.stream);
   const hp = ctx.createBiquadFilter(); hp.type = "highpass"; hp.frequency.value = HPF();
   TN.analyser = ctx.createAnalyser(); TN.analyser.fftSize = 2048; TN.src.connect(hp); hp.connect(TN.analyser);
@@ -2509,7 +2537,7 @@ async function tunerStart(){
   const loop = () => { if (!TN.on) return; tunerTick(); TN.raf = requestAnimationFrame(loop); }; TN.raf = requestAnimationFrame(loop);
 }
 function tunerStop(){
-  if (!TN.on) return; TN.on = false; cancelAnimationFrame(TN.raf);
+  if (!TN.on) return; TN.on = false; cancelAnimationFrame(TN.raf); audio.setRecording("TN", false);
   try { TN.src.disconnect(); } catch(e){} if (TN.stream) TN.stream.getTracks().forEach(t => t.stop());
   $("#tgMic").textContent = "Ligar microfone"; $("#tgMic").classList.remove("on");
 }
@@ -2585,8 +2613,8 @@ async function drillMic(){
   if (DR.analyser) return true;
   try {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error("nomedia");
-    DR.stream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false, noiseSuppression:false, autoGainControl:false}}); statHit("microfone");
-  } catch(e){ return false; }
+    DR.stream = await (audio.setRecording("DR", true), navigator).mediaDevices.getUserMedia({audio:{echoCancellation:false, noiseSuppression:false, autoGainControl:false}}); statHit("microfone");
+  } catch(e){ audio.setRecording("DR", false); return false; }
   const ctx = audio.ensure(); DR.src = ctx.createMediaStreamSource(DR.stream);
   const hp = ctx.createBiquadFilter(); hp.type = "highpass"; hp.frequency.value = INSTR === "guitar" ? 60 : 120;
   DR.analyser = ctx.createAnalyser(); DR.analyser.fftSize = 2048; DR.src.connect(hp); hp.connect(DR.analyser); DR.buf = new Float32Array(2048);
@@ -2594,7 +2622,7 @@ async function drillMic(){
   return true;
 }
 function drillStopMic(){
-  cancelAnimationFrame(DR.raf); DR.on = false; DR.run = null;
+  cancelAnimationFrame(DR.raf); DR.on = false; DR.run = null; if (DR.stream) audio.setRecording("DR", false);
   try { DR.src && DR.src.disconnect(); } catch(e){}
   if (DR.stream) DR.stream.getTracks().forEach(t => t.stop());
   DR.stream = DR.src = DR.analyser = null; GDR.an = null;
