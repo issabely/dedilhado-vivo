@@ -178,6 +178,8 @@ function allSongs(){
 const audio = {
   ctx:null, master:null, live:new Set(),
   ensure(){
+    // iPhone/iPad: com a chave de silêncio ligada, o Web Audio fica mudo. Pedir "playback" ANTES de criar o contexto
+    try { if (navigator.audioSession && !this.recording && navigator.audioSession.type !== "playback") navigator.audioSession.type = "playback"; } catch(e){}
     if (!this.ctx){
       const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return null;
       this.ctx = new AC(); this.master = this.ctx.createGain(); this.master.gain.value = 0.9;
@@ -185,24 +187,28 @@ const audio = {
       const len = this.ctx.sampleRate; const buf = this.ctx.createBuffer(1, len, this.ctx.sampleRate);
       const d = buf.getChannelData(0); for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1; this.noise = buf;
     }
-    // iPhone/iPad: o som do Web Audio fica mudo com a chave de silêncio; "playback" faz tocar como um player de música
-    try { if (navigator.audioSession && !this.recording && navigator.audioSession.type !== "playback") navigator.audioSession.type = "playback"; } catch(e){}
     if (this.ctx.state !== "running") { try { const p = this.ctx.resume(); if (p && p.catch) p.catch(() => {}); } catch(e){} }
     return this.ctx;
   },
   recording:0, recSrc:{},
   setRecording(k, on){
     this.recSrc[k] = !!on; this.recording = Object.values(this.recSrc).filter(Boolean).length;
+    if (this.recording && this.silentEl){ try { this.silentEl.pause(); } catch(e){} }
     try { if (navigator.audioSession) navigator.audioSession.type = this.recording ? "play-and-record" : "playback"; } catch(e){}
   },
   unlocked:false,
+  isIOS: /iPhone|iPad|iPod/.test(navigator.userAgent) || (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1),
   unlock(){
-    // chamado no primeiro toque: libera o áudio no iOS (contexto + um som mudo + elemento <audio> silencioso)
-    const ctx = this.ensure(); if (!ctx) return;
-    try { const b = ctx.createBuffer(1, 1, ctx.sampleRate), s = ctx.createBufferSource(); s.buffer = b; s.connect(ctx.destination); s.start(0); } catch(e){}
-    if (!this.unlocked && /iPhone|iPad|iPod|Macintosh/.test(navigator.userAgent) && "ontouchend" in document && !navigator.audioSession){
-      try { const a = new Audio("data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA="); a.setAttribute("playsinline", ""); a.loop = true; a.volume = 0.01; const p = a.play(); if (p && p.catch) p.catch(() => {}); this.silentEl = a; } catch(e){}
+    // chamado a cada toque: no iOS, um <audio> silencioso tocando em loop faz a página usar a categoria "música",
+    // que ignora a chave de silêncio. Precisa começar dentro de um toque, antes do Web Audio.
+    if (this.isIOS && !this.recording){
+      try {
+        if (!this.silentEl){ const a = document.createElement("audio"); a.src = "data:audio/wav;base64,UklGRkQDAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YSADAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgA=="; a.loop = true; a.preload = "auto"; a.setAttribute("playsinline", ""); a.setAttribute("x-webkit-airplay", "deny"); this.silentEl = a; }
+        if (this.silentEl.paused){ const p = this.silentEl.play(); if (p && p.catch) p.catch(() => {}); }
+      } catch(e){}
     }
+    const ctx = this.ensure(); if (!ctx) return;
+    if (!this.unlocked){ try { const b = ctx.createBuffer(1, 1, ctx.sampleRate), s = ctx.createBufferSource(); s.buffer = b; s.connect(ctx.destination); s.start(0); } catch(e){} }
     this.unlocked = true;
   },
   tone(m, start, dur, sounding){
@@ -1871,7 +1877,7 @@ function play(){
 
 /* iOS: libera o áudio no primeiro toque em qualquer lugar e volta depois de ligação ou de trocar de app */
 ["touchend", "pointerdown", "keydown"].forEach(ev => document.addEventListener(ev, () => audio.unlock(), {capture:true, passive:true}));
-document.addEventListener("visibilitychange", () => { if (!document.hidden && audio.ctx) audio.ensure(); });
+document.addEventListener("visibilitychange", () => { if (document.hidden){ try { audio.silentEl && audio.silentEl.pause(); } catch(e){} } else if (audio.ctx) audio.ensure(); });
 
 /* eventos: prática */
 $("#songSel").addEventListener("change", e => { const s = state.songs.find(x => x.id === e.target.value); if (s) loadSong(s); });
