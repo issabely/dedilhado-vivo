@@ -494,6 +494,7 @@ fieldset.pf-f{flex-direction:row; flex-wrap:wrap; gap:8px 16px}
         <label class="toggle"><input type="checkbox" id="metroChk"> Metrônomo</label>
         <label class="toggle"><input type="checkbox" id="countChk" checked> Contagem antes</label>
         <label class="toggle"><input type="checkbox" id="loopChk"> Repetir</label>
+        <label class="toggle" title="O microfone aceita a nota certa uma oitava acima ou abaixo (bom para trechos muito agudos)"><input type="checkbox" id="octChk"> Aceitar outra oitava</label>
         </div>
       </div>
       <div class="staff-wrap" id="staffWrap" aria-label="Partitura"></div>
@@ -2565,6 +2566,8 @@ document.addEventListener("visibilitychange", () => { if (document.hidden){ try 
 
 /* eventos: prática */
 $("#songSel").addEventListener("change", e => { const s = state.songs.find(x => x.id === e.target.value); if (s) loadSong(s); });
+$("#octChk").checked = !!store.get("dv-octok", false);
+$("#octChk").addEventListener("change", e => store.set("dv-octok", e.target.checked));
 $("#playBtn").addEventListener("click", () => { if (state.playing) stop(); else { play(); focusPractice(); } });
 $("#prevBtn").addEventListener("click", () => { stop(); state.idx = Math.max(0, state.idx - 1); L.resetNote(); drawPractice(); if (!L.on) previewNote(); });
 $("#nextBtn").addEventListener("click", () => { stop(); state.idx = Math.min(state.song.notes.length - 1, state.idx + 1); L.resetNote(); drawPractice(); if (!L.on) previewNote(); });
@@ -2771,7 +2774,7 @@ function yin(buf, sr, minF = 175){
   }
   let tau = -1;
   for (let t = tmin; t <= tmax; t++){ if (c[t] < 0.13){ while (t + 1 <= tmax && c[t + 1] < c[t]) t++; tau = t; break; } }
-  if (tau < 0) return null;
+  if (tau < 0){ let best = tmin; for (let t = tmin + 1; t <= tmax; t++) if (c[t] < c[best]) best = t; if (c[best] < 0.3) tau = best; else return null; }
   const x0 = c[tau - 1], x1 = c[tau], x2 = c[tau + 1], den = 2 * (2 * x1 - x2 - x0);
   const better = den ? tau + (x2 - x0) / den : tau;
   return {f: sr / better, clarity: 1 - x1};
@@ -2837,12 +2840,13 @@ const L = {
     this.lastPitchAt = now;
     const mf = 69 + 12 * Math.log2(p.f / A4REF) + MIC_OFF(), nearest = Math.round(mf), cents = Math.round((mf - nearest) * 100);
     $("#detName").textContent = `${noteLabel(nearest)} ${cents >= 0 ? "+" : ""}${cents}`;
-    const off = nearest === T ? cents : Math.max(-50, Math.min(50, (mf - T) * 100));
+    const octOk = $("#octChk").checked && nearest !== T && (nearest - T) % 12 === 0;
+    const off = nearest === T || octOk ? cents : Math.max(-50, Math.min(50, (mf - T) * 100));
     needle.style.left = `calc(${50 + Math.max(-50, Math.min(50, off))}% - 2px)`;
     if (this.needRelease){ needle.className = "needle"; return; }
-    if (nearest === T && Math.abs(cents) <= 45){
+    if ((nearest === T || octOk) && Math.abs(cents) <= 45){
       needle.className = "needle ok"; this.wrongMidi = null;
-      if (this.holdStart == null){ this.holdStart = now; setMsg("Isso! Segure a nota…", "ok"); }
+      if (this.holdStart == null){ this.holdStart = now; setMsg(octOk ? `Valeu! Saiu uma oitava ${nearest > T ? "acima" : "abaixo"}, segure…` : "Isso! Segure a nota…", "ok"); }
       const need = INSTR === "piano" || INSTR === "guitar" ? 180 : Math.min(1200, Math.max(250, n.dur * 60 / bpm() * 1000 * 0.6));
       const prog = (now - this.holdStart) / need; setHold(prog);
       if (prog >= 1) this.success();
@@ -2858,6 +2862,7 @@ const L = {
       const d = nearest - T;
       if (Math.abs(d) === 12 && INSTR === "guitar") setMsg(`Saiu ${noteLabel(nearest)}, uma oitava ${d > 0 ? "acima" : "abaixo"}: a nota certa está noutra corda. Confira o braço abaixo.`, "err");
       else if (Math.abs(d) === 12 && INSTR !== "flute") setMsg(`Saiu ${noteLabel(nearest)}, uma oitava ${d > 0 ? "acima" : "abaixo"} de ${noteLabel(T)}.`, "err");
+      else if (Math.abs(d) === 12 && T >= 86) setMsg(d > 0 ? "Saiu uma oitava acima. Sopre mais devagar, com os lábios mais soltos." : `Saiu uma oitava abaixo. ${noteLabel(T)} é da 3ª oitava e tem dedilhado próprio: confira os dedos na flauta abaixo e sopre mais rápido. Se ainda for agudo demais, ligue "Aceitar outra oitava" nas opções.`, "err");
       else if (Math.abs(d) === 12) setMsg(d > 0 ? "Saiu uma oitava acima. Os dedos estão certos: sopre mais devagar, com os lábios mais soltos." : "Saiu uma oitava abaixo. Os dedos estão certos: sopre mais rápido, com a abertura dos lábios menor.", "err");
       else setMsg(`Saiu ${noteLabel(nearest)} em vez de ${noteLabel(T)}. Confira os dedos ${INSTR === "guitar" ? "no braço do violão" : INSTR === "violin" ? "no violino" : INSTR === "piano" ? "no teclado" : "na flauta"} abaixo.`, "err");
       drawPractice();
