@@ -377,6 +377,7 @@ select, input[type=text], input[type=number]{border:1px solid var(--line); backg
 /* ---- conta e perfil ---- */
 .appfoot{max-width:1180px; margin:-24px auto 0; padding:0 16px 28px; text-align:center; font-size:13px; color:var(--ink-2)}
 .appfoot a, .acct-dlg .hint a{color:var(--accent)}
+.appfoot p{margin:6px 0} .seo-about{max-width:640px; margin:0 auto 6px!important} .seo-links{line-height:1.9}
 .acctbtn{padding:5px 10px 5px 6px; border-radius:999px; font-size:13px}
 .acctbtn svg{width:18px; height:18px}
 .acctbtn .av{width:24px; height:24px; border-radius:50%; object-fit:cover; flex:none}

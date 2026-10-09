@@ -1,5 +1,5 @@
 // Dedilhado Vivo: guarda o app no aparelho para funcionar sem internet.
-const CACHE = "dedilhado-vivo-v34";
+const CACHE = "dedilhado-vivo-v36";
 const FILES = ["./", "./index.html", "./manifest.webmanifest", "./three.min.js", "./config.js", "./css/style.css", "./js/app.js", "./js/repertoire.js", "./musicas/maria-tinha-um-carneirinho-partitura.musicxml", "./musicas/naquela-mesa.musicxml", "./musicas/ninguem-explica-deus.musicxml", "./musicas/sitio-do-picapau-amarelo.musicxml", "./musicas/let-it-go.musicxml", "./musicas/asa-branca.musicxml", "./musicas/aquarela.musicxml", "./musicas/fogao-de-lenha.musicxml", "./musicas/tico-tico-no-fuba.musicxml",
   "./icons/icon-192.png", "./icons/icon-512.png", "./icons/maskable-512.png", "./icons/apple-touch-icon.png"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES))); self.skipWaiting(); });

@@ -21,5 +21,20 @@ Indicado para: iniciantes de qualquer idade que querem aprender um instrumento s
 - [Aprender piano: teclas, dedos e primeiras músicas](https://dedilhadovivo.com/piano/)
 - [Afinador online grátis](https://dedilhadovivo.com/afinador-online/)
 
+## Blog de teoria musical (curso grátis em 12 aulas)
+- [Índice do curso](https://dedilhadovivo.com/blog/)
+- [As 7 notas musicais e as cifras, explicadas do zero](https://dedilhadovivo.com/blog/notas-musicais/): Quais são as notas musicais, por que elas se repetem, o que significa C, D, E, F, G, A, B nas cifras e como achar cada nota no teclado. Com teclado interativo para ouvir.
+- [Tom e semitom: a régua da música](https://dedilhadovivo.com/blog/tom-e-semitom/): O que é tom e semitom, onde ficam os semitons naturais (Mi-Fá e Si-Dó), o que fazem o sustenido e o bemol e o que é enarmonia. Explicado com teclado e violão.
+- [Escala maior: a fórmula que monta todas](https://dedilhadovivo.com/blog/escala-maior/): Aprenda a fórmula da escala maior (tom, tom, semitom, tom, tom, tom, semitom), monte a escala de Dó, Sol, Ré e Fá maior e entenda os graus e a armadura de clave.
+- [Intervalos musicais: a distância entre duas notas](https://dedilhadovivo.com/blog/intervalos-musicais/): Entenda intervalos musicais: segunda, terça maior e menor, quarta, quinta justa, sexta, sétima maior e menor e oitava. Tabela com semitons, exemplos para ouvir e músicas para memorizar.
+- [Como se forma um acorde (do jeito fácil)](https://dedilhadovivo.com/blog/como-formar-acordes/): Aprenda como é formado um acorde: fundamental, terça e quinta. Fórmulas das tríades maior, menor, diminuta e aumentada, como montar em qualquer nota e como isso vira acorde no violão e no piano.
+- [Acordes com sétima: como se formam e quando usar](https://dedilhadovivo.com/blog/acordes-com-setima/): Entenda os acordes com sétima: 7 (dominante), 7M (sétima maior), m7, m7(b5) meio-diminuto e °7 diminuto. Fórmulas, notas em todos os tons, como soam e um montador de acordes para ouvir.
+- [Oitava, nona e acordes com extensões](https://dedilhadovivo.com/blog/oitava-nona-e-extensoes/): O que é oitava, por que ela não aparece na cifra, o que é power chord (C5), e como se formam acordes com nona (add9, 7(9), 7M(9)), sus2, sus4, sexta, 11ª e 13ª.
+- [Como ler cifras de acordes (guia completo)](https://dedilhadovivo.com/blog/como-ler-cifras/): Aprenda a ler cifras de violão, piano e ukulele: letras das notas, acorde menor (m), sétima (7), sétima maior (7M), diminuto (°), sus, nona (9), acorde com baixo (C/E) e mais. Tabela completa.
+- [Campo harmônico: os acordes que “combinam” em cada tom](https://dedilhadovivo.com/blog/campo-harmonico/): Aprenda o campo harmônico maior com tríades e tétrades (7M, m7, 7, m7(b5)), funções tônica, subdominante e dominante, tabela em todos os tons e as progressões I–V–VI–IV e II–V–I.
+- [Escala menor: natural, harmônica e relativa](https://dedilhadovivo.com/blog/escala-menor/): Aprenda a escala menor natural (T S T T S T T), a relação entre tom maior e relativo menor (Dó maior e Lá menor), a escala menor harmônica, a melódica e o campo harmônico menor.
+- [Ritmo e compasso: como a música se organiza no tempo](https://dedilhadovivo.com/blog/ritmo-e-compasso/): Aprenda as figuras musicais (semibreve, mínima, semínima, colcheia, semicolcheia), pausas, ponto de aumento, ligadura, compassos 2/4, 3/4, 4/4 e 6/8 e o que é BPM.
+- [Como ler partitura do zero](https://dedilhadovivo.com/blog/como-ler-partitura/): Aprenda a ler partitura: pauta, clave de sol, clave de fá, notas nas linhas e espaços, linhas suplementares, Dó central, armadura de clave e dicas para ler mais rápido.
+
 ## Abrir o app
 - [Dedilhado Vivo](https://dedilhadovivo.com/)
