@@ -38,3 +38,7 @@ Indicado para: iniciantes de qualquer idade que querem aprender um instrumento s
 
 ## Abrir o app
 - [Dedilhado Vivo](https://dedilhadovivo.com/)
+
+## Other languages
+- [Dedilhado Vivo en español](https://dedilhadovivo.com/es/): app gratuita para aprender flauta traversa, guitarra, violín y piano, con curso de teoría musical
+- [Dedilhado Vivo in English](https://dedilhadovivo.com/en/): free app to learn flute, guitar, violin and piano, with a music theory course

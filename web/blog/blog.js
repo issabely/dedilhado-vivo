@@ -64,7 +64,10 @@
   /* ---------- Montador de acordes ---------- */
   var box = document.getElementById("montador-app");
   if (!box) return;
-  var LET = "CDEFGAB", NAT = [0, 2, 4, 5, 7, 9, 11], PT = ["Dó", "Ré", "Mi", "Fá", "Sol", "Lá", "Si"];
+  var LG = (document.documentElement.lang || "pt").slice(0, 2);
+  var LET = "CDEFGAB", NAT = [0, 2, 4, 5, 7, 9, 11];
+  var PT = LG === "es" ? ["Do", "Re", "Mi", "Fa", "Sol", "La", "Si"] : LG === "en" ? ["C", "D", "E", "F", "G", "A", "B"] : ["Dó", "Ré", "Mi", "Fá", "Sol", "Lá", "Si"];
+  var L10 = { pt: ["maior", "Notas", "Fórmula", "Dó"], es: ["mayor", "Notas", "Fórmula", "Do"], en: ["major", "Notes", "Formula", "C"] }[LG] || ["maior", "Notas", "Fórmula", "Dó"];
   var ACC = { "-2": "𝄫", "-1": "♭", "0": "", "1": "♯", "2": "𝄪" };
   var ROOTS = [["C", 0, 0], ["D♭", 1, -1], ["D", 1, 0], ["E♭", 2, -1], ["E", 2, 0], ["F", 3, 0], ["F♯", 3, 1], ["G", 4, 0], ["A♭", 5, -1], ["A", 5, 0], ["B♭", 6, -1], ["B", 6, 0]];
   // grau: [passos de letra, semitons]
@@ -88,6 +91,8 @@
     ["7(9)", "sétima e nona", ["1", "3", "5", "♭7", "9"], "Dominante com nona: rico, comum no samba e no jazz."],
     ["7M(9)", "sétima maior e nona", ["1", "3", "5", "7", "9"], "Sonoridade de bossa nova."]
   ];
+  var TL = { es: [["mayor", "Tríada mayor: alegre, estable."], ["menor", "Tríada menor: más triste o introspectiva."], ["quinta (power chord)", "Solo fundamental, quinta y octava. Ni mayor ni menor: muy usado en el rock."], ["sus4", "La tercera se vuelve cuarta: sonido 'suspendido' que pide resolver."], ["sus2", "La tercera se vuelve segunda: sonido abierto y moderno."], ["disminuido", "Dos terceras menores: sonido tenso."], ["aumentado", "Dos terceras mayores: sonido misterioso, de suspenso."], ["con séptima (dominante)", "Mayor con séptima menor: el acorde que 'empuja' hacia el siguiente."], ["con séptima mayor", "Mayor con séptima mayor: suave, con aire de bossa nova y jazz."], ["menor con séptima", "Menor con séptima menor: suave, muy usado en el pop y el soul."], ["semidisminuido", "Disminuido con séptima menor (ø). Aparece antes del V en tonalidad menor."], ["disminuido con séptima", "Tres terceras menores seguidas: mucha tensión, ideal de paso."], ["menor con séptima mayor", "Menor con séptima mayor: sonido de película de suspenso."], ["con sexta", "Mayor con sexta: dulce, común en el samba y la bossa."], ["con novena (add9)", "Mayor con novena y sin séptima: brillo extra."], ["séptima y novena", "Dominante con novena: rico, común en el samba y el jazz."], ["séptima mayor y novena", "Sonido de bossa nova."]], en: [["major", "Major triad: bright, stable."], ["minor", "Minor triad: darker or more introspective."], ["fifth (power chord)", "Only root, fifth and octave. Neither major nor minor: a rock staple."], ["sus4", "The third becomes a fourth: a 'suspended' sound that wants to resolve."], ["sus2", "The third becomes a second: open, modern sound."], ["diminished", "Two minor thirds: tense sound."], ["augmented", "Two major thirds: mysterious, suspenseful sound."], ["dominant seventh", "Major with a minor seventh: the chord that 'pulls' to the next one."], ["major seventh", "Major with a major seventh: soft, bossa nova and jazz feel."], ["minor seventh", "Minor with a minor seventh: mellow, common in pop and soul."], ["half-diminished", "Diminished with a minor seventh (ø). Comes before V in minor keys."], ["diminished seventh", "Three stacked minor thirds: lots of tension, great as a passing chord."], ["minor-major seventh", "Minor with a major seventh: suspense-movie sound."], ["sixth", "Major with a sixth: sweet, common in samba and bossa."], ["add ninth (add9)", "Major with a ninth and no seventh: extra sparkle."], ["seventh and ninth", "Dominant with a ninth: rich, common in samba and jazz."], ["major seventh and ninth", "The bossa nova sound."]] }[LG];
+  if (TL) TYPES.forEach(function (T, i) { T[1] = TL[i][0]; T[3] = TL[i][1]; });
   var root = 0, type = 7;
   function spell(r, deg) {
     var R = ROOTS[r], li = R[1], rpc = (NAT[li] + R[2] + 12) % 12;
@@ -108,7 +113,7 @@
     whites.forEach(function (m, i) {
       var x = i * W; xs[m] = x + W / 2;
       el("rect", { x: x, y: 0, width: W, height: H, rx: 3, "class": on[m] ? "wk on" : "wk" }, svg);
-      if (m % 12 === 0 && !on[m]) { var t = el("text", { x: x + W / 2, y: H - 8, "class": "kc" }, svg); t.textContent = "Dó"; }
+      if (m % 12 === 0 && !on[m]) { var t = el("text", { x: x + W / 2, y: H - 8, "class": "kc" }, svg); t.textContent = L10[3]; }
     });
     whites.slice(0, -1).forEach(function (m, i) {
       if ([1, 3, 6, 8, 10].indexOf((m + 1) % 12) >= 0) {
@@ -131,7 +136,7 @@
   });
   TYPES.forEach(function (T, i) {
     var b = document.createElement("button"); b.type = "button"; b.className = "ch";
-    b.textContent = T[0] || "maior"; b.title = T[1];
+    b.textContent = T[0] || L10[0]; b.title = T[1];
     b.onclick = function () { type = i; render(true); }; tRow.appendChild(b);
   });
   function render(sound) {
@@ -140,7 +145,7 @@
     var T = TYPES[type], degs = T[2], tones = degs.map(function (d) { return spell(root, d); });
     var name = ROOTS[root][0] + T[0];
     out.innerHTML = "<b>" + name + "</b> · " + spell(root, "1").pt + " " + T[1] +
-      "<br>Notas: <b>" + tones.map(function (t) { return t.pt; }).join(" · ") + "</b><br>Fórmula: " + degs.join(" – ") + "<br><span style='color:var(--ink2);font-size:15px'>" + T[3] + "</span>";
+      "<br>" + L10[1] + ": <b>" + tones.map(function (t) { return t.pt; }).join(" · ") + "</b><br>" + L10[2] + ": " + degs.join(" – ") + "<br><span style='color:var(--ink2);font-size:15px'>" + T[3] + "</span>";
     kb.innerHTML = ""; kb.appendChild(draw(tones, degs));
     pb.setAttribute("data-notes", tones.map(function (t) { return t.m; }).join(","));
     if (sound) play(tones.map(function (t) { return t.m; }), "chord", pb);

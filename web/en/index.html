@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#172033">
+<title>Dedilhado Vivo: learn flute, guitar, violin and piano for free, with feedback through the microphone</title>
+<meta name="description" content="Free app to learn flute, guitar, violin and piano from scratch: fingerings and chords on screen, sheet music, a tuner and a microphone that listens to you play and corrects you on the spot.">
+<link rel="canonical" href="https://dedilhadovivo.com/en/">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Dedilhado Vivo"><meta property="og:locale" content="en_US">
+<meta property="og:title" content="Dedilhado Vivo: learn flute, guitar, violin and piano for free">
+<meta property="og:description" content="See where each finger presses, play along and the app listens and corrects you through the microphone. No sign-up, right on your phone.">
+<meta property="og:url" content="https://dedilhadovivo.com/en/"><meta property="og:image" content="https://dedilhadovivo.com/og.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://dedilhadovivo.com/og.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "WebApplication", "name": "Dedilhado Vivo", "url": "https://dedilhadovivo.com/en/", "applicationCategory": "EducationalApplication", "operatingSystem": "Web, Android, iOS", "inLanguage": "en", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "BRL"}, "description": "Free app to learn flute, guitar, violin and piano from scratch, with fingerings on screen, sheet music and feedback through the microphone.", "featureList": ["Fingerings and chord diagrams", "Feedback through the microphone", "Lessons from scratch with stars", "Online tuner", "Music theory", "Sheet music editor"], "image": "https://dedilhadovivo.com/og.png"}, {"@type": "Organization", "name": "Orbe Apps", "url": "https://dedilhadovivo.com/", "logo": "https://dedilhadovivo.com/icons/icon-512.png"}, {"@type": "WebSite", "name": "Dedilhado Vivo", "url": "https://dedilhadovivo.com/en/", "inLanguage": "en"}]}</script>
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icons/icon-192.png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<script src="/config.js"></script>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<link rel="alternate" hreflang="pt-BR" href="https://dedilhadovivo.com/"><link rel="alternate" hreflang="es" href="https://dedilhadovivo.com/es/"><link rel="alternate" hreflang="en" href="https://dedilhadovivo.com/en/"><link rel="alternate" hreflang="x-default" href="https://dedilhadovivo.com/">
+</head>
+<body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@500&family=Noto+Music&display=swap">
+<link rel="stylesheet" href="/css/style.css">
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><h1>Dedilhado Vivo</h1><span id="brandSub">flauta transversal · sistema Boehm</span></div>
+    <div class="seg instsw" id="instSeg" role="group" aria-label="Instrumento"><button data-i="flute" aria-pressed="true">Flauta</button><button data-i="violin" aria-pressed="false">Violino</button><button data-i="piano" aria-pressed="false">Piano</button><button data-i="guitar" aria-pressed="false">Violão</button></div>
+    <button class="btn themebtn" id="themeBtn" title="Mudar entre tema claro, escuro e automático"><svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></svg><span id="themeLbl">Automático</span></button>
+    <select id="langSel" class="btn langsel" hidden aria-label="Idioma / Language" data-noi18n><option value="pt">Português</option><option value="es">Español</option><option value="en">English</option></select>
+    <button class="btn acctbtn" id="acctBtn" aria-label="Entrar com sua conta"><span class="lbl">Entrar</span></button>
+    <nav class="tabs" role="tablist" aria-label="Seções">
+      <button role="tab" id="tab-licoes" aria-selected="true" data-view="licoes">Lições</button>
+      <button role="tab" id="tab-pratica" aria-selected="false" data-view="pratica">Praticar</button>
+      <button role="tab" id="tab-dedilhados" aria-selected="false" data-view="dedilhados">Dedilhados</button>
+      <button role="tab" id="tab-afinador" aria-selected="false" data-view="afinador">Afinador</button>
+      <button role="tab" id="tab-teoria" aria-selected="false" data-view="teoria">Teoria</button>
+      <button role="tab" id="tab-editor" aria-selected="false" data-view="editor">Escrever música</button>
+    </nav>
+  </header>
+
+  <!-- LIÇÕES -->
+  <section id="view-licoes">
+    <div class="panel lhead">
+      <div style="flex:1 1 240px; min-width:0"><h2 id="trailTitle">Sua trilha na flauta</h2><span class="hint">Cada lição apresenta notas novas. O app ouve você tocar pelo microfone e dá as estrelas.</span></div>
+      <div class="stat"><b id="stStreak">0</b><span>dias seguidos</span></div>
+      <div class="stat"><b id="stStars">0</b><span>estrelas</span></div>
+      <div class="stat"><b id="stDone">0/0</b><span>lições</span></div>
+    </div>
+    <div class="seg tracksw inst-track" id="trackSeg" role="group" aria-label="Trilha"><button data-t="notes" aria-pressed="true">Notas e músicas</button><button data-t="tech" aria-pressed="false">Sopro e técnica</button></div>
+    <div class="panel ldetail" id="lessonDetail" hidden></div>
+    <div class="lgrid" id="lessonGrid"></div>
+  </section>
+
+  <!-- PRÁTICA -->
+  <section id="view-pratica" hidden>
+    <div class="panel banner" id="lessonBanner" hidden></div>
+    <div class="panel">
+      <div class="toolbar">
+        <div class="grow"><select id="songSel" aria-label="Escolher música" style="width:100%"></select></div>
+        <button class="btn" id="importBtn" title="Abrir arquivo MusicXML (.musicxml, .xml ou .mxl)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v3h16v-3"/></svg><span class="lbl">Importar partitura</span></button>
+        <input type="file" id="fileIn" accept=".musicxml,.xml,.mxl" hidden>
+        <button class="btn" id="delSongBtn" hidden>Remover</button>
+      </div>
+      <div class="toolbar" style="border-top:1px solid var(--line); padding-block:10px">
+        <button class="btn" id="prevBtn" aria-label="Nota anterior" title="Nota anterior (←)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+        <button class="btn primary" id="playBtn" title="Tocar / pausar (espaço)"><svg viewBox="0 0 24 24" fill="currentColor" id="playIcon"><path d="M7 4v16l13-8z"/></svg><span id="playLbl">Tocar</span></button>
+        <button class="btn" id="nextBtn" aria-label="Próxima nota" title="Próxima nota (→)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+        <button class="btn" id="restartBtn" title="Voltar ao começo"><svg class="mob-only" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4"/></svg><span class="lbl">Do começo</span></button>
+        <button class="btn mob-only" id="optsBtn" aria-expanded="false" title="Andamento, som e metrônomo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg><span class="bpm" id="bpmMini">80</span></button>
+        <div class="opts" id="optsBox">
+        <span class="sep"></span>
+        <label class="small" for="tempo">Andamento <input type="range" id="tempo" min="40" max="160" step="2" value="80"><span class="bpm" id="bpmOut">80</span></label>
+        <span class="sep"></span>
+        <label class="toggle"><input type="checkbox" id="soundChk" checked> Som</label>
+        <label class="toggle"><input type="checkbox" id="metroChk"> Metrônomo</label>
+        <label class="toggle"><input type="checkbox" id="countChk" checked> Contagem antes</label>
+        <label class="toggle"><input type="checkbox" id="loopChk"> Repetir</label>
+        <label class="toggle" title="O microfone aceita a nota certa uma oitava acima ou abaixo (bom para trechos muito agudos)"><input type="checkbox" id="octChk"> Aceitar outra oitava</label>
+        </div>
+      </div>
+      <div class="staff-wrap" id="staffWrap" aria-label="Partitura"></div>
+    </div>
+
+    <div class="panel listen" id="listenPanel">
+      <div class="det"><button class="btn" id="micBtn" title="O app ouve você tocar e só avança quando a nota sai certa">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg><span id="micLbl">Ouvir pelo microfone</span></button></div>
+      <div class="tuner" aria-hidden="true">
+        <div class="scale"></div><div class="mid"></div><div class="needle" id="needle"></div>
+        <div class="lbls"><span>baixo</span><span id="detName">—</span><span>alto</span></div>
+      </div>
+      <div style="display:flex; gap:10px; align-items:center"><div class="level" title="Volume"><i id="levelBar"></i></div><button class="btn" id="refBtn" title="Tocar o som da nota atual"><svg class="mob-only" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9v6h4l5 4V5L8 9zM16.5 8.5a5 5 0 010 7"/></svg><span class="lbl">Ouvir a nota</span></button><button class="btn inst-piano" id="midiBtn" hidden title="Usar um teclado ligado no USB">Teclado USB (MIDI)</button><label class="toggle inst-piano" hidden><input type="checkbox" id="midiSound" checked> som</label></div>
+      <div style="grid-column:1/-1"><div class="hold" title="Segure a nota até encher"><i id="holdBar"></i></div></div>
+      <p class="msg" id="micMsg">Ligue o microfone e toque a nota destacada. A barra verde enche enquanto você segura a nota certa.</p>
+    </div>
+
+    <div class="stage">
+      <div class="panel flute-panel">
+        <div class="inst-flute"><div class="flute-scroll" id="fluteMain"></div></div>
+        <div class="inst-violin" hidden><div class="flute-scroll" id="violinMain"></div></div>
+        <div class="inst-piano" hidden><div class="flute-scroll" id="pianoMain"></div></div>
+        <div class="inst-guitar" hidden><div class="flute-scroll" id="guitarMain"></div></div>
+        <div class="legend" id="legendMain"></div>
+      </div>
+    </div>
+
+    <div class="lower">
+      <div class="panel notecard" id="noteCard" aria-live="polite"></div>
+      <div class="panel hands inst-flute" id="handsMain"></div>
+      <div class="panel hands inst-violin" id="vhandsMain" hidden></div>
+      <div class="panel hands inst-piano" id="phandsMain" hidden></div>
+      <div class="panel hands inst-guitar" id="ghandsMain" hidden></div>
+      <div class="panel tip" id="tipMain"></div>
+    </div>
+  </section>
+
+  <!-- DEDILHADOS -->
+  <section id="view-dedilhados" hidden>
+    <div class="stage" style="margin-top:0">
+      <div class="panel flute-panel">
+        <div class="inst-flute"><div class="flute-scroll" id="fluteChart"></div></div>
+        <div class="inst-violin" hidden><div class="flute-scroll" id="violinChart"></div></div>
+        <div class="inst-piano" hidden><div class="flute-scroll" id="pianoChart"></div></div>
+        <div class="inst-guitar" hidden><div class="flute-scroll" id="guitarChart"></div></div>
+        <div class="legend" id="legendChart"></div>
+      </div>
+    </div>
+    <div class="lower">
+      <div class="panel notecard" id="noteCard2"></div>
+      <div class="panel hands inst-flute" id="handsChart"></div>
+      <div class="panel hands inst-violin" id="vhandsChart" hidden></div>
+      <div class="panel hands inst-piano" id="phandsChart" hidden></div>
+      <div class="panel hands inst-guitar" id="ghandsChart" hidden></div>
+      <div class="panel tip" id="tipChart"></div>
+    </div>
+    <div class="panel inst-guitar" id="chordLibWrap" hidden style="margin-top:14px">
+      <div class="toolbar" style="border-bottom:1px solid var(--line)">
+        <div class="grow"><b style="font-family:var(--display)">Acordes</b><br><span class="hint">Toque num acorde para ver no braço e ouvir. Os números são os dedos; ○ corda solta; × não tocar.</span></div>
+      </div>
+      <div class="gchords" id="chordLib"></div>
+    </div>
+    <div class="panel" style="margin-top:14px">
+      <div class="toolbar" style="border-bottom:1px solid var(--line)">
+        <div class="grow"><b style="font-family:var(--display)" id="chartTitle">Todas as notas, do Dó grave ao Dó agudo</b><br><span class="hint" id="chartHint">Toque numa nota para ver o dedilhado e ouvir o som. Bolinha cheia = chave apertada.</span></div>
+        <label class="toggle"><input type="checkbox" id="flatChk"> Mostrar bemóis (♭)</label>
+      </div>
+      <div class="chart-grid" id="chartGrid"></div>
+    </div>
+  </section>
+
+  <!-- TREINO (sopro e técnica) -->
+  <section id="view-treino" hidden>
+    <div class="panel banner" id="drBanner"></div>
+    <div class="drill-grid">
+      <div class="panel drill-main">
+        <h2 id="drTitle"></h2>
+        <p class="intro" id="drHow"></p>
+        <div id="drStage"></div>
+        <p class="msg" id="drMsg"></p>
+        <div class="row"><button class="btn primary" id="drStart">Começar</button></div>
+        <div id="drTips"></div>
+      </div>
+      <div class="panel flute-panel" id="drFluteWrap" hidden>
+        <div class="flute-scroll" id="fluteDrill"></div>
+        <div class="legend" id="legendDrill"></div>
+      </div>
+      <div class="panel flute-panel" id="drGuitarWrap" hidden>
+        <div class="flute-scroll" id="guitarDrill"></div>
+        <div class="legend" id="legendDrillG"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEORIA -->
+  <section id="view-teoria" hidden>
+    <div class="th-grid">
+      <aside class="panel th-side"><h2>Teoria musical</h2><p class="hint" id="thProg"></p><div id="thNav"></div><p class="hint"><a href="https://dedilhadovivo.com/blog/" target="_blank" rel="noopener">📖 Curso completo de teoria no blog</a></p></aside>
+      <article class="panel th-main" id="thContent"></article>
+    </div>
+  </section>
+
+  <!-- AFINADOR -->
+  <section id="view-afinador" hidden>
+    <div class="tuner-grid">
+      <div class="panel tuner-main">
+        <div id="tgGauge" class="gauge"></div>
+        <div class="tnote"><b id="tgNote">—</b><sup id="tgOct"></sup><span id="tgCifra"></span></div>
+        <div class="thz" id="tgHz">Ligue o microfone e toque uma nota longa.</div>
+        <div class="tlevel" title="Volume"><i id="tgLevel"></i></div>
+        <svg class="trail" viewBox="0 0 600 90" preserveAspectRatio="none" aria-hidden="true"><rect x="0" y="40" width="600" height="10" fill="var(--ok-soft)"/><line x1="0" x2="600" y1="45" y2="45" stroke="var(--ok)" stroke-width="1"/><path id="tgTrail" d="" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round"/></svg>
+        <p class="hint" style="margin:2px 0 0">Linha do tempo dos últimos segundos: quanto mais reta no meio, mais estável a nota.</p>
+        <p class="msg" id="tgMsg">O afinador mostra a nota que você toca e se ela está alta ou baixa.</p>
+        <div class="row" style="justify-content:space-between">
+          <button class="btn primary" id="tgMic">Ligar microfone</button>
+          <span class="row" style="gap:6px"><span class="hint">Lá de referência</span><button class="btn sm" id="tgMinus" aria-label="Diminuir">−</button><b class="bpm"><span id="tgA4">440</span> Hz</b><button class="btn sm" id="tgPlus" aria-label="Aumentar">+</button></span>
+        </div>
+      </div>
+      <div class="panel tuner-side">
+        <h3 id="tgTitle">Notas para afinar</h3>
+        <p class="hint" id="tgMode">Automático: o afinador descobre a nota sozinho.</p>
+        <div class="seg inst-guitar tunesw" id="tgTuneSeg" role="group" aria-label="Afinação do violão" hidden><button data-g="std">Padrão</button><button data-g="half">Meio tom abaixo</button><button data-g="dropd">Drop D</button></div>
+        <div id="tgTargets" class="tcards"></div>
+        <div id="tgHelp"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDITOR -->
+  <section id="view-editor" hidden>
+    <div class="panel">
+      <div class="ed-grid">
+        <div class="row">
+          <span class="lbl">Título</span>
+          <input type="text" id="edTitle" value="Minha música" style="flex:1 1 220px; min-width:0">
+          <span class="lbl" style="min-width:auto">Compasso</span>
+          <select id="edTime"><option value="2">2/4</option><option value="3">3/4</option><option value="4" selected>4/4</option></select>
+          <span class="lbl" style="min-width:auto">Andamento</span>
+          <input type="number" id="edBpm" value="80" min="40" max="200" style="width:80px">
+        </div>
+        <div class="row">
+          <span class="lbl">Duração</span>
+          <div class="seg" id="durSeg">
+            <button data-d="4" aria-pressed="false" title="Semibreve: 4 tempos">Semibreve</button>
+            <button data-d="2" aria-pressed="false" title="Mínima: 2 tempos">Mínima</button>
+            <button data-d="1" aria-pressed="true" title="Semínima: 1 tempo">Semínima</button>
+            <button data-d="0.5" aria-pressed="false" title="Colcheia: meio tempo">Colcheia</button>
+            <button data-d="0.25" aria-pressed="false" title="Semicolcheia: 1/4 de tempo">Semicolch.</button>
+          </div>
+          <label class="toggle"><input type="checkbox" id="dotChk"> Pontuada (+ metade)</label>
+        </div>
+        <div class="row">
+          <span class="lbl">Oitava</span>
+          <div class="seg" id="octSeg">
+            <button data-o="3" aria-pressed="false" class="inst-low" hidden>Grave (3)</button>
+            <button data-o="4" aria-pressed="true">Grave (4)</button>
+            <button data-o="5" aria-pressed="false">Média (5)</button>
+            <button data-o="6" aria-pressed="false">Aguda (6)</button>
+          </div>
+          <span class="lbl" style="min-width:auto">Acidente</span>
+          <div class="seg" id="accSeg">
+            <button data-a="0" aria-pressed="true">Natural</button>
+            <button data-a="1" aria-pressed="false">♯ Sustenido</button>
+            <button data-a="-1" aria-pressed="false">♭ Bemol</button>
+          </div>
+        </div>
+        <div class="notepad" id="notePad"></div>
+        <div class="row">
+          <button class="btn" id="edUndo">Apagar última</button>
+          <button class="btn" id="edDelSel">Apagar selecionada</button>
+          <button class="btn" id="edClear">Limpar tudo</button>
+          <span class="sep"></span>
+          <button class="btn" id="edListen">Ouvir</button>
+          <button class="btn" id="edSave">Salvar na biblioteca</button>
+          <button class="btn primary" id="edPractice">Praticar esta música</button>
+        </div>
+        <p class="hint">Atalhos: teclas C D E F G A B (ou dó ré mi pelo teclado numérico 1–7), R para pausa, Backspace apaga. Toque numa nota da pauta para selecioná-la.</p>
+      </div>
+      <div class="staff-wrap" id="edStaff"></div>
+    </div>
+  </section>
+</div>
+<footer class="appfoot" id="appFoot">
+  <p class="seo-about"><b>Dedilhado Vivo</b> é um app grátis para aprender flauta transversal, violão, violino e piano do zero: mostra onde cada dedo aperta, acende a nota na partitura e ouve você tocar pelo microfone.</p>
+  <nav class="seo-links" aria-label="Guias"><a href="/en/blog/">Teoria musical: curso grátis</a> · <a href="/en/flute/">Flauta transversal para iniciantes</a> · <a href="/en/guitar/">Acordes de violão</a> · <a href="/en/violin/">Aprender violino</a> · <a href="/en/piano/">Aprender piano</a> · <a href="/en/online-tuner/">Afinador online grátis</a></nav>
+  <p><a href="/privacidade.html">Política de privacidade</a> · <a href="/termos.html">Termos de uso</a></p>
+</footer>
+<div class="toast" id="toast" role="status" hidden></div>
+<div class="result" id="result" hidden><div class="card" role="dialog" aria-modal="true" aria-labelledby="resTitle" id="resultCard"></div></div>
+
+<dialog class="acct-dlg" id="acctDlg" aria-label="Sua conta"><button class="btn sm acct-x" id="acctClose" aria-label="Fechar">✕</button><div id="acctBody"></div></dialog>
+<script src="/js/lang-en.js"></script>
+<script src="/js/i18n.js"></script>
+<script src="/js/repertoire.js"></script>
+<script src="/js/app.js"></script>
+
+<script>
+if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+}
+</script>
+</body>
+</html>

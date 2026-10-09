@@ -412,6 +412,7 @@ fieldset.pf-f{flex-direction:row; flex-wrap:wrap; gap:8px 16px}
 .pf-danger summary{cursor:pointer; font-size:13px; color:var(--ink-2)}
 .pf-danger .btn{margin-top:4px; border-color:var(--warn); color:var(--warn)}
 @media (max-width:600px){ .acctbtn{padding:4px} .acctbtn .lbl{display:none} .acctbtn svg{margin:2px} }
+.langsel{padding:6px 8px; font:inherit; font-size:13px; cursor:pointer; max-width:120px}
 </style>
 
 <div class="wrap">
@@ -419,6 +420,7 @@ fieldset.pf-f{flex-direction:row; flex-wrap:wrap; gap:8px 16px}
     <div class="brand"><h1>Dedilhado Vivo</h1><span id="brandSub">flauta transversal · sistema Boehm</span></div>
     <div class="seg instsw" id="instSeg" role="group" aria-label="Instrumento"><button data-i="flute" aria-pressed="true">Flauta</button><button data-i="violin" aria-pressed="false">Violino</button><button data-i="piano" aria-pressed="false">Piano</button><button data-i="guitar" aria-pressed="false">Violão</button></div>
     <button class="btn themebtn" id="themeBtn" title="Mudar entre tema claro, escuro e automático"><svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"></svg><span id="themeLbl">Automático</span></button>
+    <select id="langSel" class="btn langsel" hidden aria-label="Idioma / Language" data-noi18n><option value="pt">Português</option><option value="es">Español</option><option value="en">English</option></select>
     <button class="btn acctbtn" id="acctBtn" aria-label="Entrar com sua conta"><span class="lbl">Entrar</span></button>
     <nav class="tabs" role="tablist" aria-label="Seções">
       <button role="tab" id="tab-licoes" aria-selected="true" data-view="licoes">Lições</button>
