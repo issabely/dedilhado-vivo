@@ -829,6 +829,8 @@ var STQ = [], STT = 0, STSEEN = {}, STN = 0;
 function statOn(){
   const c = window.DV_CONFIG || {};
   if (!c.supabaseUrl || !c.supabaseKey) return false;
+  // robôs e navegadores automáticos não contam
+  if (navigator.webdriver || /bot|crawl|spider|slurp|headless|lighthouse|pagespeed|preview|facebookexternalhit|whatsapp|python|curl|wget/i.test(navigator.userAgent)) return false;
   if (window.ReactNativeWebView) return true;
   return /^https:$/.test(location.protocol) && !/^(localhost|127\.|192\.168\.|10\.)/.test(location.hostname);
 }
@@ -4377,6 +4379,19 @@ if (ACC_ON && (store.get("dv-acct", false) || /[?&]code=/.test(location.search))
 
 /* ---------- Início ---------- */
 statHit("visita");
+// região aproximada (país, estado e cidade) a partir da rede, calculada pela Cloudflare; o endereço IP não é guardado
+try {
+  if (statOn() && !sessionStorage.getItem("dv-st:geo")){
+    sessionStorage.setItem("dv-st:geo", "1");
+    const slug = (x, n) => String(x || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, n);
+    fetch((window.ReactNativeWebView ? "https://dedilhadovivo.com" : "") + "/geo", {cache:"no-store"}).then(r => r.ok ? r.json() : null).then(g => {
+      if (!g) return; const uf = slug(g.estado, 3);
+      if (g.pais) statHit("pais:" + slug(g.pais, 2));
+      if (uf) statHit("estado:" + uf);
+      if (g.cidade) statHit("cidade:" + slug(g.cidade, 28) + (uf ? "-" + uf : ""));
+    }).catch(() => {});
+  }
+} catch(e){}
 try {
   if (window.ReactNativeWebView || matchMedia("(display-mode: standalone)").matches) statHit("app_instalado");
   const q = new URLSearchParams(location.search), utm = (q.get("utm_source") || q.get("origem") || "").toLowerCase().replace(/[^a-z0-9_-]/g, "").slice(0, 20);

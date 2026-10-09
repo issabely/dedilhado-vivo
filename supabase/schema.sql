@@ -86,7 +86,7 @@ begin
   if eventos is null or array_length(eventos, 1) is null or array_length(eventos, 1) > 20 then return; end if;
   foreach e in array eventos loop
     -- só nomes da lista conhecida contam (evita lixo e abuso)
-    if e ~ '^(visita|login|conta_nova|app_instalado|microfone|exercicio|exercicio_fim|musica_importada|musica_escrita|aba:(licoes|pratica|dedilhados|afinador|teoria|editor)|inst:(flute|violin|piano|guitar)|origem:[a-z0-9_-]{1,20})$' then
+    if e ~ '^(visita|login|conta_nova|app_instalado|microfone|exercicio|exercicio_fim|musica_importada|musica_escrita|aba:(licoes|pratica|dedilhados|afinador|teoria|editor)|inst:(flute|violin|piano|guitar)|origem:[a-z0-9_-]{1,20}|pais:[a-z]{2}|estado:[a-z0-9]{1,3}|cidade:[a-z0-9-]{1,32})$' then
       insert into public.uso_diario as u (dia, evento, total)
       values ((now() at time zone 'America/Sao_Paulo')::date, e, 1)
       on conflict (dia, evento) do update set total = u.total + 1;
@@ -111,3 +111,11 @@ create or replace view public.uso_por_dia with (security_invoker = true) as
     sum(total) filter (where evento = 'conta_nova') as contas_novas
   from public.uso_diario group by dia order by dia desc;
 revoke all on public.uso_ultimos_30_dias, public.uso_por_dia from public, anon, authenticated;
+
+-- Público por região (país, estado e cidade aproximados, últimos 30 dias)
+create or replace view public.uso_regioes with (security_invoker = true) as
+  select split_part(evento, ':', 1) as tipo, split_part(evento, ':', 2) as lugar, sum(total) as visitas
+  from public.uso_diario
+  where dia >= ((now() at time zone 'America/Sao_Paulo')::date - 29) and (evento like 'pais:%' or evento like 'estado:%' or evento like 'cidade:%')
+  group by 1, 2 order by 1 desc, 3 desc;
+revoke all on public.uso_regioes from public, anon, authenticated;
