@@ -8,10 +8,13 @@
   function getPref() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
   function setPref(v) { try { localStorage.setItem(KEY, v); } catch (e) {} }
   var isBot = navigator.webdriver || /bot|crawl|spider|lighthouse|headless|preview/i.test(navigator.userAgent);
-  var BASE = { pt: "/", es: "/es/", en: "/en/" };
+  // raiz do site (funciona no domínio e também em servidor local, ex.: 127.0.0.1:5501/web/)
+  var path = location.pathname.replace(/index\.html$/, "");
+  var ROOT = LANG === "pt" ? path : path.replace(/(es|en)\/$/, "");
+  var BASE = { pt: ROOT, es: ROOT + "es/", en: ROOT + "en/" };
 
   // Preferência salva: quem escolheu outro idioma volta direto para ele
-  if (!native && !isBot && LANG === "pt" && location.pathname === "/") {
+  if (!native && !isBot && LANG === "pt" && /\/$/.test(path) && !/\/(blog|violao|violino|piano|flauta-transversal|afinador-online)\/$/.test(path)) {
     var p = getPref();
     if (p === "es" || p === "en") { location.replace(BASE[p] + location.search + location.hash); return; }
   }
