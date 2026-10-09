@@ -3715,6 +3715,8 @@ try {
   statHit("origem:" + src);
 } catch(e){}
 fillSongSelect();
+// links dos guias: ?inst=guitar abre direto no violão (e assim por diante)
+try { const qi = new URLSearchParams(location.search).get("inst"); if (["flute","violin","piano","guitar"].includes(qi)){ store.set("dv-instr", qi); if (qi === "guitar") store.set("dv-gtrack", "tech"); } } catch(e){}
 setInstrument(store.get("dv-instr", "flute"), true);
 loadSong(state.songs.find(s => s.id === "b-brilha"));
 drawChart(); selectChart(false); drawPad();

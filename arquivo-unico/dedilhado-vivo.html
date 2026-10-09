@@ -383,6 +383,7 @@ select, input[type=text], input[type=number]{border:1px solid var(--line); backg
 /* ---- conta e perfil ---- */
 .appfoot{max-width:1180px; margin:-24px auto 0; padding:0 16px 28px; text-align:center; font-size:13px; color:var(--ink-2)}
 .appfoot a, .acct-dlg .hint a{color:var(--accent)}
+.appfoot p{margin:6px 0} .seo-about{max-width:640px; margin:0 auto 6px!important} .seo-links{line-height:1.9}
 .acctbtn{padding:5px 10px 5px 6px; border-radius:999px; font-size:13px}
 .acctbtn svg{width:18px; height:18px}
 .acctbtn .av{width:24px; height:24px; border-radius:50%; object-fit:cover; flex:none}
@@ -650,7 +651,11 @@ fieldset.pf-f{flex-direction:row; flex-wrap:wrap; gap:8px 16px}
     </div>
   </section>
 </div>
-<footer class="appfoot" id="appFoot" hidden><a href="privacidade.html">Política de privacidade</a> · <a href="termos.html">Termos de uso</a></footer>
+<footer class="appfoot" id="appFoot" hidden>
+  <p class="seo-about"><b>Dedilhado Vivo</b> é um app grátis para aprender flauta transversal, violão, violino e piano do zero: mostra onde cada dedo aperta, acende a nota na partitura e ouve você tocar pelo microfone.</p>
+  <nav class="seo-links" aria-label="Guias"><a href="flauta-transversal/">Flauta transversal para iniciantes</a> · <a href="violao/">Acordes de violão</a> · <a href="violino/">Aprender violino</a> · <a href="piano/">Aprender piano</a> · <a href="afinador-online/">Afinador online grátis</a></nav>
+  <p><a href="privacidade.html">Política de privacidade</a> · <a href="termos.html">Termos de uso</a></p>
+</footer>
 <div class="toast" id="toast" role="status" hidden></div>
 <div class="result" id="result" hidden><div class="card" role="dialog" aria-modal="true" aria-labelledby="resTitle" id="resultCard"></div></div>
 
@@ -4373,6 +4378,8 @@ try {
   statHit("origem:" + src);
 } catch(e){}
 fillSongSelect();
+// links dos guias: ?inst=guitar abre direto no violão (e assim por diante)
+try { const qi = new URLSearchParams(location.search).get("inst"); if (["flute","violin","piano","guitar"].includes(qi)){ store.set("dv-instr", qi); if (qi === "guitar") store.set("dv-gtrack", "tech"); } } catch(e){}
 setInstrument(store.get("dv-instr", "flute"), true);
 loadSong(state.songs.find(s => s.id === "b-brilha"));
 drawChart(); selectChart(false); drawPad();

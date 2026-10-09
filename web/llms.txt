@@ -1,0 +1,25 @@
+# Dedilhado Vivo
+
+> App web gratuito, em português, para aprender flauta transversal, violão, violino e piano do zero. Mostra onde cada dedo aperta (dedilhados, diagramas de acorde, braço do violão, teclado), acende a nota na partitura e ouve o aluno pelo microfone para corrigir em tempo real. Sem cadastro e sem instalar; funciona no celular e no computador.
+
+Indicado para: iniciantes de qualquer idade que querem aprender um instrumento sozinhos, alunos que querem praticar entre as aulas e professores que procuram um apoio gratuito para os alunos.
+
+## O que o app tem
+- Lições do zero com estrelas, exercícios curtos e músicas conhecidas, por instrumento
+- Correção pelo microfone: diz se a nota saiu certa, alta, baixa ou uma oitava acima
+- Violão: acordes para iniciantes (Em, Am, C, G, D, E, com sétima, pestana), batidas com metrônomo, troca de acordes, melodias na 1ª posição
+- Flauta transversal: dedilhados de três oitavas (sistema Boehm), guia de embocadura e sopro, treinos de respiração, notas longas, staccato e dinâmica
+- Violino: notas da 1ª posição, direção do arco, escalas
+- Piano: teclas, numeração dos dedos, mão esquerda e direita
+- Afinador online grátis (violão padrão, meio tom abaixo e Drop D; violino; flauta; piano)
+- Teoria musical com exercícios e editor para escrever as próprias músicas
+
+## Guias
+- [Aprender violão: acordes para iniciantes e batidas](https://dedilhadovivo.com/violao/)
+- [Flauta transversal para iniciantes: primeiro som e dedilhados](https://dedilhadovivo.com/flauta-transversal/)
+- [Aprender violino: notas da 1ª posição e arco](https://dedilhadovivo.com/violino/)
+- [Aprender piano: teclas, dedos e primeiras músicas](https://dedilhadovivo.com/piano/)
+- [Afinador online grátis](https://dedilhadovivo.com/afinador-online/)
+
+## Abrir o app
+- [Dedilhado Vivo](https://dedilhadovivo.com/)
